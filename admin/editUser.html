@@ -1,0 +1,79 @@
+<div class="modal fade" id="staticBackdropedit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true" data-id="">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #EE4C51; color: white;">
+                <h5 class="modal-title" id="staticBackdropLabel">Edit User Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="post" id="form-edit-user">
+                <div class="modal-body">
+                    <div class="mb-2">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" />
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" />
+                        <div class="invalid-feedback"></div>
+                        <label for="chkShowPassword">
+                        Show Password  <input type="checkbox" id="chkShowPassword" onclick="changeType()">
+                    </div>
+                    <div class="mb-2">
+                        <label for="first_name" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" />
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="last_name" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" />
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="middle_name" class="form-label">Middle Name</label>
+                        <input type="text" class="form-control" id="middle_name" name="middle_name" />
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="course_id" class="form-label">Course Code</label>
+                        <select class="form-select" id="course_id" name="course_id">
+                            <option value="">--Select--</option>
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="level" class="form-label">Year Level</label>
+                        <select class="form-select" id="level" name="level">
+                            <option value="0"> NONE </option>
+                            <option value="1"> 1 </option>
+                            <option value="2"> 2 </option>
+                            <option value="3"> 3 </option>
+                            <option value="4"> 4 </option>
+                            <option value="5"> 5 </option>
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="role" class="form-label">Role</label>
+                        <select class="form-select" id="role" name="role">
+                            <option value="user">User</option>
+                            <option value="staff">Staff</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        No
+                    </button>
+                    <button type="submit" class="btn btn-primary brand-bg-color">
+                        Yes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="../admin/password.js"></script>
