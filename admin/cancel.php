@@ -4,11 +4,13 @@ session_start();
 
 require_once('../tools/functions.php');
 require_once('../classes/event.class.php');
+require_once('../classes/reserve.class.php');
 
 $reviewed_by = $event_id = '';
 $reviewed_byErr = $event_idErr  = '';
 
 $eventObj = new Event();
+$reserveObj = new Reserve();
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     
@@ -29,10 +31,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $eventObj->creation_status = "pending";
         $eventObj->progress_status = "pending";
 
-        if($eventObj->changeEventStatus()){
-            header("location: ../admin/events.php");
-        } else {
-            echo 'Something went wrong when you tried to change the status.';
+        if($reserveObj->deleteEvent($event_id)) {
+            if($eventObj->changeEventStatus()){
+                header("location: ../admin/events.php");
+            } else {
+                echo 'Something went wrong when you tried to change the status.';
+            }
         }
         exit;
     }

@@ -104,10 +104,13 @@
                         <td style="text-align: center;">
                             <?php if($arr["creation_status"] == "pending"): ?>
                                 <a href="" class="edit text-success" data-id="<?= $arr["event_id"] ?>">Edit</a>
-                                <a href="" class="delete text-danger" data-id="<?= $arr["event_id"] ?>">Delete</a>
+                                <a href="" class="delete text-danger" data-id="<?= $arr["event_id"] ?>">Delete</a>  
                             <?php endif; ?>
                             <?php if($arr["creation_status"] == "approved"): ?>
                                 <a href="" class="cancel text-danger" data-id="<?= $arr["event_id"] ?>">Cancel</a>
+                            <?php endif; ?>
+                            <?php if($arr["creation_status"] == "denied"): ?>
+                                <a href="" class="delete text-danger" data-id="<?= $arr["event_id"] ?>">Delete</a>
                             <?php endif; ?>
                         </td>
                     </tr>

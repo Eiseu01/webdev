@@ -79,13 +79,16 @@
                         <td class="text-center"><?= $arr["progress_status"] ?></td>
                         <td class="text-center"><?= $arr["capacity"] ?></td>
                         
-                        <td>
+                        <td class="text-center">
                             <?php if($arr["creation_status"] == "approved"): ?>
                                 <a href="" class="cancel text-danger" data-id="<?= $arr["event_id"] ?>">Cancel</a>
                             <?php endif; ?>
-                            <?php if($arr["creation_status"] == "pending" || $arr["creation_status"] == "denied"): ?>
+                            <?php if($arr["creation_status"] == "pending"): ?>
                                 <a href="" class="approve text-success" data-id="<?= $arr["event_id"] ?>">Approve</a>
                                 <a href="" class="reject text-danger" data-id="<?= $arr["event_id"] ?>">Reject</a>
+                            <?php endif; ?>
+                            <?php if($arr["creation_status"] == "denied"): ?>
+                                
                             <?php endif; ?>
                         </td>
                     </tr>
