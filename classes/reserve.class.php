@@ -51,10 +51,11 @@ class Reserve {
         return $query->execute();
     }
 
-    public function fetchEvents()
+    function fetchEvents($created_by)
     {
-        $sql = "SELECT * FROM events ORDER BY created_at ASC;";
+        $sql = "SELECT * FROM events e JOIN reservations r ON e.event_id = r.event_id JOIN users u ON r.user_id = u.user_id JOIN course c ON u.course_id = c.course_id WHERE e.created_by = :created_by;";
         $query = $this->db->connect()->prepare($sql);
+        $query->bindParam(':created_by', $created_by);
         $data = null;
         if ($query->execute()) {
             $data = $query->fetchAll(PDO::FETCH_ASSOC);

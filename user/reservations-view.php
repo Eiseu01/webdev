@@ -61,7 +61,9 @@
                         <td style="width: 150px;"><?= $arr["date"] ?></td>
                         <td style="width: 200px;"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
                         <td class="text-center"><?= $arr["capacity"] ?></td>
-                        <td><a href="" class="register-btn" data-id="<?= $arr["event_id"] ?>">Pay</a></td>
+                        <td>
+                            <a href="" class="register-btn" data-id="<?= $arr["event_id"] ?>">Pay</a>
+                        </td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>

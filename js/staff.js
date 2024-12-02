@@ -50,6 +50,23 @@ $(document).ready(function () {
       dataType: "html", // Expect HTML response
       success: function (response) {
         $(".content-page").html(response); // Load the response into the content area
+        
+        var table = $("#table-products").DataTable({
+          dom: "rtp", // Set DataTable options
+          pageLength: 10, // Default page length
+          ordering: false, // Disable ordering
+        });
+
+        // Bind custom input to DataTable search
+        $("#custom-search").on("keyup", function () {
+          table.search(this.value).draw(); // Search products based on input
+        });
+
+        $("#category-filter").on("change", function () {
+          if (this.value !== "choose") {
+            table.column(5).search(this.value).draw(); // Filter products by selected category
+          }
+        });
       },
     });
   }
@@ -74,6 +91,12 @@ $(document).ready(function () {
         // Bind custom input to DataTable search
         $("#custom-search").on("keyup", function () {
           table.search(this.value).draw(); // Search products based on input
+        });
+
+        $("#category-filter").on("change", function () {
+          if (this.value !== "choose") {
+            table.column(5).search(this.value).draw(); // Filter products by selected category
+          }
         });
 
         $(".edit").on("click", function (e) {

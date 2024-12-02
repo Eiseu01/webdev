@@ -85,11 +85,12 @@ class Event
         return $query->execute();
     }
 
-    function fetchEvents($created_by = '')
+    function fetchEvents($created_by = '', $creation_status = '')
     {
-        $sql = "SELECT * FROM events e JOIN users u ON e.created_by = u.user_id WHERE created_by LIKE '%' :created_by '%' ORDER BY e.created_at DESC;";
+        $sql = "SELECT * FROM events e JOIN users u ON e.created_by = u.user_id WHERE created_by LIKE '%' :created_by '%' AND creation_status LIKE '%' :creation_status '%' ORDER BY e.created_at DESC;";
         $query = $this->db->connect()->prepare($sql);
         $query->bindParam(':created_by', $created_by);
+        $query->bindParam(':creation_status', $creation_status);
         $data = null;
         if ($query->execute()) {
             $data = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -118,6 +119,16 @@ class Event
         $query->bindParam(':creation_status', $this->creation_status);
         $query->bindParam(':reviewed_by', $this->reviewed_by);
         $query->bindParam(':event_id', $this->event_id);
+
+        return $query->execute();
+    }
+
+    function subtractCapacity($event_id) {
+        $sql = "UPDATE events SET capacity = capacity - 1 WHERE event_id = :event_id";
+
+        $query = $this->db->connect()->prepare($sql);
+
+        $query->bindParam(':event_id', $event_id);
 
         return $query->execute();
     }

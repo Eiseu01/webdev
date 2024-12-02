@@ -48,14 +48,6 @@
 <div class="card">
     <div class="card-body">
         <div class="table-responsive">
-            <form class="d-flex me-2">
-                <div class="input-group w-100 pb-3 m-3">
-                    <input type="text" class="form-control form-control-light" id="custom-search" placeholder="Search Users">
-                    <span class="input-group-text bg-primary border-primary text-white brand-bg-color">
-                        <i class="bi bi-search"></i>
-                    </span>
-                </div>
-            </form>
             <div class="container">
                 <?php foreach($array as $arr): ?>
                     <div class="box">

@@ -36,8 +36,8 @@
         color: grey;
     }
 </style>
-<div class="page-title">
-    <h2>Notifications</h2>
+<div>
+    <h2 class="page-title">Notifications</h2>
 </div>
 <div class="card">
     <div class="card-body">

@@ -4,11 +4,13 @@ session_start();
 
 require_once('../tools/functions.php');
 require_once('../classes/reserve.class.php');
+require_once('../classes/event.class.php');
 
 $user_id = $event_id = '';
 $user_idErr = $event_idErr  = '';
 
 $reserveObj = new Reserve();
+$eventObj = new Event();
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     
@@ -27,10 +29,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $reserveObj->user_id = $user_id;
         $reserveObj->event_id = $event_id;
 
-        if($reserveObj->addReserve()){
-            header("location: ../user/dashboard.php");
-        } else {
-            echo 'Something went wrong when you tried to register.';
+        if($eventObj->subtractCapacity($event_id)) {
+            if($reserveObj->addReserve()){
+                header("location: ../user/dashboard.php");
+            } else {
+                echo 'Something went wrong when you tried to register.';
+            }
         }
         exit;
     }
