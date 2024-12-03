@@ -30,7 +30,7 @@ class Event
 
     function addEvent()
     {
-        $sql = "INSERT INTO events (event_name, event_description, date, start_time, end_time, location, created_by, capacity) VALUES (:event_name, :event_description,  :date, :start_time, :end_time, :location, :created_by, :capacity);";
+        $sql = "INSERT INTO events (event_name, event_description, date, start_time, end_time, location, created_by, total_capacity, available_capacity) VALUES (:event_name, :event_description,  :date, :start_time, :end_time, :location, :created_by, :capacity, :capacity);";
 
         $query = $this->db->connect()->prepare($sql);
 
@@ -47,7 +47,7 @@ class Event
     }
 
     function updateEvent() {
-        $sql = "UPDATE events SET event_name = :event_name, location = :location, event_description = :event_description, date = :date, start_time = :start_time, end_time = :end_time, capacity = :capacity WHERE event_id = :event_id;";
+        $sql = "UPDATE events SET event_name = :event_name, location = :location, event_description = :event_description, date = :date, start_time = :start_time, end_time = :end_time, total_capacity = :capacity, available_capacity = :capacity WHERE event_id = :event_id;";
 
         $query = $this->db->connect()->prepare($sql);
 
@@ -98,8 +98,20 @@ class Event
         return $data;
     }
 
+    // function fetchAvailableEvents($user_id) {
+    //     $sql = "SELECT e.* FROM events e LEFT JOIN reservations r ON e.event_id = r.event_id AND r.user_id = :user_id WHERE e.creation_status = 'approved' AND e.progress_status = 'scheduled' AND r.reservation_id IS NULL;";
+
+    //     $query = $this->db->connect()->prepare($sql);
+    //     $query->bindParam(':user_id', $user_id);
+    //     $data = null;
+    //     if ($query->execute()) {
+    //         $data = $query->fetchAll(PDO::FETCH_ASSOC);
+    //     }
+    //     return $data;
+    // }
+
     function fetchAvailableEvents($user_id) {
-        $sql = "SELECT e.* FROM events e LEFT JOIN reservations r ON e.event_id = r.event_id AND r.user_id = :user_id WHERE e.creation_status = 'approved' AND e.progress_status = 'scheduled' AND r.reservation_id IS NULL;";
+        $sql = "SELECT e.*, r.event_id as 'revent_id', r.reservation_status FROM events e LEFT JOIN reservations r ON e.event_id = r.event_id AND r.user_id = :user_id WHERE e.creation_status = 'approved' AND e.progress_status = 'scheduled' ORDER BY created_at DESC;";
 
         $query = $this->db->connect()->prepare($sql);
         $query->bindParam(':user_id', $user_id);
@@ -124,7 +136,17 @@ class Event
     }
 
     function subtractCapacity($event_id) {
-        $sql = "UPDATE events SET capacity = capacity - 1 WHERE event_id = :event_id";
+        $sql = "UPDATE events SET available_capacity = available_capacity - 1 WHERE event_id = :event_id";
+
+        $query = $this->db->connect()->prepare($sql);
+
+        $query->bindParam(':event_id', $event_id);
+
+        return $query->execute();
+    }
+
+    function addCapacity($event_id) {
+        $sql = "UPDATE events SET available_capacity = available_capacity + 1 WHERE event_id = :event_id";
 
         $query = $this->db->connect()->prepare($sql);
 

@@ -18,6 +18,8 @@
     }
     .container {
         display: grid;
+        justify-content: center;
+        align-items: center;
         grid-template-columns: 1fr 1fr;
         gap: 20px;
         margin: 5px;
@@ -48,27 +50,25 @@
 <div class="card">
     <div class="card-body">
         <div class="table-responsive">
-            <div class="container">
-                <?php foreach($array as $arr): ?>
-                    <div class="box">
-                        <div class="picture">
-                            <img src="../img/empty.jpg">
-                        </div>
-                        <div>
-                            <div class="information">
-                                <p>Username: <?= $arr["username"] ?></p>
-                                <p>Full Name: <?= $arr["last_name"] . ", " . $arr["first_name"] . " " . $arr["middle_name"] ?></p>
-                                <p>Course: <?= $arr["course_code"] ?></p>
-                                <p>Year Level: <?= $arr["level"] ? $arr["level"] : "NONE" ?> </p>
-                                <p>Role: <?= $arr["role"] ?> </p>
-                            </div>
-                        </div>
-                        <div>
-                            <a href="" class="manage-user" data-id="<?= $arr["user_id"] ?>">Manage</a>
+            <?php foreach($array as $arr): ?>
+                <div class="box w-100">
+                    <div class="picture">
+                        <img src="../img/empty.jpg">
+                    </div>
+                    <div>
+                        <div class="information">
+                            <p>Username: <?= $arr["username"] ?></p>
+                            <p>Full Name: <?= $arr["last_name"] . ", " . $arr["first_name"] . " " . $arr["middle_name"] ?></p>
+                            <p>Course: <?= $arr["course_code"] ?></p>
+                            <p>Year Level: <?= $arr["level"] ? $arr["level"] : "NONE" ?> </p>
+                            <p>Role: <?= $arr["role"] ?> </p>
                         </div>
                     </div>
-                <?php endforeach; ?>
-            </div>
+                    <div>
+                        <a href="" class="manage-user" data-id="<?= $arr["user_id"] ?>">Manage</a>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </div>

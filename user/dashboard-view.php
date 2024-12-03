@@ -18,9 +18,6 @@
         color: black;
         text-align: center;
     }
-    .register-btn {
-        color: green;
-    }
 </style>
 <?php
     session_start();
@@ -56,9 +53,10 @@
                         <th>Event Name</th>
                         <th>Venue</th>
                         <th>Description</th>
-                        <th>Date</th>
+                        <th class="text-center">Date</th>
                         <th>Time</th>
-                        <th>Capacity</th>
+                        <th class="text-center">Total Capacity</th>
+                        <th class="text-center">Available Capacity</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -72,15 +70,21 @@
                         <td><?= $arr["event_name"] ?></td>
                         <td><?= $arr["location"] ?></td>
                         <td><?= $arr["event_description"] ?></td>
-                        <td style="width: 150px;"><?= $arr["date"] ?></td>
-                        <td style="width: 200px;"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
-                        <td class="text-center"><?= $arr["capacity"] ?></td>
-                        <td>
-                            <?php if($arr["creation_status"] == "pending"): ?>
-                                <a href="" class="register-btn" data-id="<?= $arr["event_id"] ?>">Register</a>
+                        <td class="text-center" style="width: 150px;"><?= $arr["date"] ?></td>
+                        <td class="text-center" style="width: 200px;"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
+                        <td class="text-center"><?= $arr["total_capacity"] ?></td>
+                        <td class="text-center"><?= $arr["available_capacity"] ?></td>
+                        <td class="text-center">
+                            <?php if($arr["available_capacity"] > 0): ?>
+                                <?php if($arr["event_id"] == $arr["revent_id"] && $arr["reservation_status"] == "pending"): ?>
+                                    <a href="" class="cancel-btn text-danger" data-id="<?= $arr["event_id"] ?>">Cancel</a>
+                                <?php endif; ?>
+                                <?php if($arr["event_id"] != $arr["revent_id"]): ?>
+                                    <a href="" class="register-btn text-success" data-id="<?= $arr["event_id"] ?>">Register</a>
+                                <?php endif; ?>
                             <?php endif; ?>
-                            <?php if($arr["creation_status"] == "approved"): ?>
-                                <a href="" class="register-btn" data-id="<?= $arr["event_id"] ?>">Register</a>
+                            <?php if($arr["available_capacity"] == 0): ?>
+                                <a class="text-muted" data-id="<?= $arr["event_id"] ?>">Unavailable</a>
                             <?php endif; ?>
                         </td>
                     </tr>

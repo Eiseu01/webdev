@@ -33,7 +33,7 @@
         <h3>Welcome staff <?= $_SESSION["account"]["username"] ?>!</h3>
     </div>
     <div class="page-title">
-        <h2>Proposed Event List</h2>
+        <h2>Manage Events</h2>
     </div>
 </div>
 <div class="card">
@@ -77,11 +77,11 @@
                         <td style="width: 200px;"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
                         <td class="text-center"><?= $arr["creation_status"] ?></td>
                         <td class="text-center"><?= $arr["progress_status"] ?></td>
-                        <td class="text-center"><?= $arr["capacity"] ?></td>
+                        <td class="text-center"><?= $arr["total_capacity"] ?></td>
                         
                         <td class="text-center">
                             <?php if($arr["creation_status"] == "approved"): ?>
-                                <a href="" class="cancel text-danger" data-id="<?= $arr["event_id"] ?>">Cancel</a>
+                                <!-- <a href="" class="cancel text-danger" data-id="<?= $arr["event_id"] ?>">Cancel</a> -->
                             <?php endif; ?>
                             <?php if($arr["creation_status"] == "pending"): ?>
                                 <a href="" class="approve text-success" data-id="<?= $arr["event_id"] ?>">Approve</a>

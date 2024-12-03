@@ -50,7 +50,8 @@ $(document).ready(function () {
       dataType: "html", // Expect HTML response
       success: function (response) {
         $(".content-page").html(response); // Load the response into the content area
-        
+
+        // Initialize DataTable for product table
         var table = $("#table-products").DataTable({
           dom: "rtp", // Set DataTable options
           pageLength: 10, // Default page length
@@ -67,10 +68,45 @@ $(document).ready(function () {
             table.column(5).search(this.value).draw(); // Filter products by selected category
           }
         });
+
+        $(".confirm").on("click", function (e) {
+          e.preventDefault();
+          confirmReservation(this.dataset.id);
+        });
+
+        $(".decline").on("click", function (e) {
+          e.preventDefault();
+          declineReservation(this.dataset.id);
+        });
+      },
+    }); 
+  }
+
+  function confirmReservation(reservationId) {
+    $.ajax({
+      url: `../staff/confirm-reservation.php`,
+      type: "GET",
+      datatype: "html",
+      success: function (view) {
+        $(".modal-container").empty().html(view); // Load the modal view
+        $("#staticBackdropedit").modal("show"); // Show the modal
+        $("#reservation_id").val(reservationId);
       },
     });
   }
 
+  function declineReservation(reservationId) {
+    $.ajax({
+      url: `../staff/decline-reservation.php`,
+      type: "GET",
+      datatype: "html",
+      success: function (view) {
+        $(".modal-container").empty().html(view); // Load the modal view
+        $("#staticBackdropedit").modal("show"); // Show the modal
+        $("#reservation_id").val(reservationId);
+      },
+    });
+  }
 
   // Function to load analytics view
   function viewProposedEvents() {
@@ -339,46 +375,7 @@ $(document).ready(function () {
         $("#date").val(event.date);
         $("#start_time").val(event.start_time);
         $("#end_time").val(event.end_time);
-        $("#capacity").val(event.capacity);
-      },
-    });
-  }
-
-  function fetchCourse() {
-    $.ajax({
-      url: "../staff/fetch-course.php", // URL for fetching categories
-      type: "GET", // Use GET request
-      dataType: "json", // Expect JSON response
-      success: function (data) {
-        // Clear existing options and add a default "Select" option
-        $("#course_id").empty().append('<option value="">--Select--</option>');
-
-        // Append each category to the select dropdown
-        $.each(data, function (index, course) {
-          $("#course_id").append(
-            $("<option>", {
-              value: course.course_id, // Value attribute
-              text: course.course_code, // Displayed text
-            })
-          );
-        });
-      },
-    });
-  }
-
-  function fetchUser(userId) {
-    $.ajax({
-      url: `../staff/fetch-user.php?user_id=${userId}`, // URL for fetching categories
-      type: "POST", // Use GET request
-      dataType: "json", // Expect JSON response
-      success: function (user) {
-        console.log(user);
-        $("#username").val(user.username);
-        $("#last_name").val(user.last_name);
-        $("#first_name").val(user.first_name);
-        $("#middle_name").val(user.middle_name);
-        $("#course_id").val(user.course_id);
-        $("#level").val(user.level);
+        $("#capacity").val(event.total_capacity);
       },
     });
   }

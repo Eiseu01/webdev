@@ -78,11 +78,12 @@
                         <th>Event Name</th>
                         <th>Venue</th>
                         <th>Description</th>
-                        <th>Date</th>
+                        <th class="text-center">Date</th>
                         <th>Time</th>
                         <th>Creation Status</th>
                         <th>Progress Status</th>
-                        <th>Capacity</th>
+                        <th class="text-center">Total Capacity</th>
+                        <th class="text-center">Available Capacity</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -96,11 +97,12 @@
                         <td><?= $arr["event_name"] ?></td>
                         <td><?= $arr["location"] ?></td>
                         <td><?= $arr["event_description"] ?></td>
-                        <td style="width: 150px;"><?= $arr["date"] ?></td>
-                        <td style="width: 200px;"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
+                        <td style="width: 150px;" class="text-center"><?= $arr["date"] ?></td>
+                        <td style="width: 200px;" class="text-center"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
                         <td class="text-center"><?= $arr["creation_status"] ?></td>
                         <td class="text-center"><?= $arr["progress_status"] ?></td>
-                        <td class="text-center"><?= $arr["capacity"] ?></td>
+                        <td class="text-center"><?= $arr["total_capacity"] ?></td>
+                        <td class="text-center"><?= $arr["available_capacity"] ?></td>
                         <td style="text-align: center;">
                             <?php if($arr["creation_status"] == "pending"): ?>
                                 <a href="" class="edit text-success" data-id="<?= $arr["event_id"] ?>">Edit</a>

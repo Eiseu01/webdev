@@ -7,11 +7,7 @@
         padding: 15px;
     }
     td a {
-        background-color: lightblue;
-        border-radius: 5px;
-        padding: 5px 15px;
         text-decoration: none;
-        color: black;
     }
 </style>
 <?php
@@ -44,7 +40,7 @@
                         <th>Description</th>
                         <th>Date</th>
                         <th>Time</th>
-                        <th>Capacity</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -60,9 +56,11 @@
                         <td><?= $arr["event_description"] ?></td>
                         <td style="width: 150px;"><?= $arr["date"] ?></td>
                         <td style="width: 200px;"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
-                        <td class="text-center"><?= $arr["capacity"] ?></td>
+                        <td><?= $arr["reservation_status"] ?></td>
                         <td>
-                            <a href="" class="register-btn" data-id="<?= $arr["event_id"] ?>">Pay</a>
+                            <?php if($arr["reservation_status"] == "confirmed"): ?>
+                                <a class="view-ticket text-primary" href="" data-id="<?= $arr["reservation_id"] ?>">View Ticket</a>
+                            <?php endif; ?>
                         </td>
                     </tr>
                     <?php endforeach; ?>

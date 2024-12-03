@@ -66,6 +66,11 @@ $(document).ready(function () {
           e.preventDefault();
           registerModal(this.dataset.id);
         });
+
+        $(".cancel-btn").on("click", function (e) {
+          e.preventDefault();
+          cancelModal(this.dataset.id);
+        });
       },
     });
   }
@@ -73,6 +78,19 @@ $(document).ready(function () {
   function registerModal(eventId) {
     $.ajax({
       url: `../user/register.php`,
+      type: "GET",
+      datatype: "html",
+      success: function (view) {
+        $(".modal-container").empty().html(view); // Load the modal view
+        $("#staticBackdropedit").modal("show"); // Show the modal
+        $("#event_id").val(eventId);
+      },
+    });
+  }
+
+  function cancelModal(eventId) {
+    $.ajax({
+      url: `../user/cancel.php`,
       type: "GET",
       datatype: "html",
       success: function (view) {
@@ -113,6 +131,40 @@ $(document).ready(function () {
         $("#custom-search").on("keyup", function () {
           table.search(this.value).draw(); // Search products based on input
         });
+
+        $(".view-ticket").on("click", function (e) {
+          e.preventDefault();
+          viewTicket(this.dataset.id);
+        });
+      },
+    });
+  }
+
+  function viewTicket(reservationId) {
+    $.ajax({
+      url: `../user/view-ticket.php`,
+      type: "GET",
+      datatype: "html",
+      success: function (view) {
+        fetchTicketInfo(reservationId);
+
+        $(".modal-container").empty().html(view); // Load the modal view
+        $("#staticBackdropedit").modal("show"); // Show the modal
+      },
+    });
+  }
+  function fetchTicketInfo(reservationId) {
+    $.ajax({
+      url: `../user/fetch-ticket.php?reservation_id=${reservationId}`, // URL for fetching categories
+      type: "POST", // Use GET request
+      dataType: "json", // Expect JSON response
+      success: function (user) {
+        console.log(user);
+        $("#name").val(`Name: ${user.last_name}, ${user.first_name} ${user.middle_name}`);
+        $("#event").val("Event Name: " + user.event_name);
+        $("#venue").val("Venue: " + user.location);
+        $("#date").val("Date: " + user.date);
+        $("#time").val(`Time: ${user.start_time} - ${user.end_time}`);
       },
     });
   }
