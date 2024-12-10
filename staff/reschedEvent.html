@@ -1,0 +1,43 @@
+<div class="modal fade" id="staticBackdropedit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true" data-id="">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #EE4C51; color: white;">
+                <h5 class="modal-title" id="staticBackdropLabel">Edit Proposed Event</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="post" id="form-edit-event">
+                <div class="modal-body">
+                    <div class="mb-2">
+                        <label for="event_name" class="form-label">Event Name</label>
+                        <input type="text" class="form-control" id="event_name" name="event_name" disabled />
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="date" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="date" name="date" />
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="start_time" class="form-label">Start Time</label>
+                        <input type="time" class="form-control" id="start_time" name="start_time" />
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="end_time" class="form-label">End Time</label>
+                        <input type="time" class="form-control" id="end_time" name="end_time" />
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        No
+                    </button>
+                    <button type="submit" class="btn btn-primary brand-bg-color">
+                        Yes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

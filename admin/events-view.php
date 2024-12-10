@@ -30,7 +30,7 @@
 <div class="modal-container"></div>
 <div>
     <div class="username">
-        <h3>Welcome staff <?= $_SESSION["account"]["username"] ?>!</h3>
+        <h3>Welcome Admin <?= $_SESSION["account"]["username"] ?>!</h3>
     </div>
     <div class="page-title">
         <h2>Manage Events</h2>
@@ -54,7 +54,7 @@
                         <th>Venue</th>
                         <th>Organizer</th>
                         <th>Description</th>
-                        <th>Date</th>
+                        <th class="text-center">Date</th>
                         <th>Time</th>
                         <th>Creation Status</th>
                         <th>Progress Status</th>
@@ -73,19 +73,23 @@
                         <td><?= $arr["location"] ?></td>
                         <td><?= $arr["last_name"] . ', ' . $arr["first_name"] . " " . $arr["middle_name"] ?></td>
                         <td><?= $arr["event_description"] ?></td>
-                        <td style="width: 150px;"><?= $arr["date"] ?></td>
-                        <td style="width: 200px;"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
+                        <td class="text-center" style="width: 150px;"><?= $arr["date"] ?></td>
+                        <td class="text-center" style="width: 100px;"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
                         <td class="text-center"><?= $arr["creation_status"] ?></td>
                         <td class="text-center"><?= $arr["progress_status"] ?></td>
                         <td class="text-center"><?= $arr["total_capacity"] ?></td>
                         
-                        <td class="text-center">
-                            <?php if($arr["creation_status"] == "approved"): ?>
-                                <!-- <a href="" class="cancel text-danger" data-id="<?= $arr["event_id"] ?>">Cancel</a> -->
+                        <td class="text-center" style="width: 200px">
+                            <?php if($arr["creation_status"] == "approved" && $arr["progress_status"] == "scheduled"): ?>
+                                <a href="" class="cancel" data-id="<?= $arr["event_id"] ?>">Delete</a>
+                            <?php endif; ?>
+                            <?php if($arr["creation_status"] == "approved" && $arr["progress_status"] == "rescheduled"): ?>
+                                <a href="" class="approve" data-id="<?= $arr["event_id"] ?>">Approve</a>
+                                <a href="" class="reject" data-id="<?= $arr["event_id"] ?>">Reject</a>
                             <?php endif; ?>
                             <?php if($arr["creation_status"] == "pending"): ?>
-                                <a href="" class="approve text-success" data-id="<?= $arr["event_id"] ?>">Approve</a>
-                                <a href="" class="reject text-danger" data-id="<?= $arr["event_id"] ?>">Reject</a>
+                                <a href="" class="approve" data-id="<?= $arr["event_id"] ?>">Approve</a>
+                                <a href="" class="reject" data-id="<?= $arr["event_id"] ?>">Reject</a>
                             <?php endif; ?>
                             <?php if($arr["creation_status"] == "denied"): ?>
                                 

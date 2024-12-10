@@ -55,7 +55,7 @@
 <div class="modal-container"></div>
 <div>
     <div class="username">
-        <h3>Welcome staff <?= $_SESSION["account"]["username"] ?>!</h3>
+        <h3>Welcome Staff <?= $_SESSION["account"]["username"] ?>!</h3>
     </div>
     <div class="page-title">
         <h2>Proposed Event List</h2>
@@ -97,22 +97,22 @@
                         <td><?= $arr["event_name"] ?></td>
                         <td><?= $arr["location"] ?></td>
                         <td><?= $arr["event_description"] ?></td>
-                        <td style="width: 150px;" class="text-center"><?= $arr["date"] ?></td>
-                        <td style="width: 200px;" class="text-center"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
+                        <td style="width: 110px;" class="text-center"><?= $arr["date"] ?></td>
+                        <td style="width: 100px;" class="text-center"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
                         <td class="text-center"><?= $arr["creation_status"] ?></td>
                         <td class="text-center"><?= $arr["progress_status"] ?></td>
                         <td class="text-center"><?= $arr["total_capacity"] ?></td>
                         <td class="text-center"><?= $arr["available_capacity"] ?></td>
-                        <td style="text-align: center;">
+                        <td style="text-align: center; width: 150px">
                             <?php if($arr["creation_status"] == "pending"): ?>
-                                <a href="" class="edit text-success" data-id="<?= $arr["event_id"] ?>">Edit</a>
-                                <a href="" class="delete text-danger" data-id="<?= $arr["event_id"] ?>">Delete</a>  
+                                <a href="" class="edit" data-id="<?= $arr["event_id"] ?>">Edit</a>
+                                <a href="" class="delete" data-id="<?= $arr["event_id"] ?>">Delete</a>  
                             <?php endif; ?>
                             <?php if($arr["creation_status"] == "approved"): ?>
-                                <a href="" class="cancel text-danger" data-id="<?= $arr["event_id"] ?>">Cancel</a>
+                                <a href="" class="resched" data-id="<?= $arr["event_id"] ?>">Reschedule</a>
                             <?php endif; ?>
                             <?php if($arr["creation_status"] == "denied"): ?>
-                                <a href="" class="delete text-danger" data-id="<?= $arr["event_id"] ?>">Delete</a>
+                                <a href="" class="delete" data-id="<?= $arr["event_id"] ?>">Delete</a>
                             <?php endif; ?>
                         </td>
                     </tr>

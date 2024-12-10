@@ -63,6 +63,19 @@ class Event
         return $query->execute();
     }
 
+    function reschedEvent() {
+        $sql = "UPDATE events SET date = :date, start_time = :start_time, end_time = :end_time, progress_status = 'rescheduled' WHERE event_id = :event_id;";
+
+        $query = $this->db->connect()->prepare($sql);
+
+        $query->bindParam(':event_id', $this->event_id);
+        $query->bindParam(':date', $this->date);
+        $query->bindParam(':start_time', $this->start_time);
+        $query->bindParam(':end_time', $this->end_time);
+
+        return $query->execute();
+    }
+
     function fetchRecord($recordID)
     {
         $sql = "SELECT * FROM events WHERE event_id = :recordID;";

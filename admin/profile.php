@@ -1,5 +1,5 @@
 <?php
-$page_title = "Event - Dashboard";
+$page_title = "Event - Profile";
 session_start();
 
 if (isset($_SESSION['account'])) {

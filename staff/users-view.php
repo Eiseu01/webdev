@@ -74,8 +74,8 @@
                         <td><?= $arr["reservation_status"] ?></td>
                         <td class="action"> 
                             <?php if($arr["reservation_status"] == "pending"): ?>
-                                <a class="confirm text-success" href="" data-id="<?= $arr["reservation_id"] ?>">Confirm</a>
-                                <a class="decline text-danger" href="" data-id="<?= $arr["reservation_id"] ?>">Decline</a>
+                                <a class="confirm" href="" data-id="<?= $arr["reservation_id"] ?>">Confirm</a>
+                                <a class="decline" href="" data-id="<?= $arr["reservation_id"] ?>">Decline</a>
                             <?php endif; ?>
                             <?php if($arr["reservation_status"] == "confirmed"): ?>
                                 <p class="text-success m-0">Confirmed</p>

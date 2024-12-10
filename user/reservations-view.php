@@ -38,7 +38,7 @@
                         <th>Event Name</th>
                         <th>Venue</th>
                         <th>Description</th>
-                        <th>Date</th>
+                        <th class="text-center">Date</th>
                         <th>Time</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -54,12 +54,12 @@
                         <td><?= $arr["event_name"] ?></td>
                         <td><?= $arr["location"] ?></td>
                         <td><?= $arr["event_description"] ?></td>
-                        <td style="width: 150px;"><?= $arr["date"] ?></td>
-                        <td style="width: 200px;"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
-                        <td><?= $arr["reservation_status"] ?></td>
-                        <td>
+                        <td class="text-center" style="width: 150px;"><?= $arr["date"] ?></td>
+                        <td class="text-center" style="width: 200px;"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
+                        <td class="text-center"><?= $arr["reservation_status"] ?></td>
+                        <td class="text-center">
                             <?php if($arr["reservation_status"] == "confirmed"): ?>
-                                <a class="view-ticket text-primary" href="" data-id="<?= $arr["reservation_id"] ?>">View Ticket</a>
+                                <a class="view-ticket" href="" data-id="<?= $arr["reservation_id"] ?>">View Ticket</a>
                             <?php endif; ?>
                         </td>
                     </tr>

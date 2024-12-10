@@ -1,5 +1,5 @@
 <?php
-$page_title = "Event - Homepage";
+$page_title = "Event - Manage Participants";
 session_start();
 
 if (isset($_SESSION['account'])) {

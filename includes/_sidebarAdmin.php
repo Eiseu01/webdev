@@ -3,12 +3,12 @@
         <img style="border-radius:100%; width: 80px; height: 80px; margin-left: 15px; margin-right: -30px" src="../img/wmsu-logo.png" alt="WMSU-logo">
     </a>
     <ul class="nav nav-pills flex-column mb-auto">
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <a href="../admin/dashboard.php" id="dashboard-link" class="nav-link">
                 <i class="bi bi-speedometer2"></i>
                 <span class="fs-6 ms-2">Dashboard</span>
             </a>
-        </li>
+        </li> -->
         <li class="nav-item">
             <a href="../admin/events.php" id="manage-link" class="nav-link">
                 <i class="bi bi-calendar-check"></i>

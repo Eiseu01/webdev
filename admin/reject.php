@@ -23,7 +23,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $event_idErr = 'Event ID is required.';
     }
 
-    if(empty($user_idErr) && empty($event_idErr)){
+    if(empty($reviewed_byErr) && empty($event_idErr)){
         $eventObj->reviewed_by = $reviewed_by;
         $eventObj->event_id = $event_id;
         $eventObj->creation_status = "denied";

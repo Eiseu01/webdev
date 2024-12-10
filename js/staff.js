@@ -145,6 +145,11 @@ $(document).ready(function () {
           deleteEvent(this.dataset.id);
         });
 
+        $(".resched").on("click", function (e) {
+          e.preventDefault();
+          reschedEvent(this.dataset.id);
+        });
+
         $("#addEvent").on("click", function (e) {
           e.preventDefault();
           addEvent();
@@ -272,6 +277,72 @@ $(document).ready(function () {
     });
   }
 
+  function reschedEvent(eventId) {
+    $.ajax({
+      url: `../staff/reschedEvent.html`,
+      type: "GET",
+      datatype: "html",
+      success: function (view) {
+        fetchEvent(eventId);
+
+        $(".modal-container").empty().html(view); // Load the modal view
+        $("#staticBackdropedit").modal("show"); // Show the modal
+        $("#staticBackdropedit").attr("data-id", eventId);
+
+        $("#form-edit-event").on("submit", function (e) {
+          e.preventDefault(); // Prevent default form submission
+          updateReschedEvent(eventId); // Call function to save product
+        });
+      },
+    });
+  }
+
+  function updateReschedEvent(eventId) {
+    console.log("AJAX request is about to be sent");
+    $.ajax({
+      type: "POST",
+      url: `../staff/reschedEvent.php?event_id=${eventId}`,
+      data: $("form").serialize(),
+      dataType: "json",
+      success: function (response) {
+        console.log(response);
+        if (response.status === "error") {
+          // Handle validation errors
+          if (response.event_nameErr) {
+            $("#event_name").addClass("is-invalid");
+            $("#event_name")
+              .next(".invalid-feedback")
+              .text(response.event_nameErr)
+              .show();
+          } else {
+            $("#event_name").removeClass("is-invalid");
+          }
+          if (response.event_venueErr) {
+            $("#event_venue").addClass("is-invalid");
+            $("#event_venue")
+              .next(".invalid-feedback")
+              .text(response.event_venueErr)
+              .show();
+          } else {
+            $("#event_venue").removeClass("is-invalid");
+          }
+        } else if (response.status === "success") {
+          // On success, hide modal and reset form
+          $("#staticBackdropedit").modal("hide");
+          $("form")[0].reset(); // Reset the form
+          // Optionally, reload products to show new entry
+          viewProposedEvents();
+        }
+      },
+      error: function (xhr, status, error) {
+        console.log("AJAX request failed:");
+        console.log("Status:", status); // Logs the status (e.g., "timeout", "error", etc.)
+        console.log("Error:", error); // Logs the error message
+        console.log("Response text:", xhr.responseText); // Logs the raw response from the server
+      },
+    });
+  }
+
   function editEvent(eventId) {
     $.ajax({
       url: `../staff/editEvent.html`,
@@ -376,6 +447,7 @@ $(document).ready(function () {
         $("#start_time").val(event.start_time);
         $("#end_time").val(event.end_time);
         $("#capacity").val(event.total_capacity);
+        $("#progress").val(event.progress_status);
       },
     });
   }

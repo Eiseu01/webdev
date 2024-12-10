@@ -18,15 +18,17 @@
   --sidebar-width: 240px;
   --topbar-height: 100px;
   --body-color: #f7f8fb;
-  --brand-color: #ee4c51;
-  --ct-blue: #2c8ef8;
+  --brand-color: #c74145;
+  --ct-blue: #0063cc;
+  --ct-blue-hover: #2e8ff7;
   --ct-indigo: #727cf5;
   --ct-purple: #6b5eae;
   --ct-pink: #ff679b;
   --ct-red: #fa5c7c;
   --ct-orange: #fd7e14;
   --ct-yellow: #ffc35a;
-  --ct-green: #0acf97;
+  --ct-green: #00501b;
+  --ct-green-hover:#006b24;
   --ct-teal: #02a8b5;
   --ct-cyan: #39afd1;
   --ct-black: #000;
@@ -369,12 +371,6 @@
   border-color: var(--brand-color);
 }
 
-div.dt-container div.dt-paging ul.pagination {
-  margin-top: 10px;
-  display: flex;
-  justify-content: flex-end;
-}
-
 #category-filter {
   width: 200px;
 }
@@ -398,25 +394,6 @@ div.dt-container div.dt-paging ul.pagination {
   border-color: var(--ct-table-border-color);
 }
 
-.table {
-  --ct-table-color-type: initial;
-  --ct-table-bg-type: initial;
-  --ct-table-color-state: initial;
-  --ct-table-bg-state: initial;
-  --ct-table-color: var(--ct-body-color);
-  --ct-table-bg: transparent;
-  --ct-table-border-color: var(--ct-border-color);
-  --ct-table-accent-bg: transparent;
-  --ct-table-striped-color: var(--ct-body-color);
-  --ct-table-striped-bg: rgba(var(--ct-tertiary-bg-rgb), 1);
-  --ct-table-active-color: var(--ct-body-color);
-  --ct-table-active-bg: rgba(var(--ct-tertiary-bg-rgb), 1);
-  --ct-table-hover-color: var(--ct-body-color);
-  --ct-table-hover-bg: rgba(var(--ct-tertiary-bg-rgb), 1);
-  width: 100%;
-  margin-bottom: 1.5rem;
-  border-color: var(--ct-table-border-color);
-}
 
 .table-centered td,
 .table-centered th {
@@ -462,4 +439,41 @@ div.dt-container div.dt-paging ul.pagination {
 
 .modal-header {
   background-color: #B22222;
+} 
+
+.reject, .cancel, .cancel-btn, .delete {
+  background-color: #B22222;
+  padding: 5px 10px;
+  border-radius: 3px;
+  color: white;
+  transition: 0.3s;
+}
+.reject:hover, .cancel:hover, .cancel-btn:hover, .delete:hover{
+  background-color: var(--brand-color);
+}
+
+.edit, .confirm, .register-btn, .approve {
+  background-color: var(--ct-green);
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: white;
+  transition: 0.3s;
+}
+.edit:hover, .confirm:hover, .register-btn:hover, .approve:hover {
+  background-color: var(--ct-green-hover);
+}
+
+.resched, .view-ticket {
+  background-color: var(--ct-blue);
+  padding: 5px 10px;
+  border-radius: 3px;
+  color: white;
+  transition: 0.3s;
+}
+.resched:hover, .view-ticket:hover {
+  background-color: var(--ct-blue-hover);
+}
+
+.dt-paging {
+  display: none;
 }

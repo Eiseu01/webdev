@@ -6,33 +6,25 @@ require_once('../tools/functions.php');
 require_once('../classes/event.class.php');
 require_once('../classes/reserve.class.php');
 
-$reviewed_by = $event_id = '';
-$reviewed_byErr = $event_idErr  = '';
+$event_id = '';
+$event_idErr  = '';
 
 $eventObj = new Event();
 $reserveObj = new Reserve();
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     
-    $reviewed_by = $_SESSION["account"]["user_id"];
     $event_id = $_POST["event_id"];
-
-    if(empty($reviewed_by)){
-        $reviewed_byErr = 'Reviewed by ID is required.';
-    }
 
     if(empty($event_id)){
         $event_idErr = 'Event ID is required.';
     }
 
-    if(empty($user_idErr) && empty($event_idErr)){
-        $eventObj->reviewed_by = $reviewed_by;
+    if(empty($event_idErr)){
         $eventObj->event_id = $event_id;
-        $eventObj->creation_status = "pending";
-        $eventObj->progress_status = "pending";
 
         if($reserveObj->deleteEvent($event_id)) {
-            if($eventObj->changeEventStatus()){
+            if($eventObj->deleteEvent($event_id)){
                 header("location: ../admin/events.php");
             } else {
                 echo 'Something went wrong when you tried to change the status.';
@@ -53,7 +45,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             <form method="post" id="edit-event-status" action="cancel.php">
                 <div class="modal-body">
                     <div id="label" class="mb-2">
-                        <label for="event_id"><h4>Are you sure you want to cancel this event?</h4></label>
+                        <label for="event_id"><h4>Are you sure you want to delete this event?</h4></label>
                         <input style="display:none;" type="text" value="" id="event_id" name="event_id">
                     </div>
                 </div>

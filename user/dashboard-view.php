@@ -77,10 +77,13 @@
                         <td class="text-center">
                             <?php if($arr["available_capacity"] > 0): ?>
                                 <?php if($arr["event_id"] == $arr["revent_id"] && $arr["reservation_status"] == "pending"): ?>
-                                    <a href="" class="cancel-btn text-danger" data-id="<?= $arr["event_id"] ?>">Cancel</a>
+                                    <a href="" class="cancel-btn" data-id="<?= $arr["event_id"] ?>">Cancel</a>
+                                <?php endif; ?>
+                                <?php if($arr["event_id"] == $arr["revent_id"] && $arr["reservation_status"] == "confirmed"): ?>
+                                    <a>Registered</a>
                                 <?php endif; ?>
                                 <?php if($arr["event_id"] != $arr["revent_id"]): ?>
-                                    <a href="" class="register-btn text-success" data-id="<?= $arr["event_id"] ?>">Register</a>
+                                    <a href="" class="register-btn" data-id="<?= $arr["event_id"] ?>">Register</a>
                                 <?php endif; ?>
                             <?php endif; ?>
                             <?php if($arr["available_capacity"] == 0): ?>
