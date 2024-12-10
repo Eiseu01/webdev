@@ -14,28 +14,23 @@ $(document).ready(function () {
   }
 
   $("#dashboard-link").on("click", function (e) {
-    e.preventDefault(); // Prevent default behavior
-    viewDashboard(); // Call the function to load analytics
+    e.preventDefault();
+    viewDashboard();
   });
 
   $("#users-link").on("click", function (e) {
-    e.preventDefault(); // Prevent default behavior
-    viewUsers(); // Call the function to load analytics
+    e.preventDefault();
+    viewUsers();
   });
 
   $("#manage-link").on("click", function (e) {
-    e.preventDefault(); // Prevent default behavior
-    viewEvents(); // Call the function to load analytics
-  });
-
-  $("#notifications-link").on("click", function (e) {
-    e.preventDefault(); // Prevent default behavior
-    viewNotifications(); // Call the function to load analytics
+    e.preventDefault();
+    viewEvents();
   });
 
   $("#profile-link").on("click", function (e) {
-    e.preventDefault(); // Prevent default behavior
-    viewProfile(); // Call the function to load analytics
+    e.preventDefault();
+    viewProfile();
   });
 
 
@@ -46,53 +41,49 @@ $(document).ready(function () {
   } else if (url.endsWith("users.php")) {
     $("#users-link").trigger("click"); // Trigger the products click event
   } else if (url.endsWith("events.php")) {
-    $("#manage-link").trigger("click"); // Default to dashboard if no specific page
+    $("#manage-link").trigger("click"); // Trigger the manage click event
   } else if (url.endsWith("profile.php")) {
-    $("#profile-link").trigger("click"); // Default to dashboard if no specific page
-  } else if (url.endsWith("notifications.php")) {
-    $("#notifications-link").trigger("click"); // Default to dashboard if no specific page
-  }
+    $("#profile-link").trigger("click"); // Trigger the notifications click event
+  } 
 
   function viewDashboard() {
     $.ajax({
-      type: "GET", // Use GET request
-      url: "../admin/dashboard-view.php", // URL for the analytics view
-      dataType: "html", // Expect HTML response
+      type: "GET", 
+      url: "../admin/dashboard-view.php",
+      dataType: "html", 
       success: function (response) {
-        $(".content-page").html(response); // Load the response into the content area
+        $(".content-page").html(response);
       },
     });
   }
   
   function viewProfile() {
     $.ajax({
-      type: "GET", // Use GET request
-      url: "../admin/profile-view.php", // URL for the analytics view
-      dataType: "html", // Expect HTML response
+      type: "GET",
+      url: "../admin/profile-view.php",
+      dataType: "html",
       success: function (response) {
-        $(".content-page").html(response); // Load the response into the content area
+        $(".content-page").html(response);
       },
     });
   }
   
   function viewEvents() {
     $.ajax({
-      type: "GET", // Use GET request
-      url: "../admin/events-view.php", // URL for the analytics view
-      dataType: "html", // Expect HTML response
+      type: "GET",
+      url: "../admin/events-view.php",
+      dataType: "html",
       success: function (response) {
-        $(".content-page").html(response); // Load the response into the content area
+        $(".content-page").html(response); 
 
-        // Initialize DataTable for product table
         var table = $("#table-products").DataTable({
-          dom: "rtp", // Set DataTable options
-          pageLength: 10, // Default page length
-          ordering: false, // Disable ordering
+          dom: "rtp", 
+          pageLength: 10, 
+          ordering: false, 
         });
 
-        // Bind custom input to DataTable search
         $("#custom-search").on("keyup", function () {
-          table.search(this.value).draw(); // Search products based on input
+          table.search(this.value).draw();
         });
 
         $(".reject").on("click", function (e) {
@@ -119,8 +110,8 @@ $(document).ready(function () {
       type: "GET",
       datatype: "html",
       success: function (view) {
-        $(".modal-container").empty().html(view); // Load the modal view
-        $("#staticBackdropedit").modal("show"); // Show the modal
+        $(".modal-container").empty().html(view);
+        $("#staticBackdropedit").modal("show");
         $("#event_id").val(eventId);
       },
     });
@@ -132,8 +123,8 @@ $(document).ready(function () {
       type: "GET",
       datatype: "html",
       success: function (view) {
-        $(".modal-container").empty().html(view); // Load the modal view
-        $("#staticBackdropedit").modal("show"); // Show the modal
+        $(".modal-container").empty().html(view);
+        $("#staticBackdropedit").modal("show");
         $("#event_id").val(eventId);
       },
     });
@@ -145,8 +136,8 @@ $(document).ready(function () {
       type: "GET",
       datatype: "html",
       success: function (view) {
-        $(".modal-container").empty().html(view); // Load the modal view
-        $("#staticBackdropedit").modal("show"); // Show the modal
+        $(".modal-container").empty().html(view);
+        $("#staticBackdropedit").modal("show");
         $("#event_id").val(eventId);
       },
     });
@@ -154,11 +145,11 @@ $(document).ready(function () {
 
   function viewUsers() {
     $.ajax({
-      type: "GET", // Use GET request
-      url: "../admin/users-view.php", // URL for the analytics view
-      dataType: "html", // Expect HTML response
+      type: "GET",
+      url: "../admin/users-view.php",
+      dataType: "html",
       success: function (response) {
-        $(".content-page").html(response); // Load the response into the content area
+        $(".content-page").html(response); 
 
         $(".manage-user").on("click", function (e) {
           e.preventDefault();
@@ -177,13 +168,13 @@ $(document).ready(function () {
         fetchCourse();
         fetchUser(userId);
 
-        $(".modal-container").empty().html(view); // Load the modal view
-        $("#staticBackdropedit").modal("show"); // Show the modal
+        $(".modal-container").empty().html(view);
+        $("#staticBackdropedit").modal("show");
         $("#staticBackdropedit").attr("data-id", userId);
 
         $("#form-edit-user").on("submit", function (e) {
-          e.preventDefault(); // Prevent default form submission
-          updateUser(userId); // Call function to save product
+          e.preventDefault();
+          updateUser(userId);
         });
       },
     });
@@ -280,28 +271,26 @@ $(document).ready(function () {
       },
       error: function (xhr, status, error) {
         console.log("AJAX request failed:");
-        console.log("Status:", status); // Logs the status (e.g., "timeout", "error", etc.)
-        console.log("Error:", error); // Logs the error message
-        console.log("Response text:", xhr.responseText); // Logs the raw response from the server
+        console.log("Status:", status);
+        console.log("Error:", error);
+        console.log("Response text:", xhr.responseText);
       },
     });
   }
 
   function fetchCourse() {
     $.ajax({
-      url: "../admin/fetch-course.php", // URL for fetching categories
-      type: "GET", // Use GET request
-      dataType: "json", // Expect JSON response
+      url: "../admin/fetch-course.php",
+      type: "GET",
+      dataType: "json",
       success: function (data) {
-        // Clear existing options and add a default "Select" option
         $("#course_id").empty().append('<option value="">--Select--</option>');
 
-        // Append each category to the select dropdown
         $.each(data, function (index, course) {
           $("#course_id").append(
             $("<option>", {
-              value: course.course_id, // Value attribute
-              text: course.course_code, // Displayed text
+              value: course.course_id,
+              text: course.course_code,
             })
           );
         });
@@ -311,9 +300,9 @@ $(document).ready(function () {
 
   function fetchUser(userId) {
     $.ajax({
-      url: `../admin/fetch-user.php?user_id=${userId}`, // URL for fetching categories
-      type: "POST", // Use GET request
-      dataType: "json", // Expect JSON response
+      url: `../admin/fetch-user.php?user_id=${userId}`,
+      type: "POST",
+      dataType: "json",
       success: function (user) {
         console.log(user);
         $("#username").val(user.username);
@@ -329,11 +318,11 @@ $(document).ready(function () {
 
   function viewNotifications() {
     $.ajax({
-      type: "GET", // Use GET request
-      url: "../staff/notifications-view.php", // URL for the analytics view
-      dataType: "html", // Expect HTML response
+      type: "GET",
+      url: "../staff/notifications-view.php", 
+      dataType: "html",
       success: function (response) {
-        $(".content-page").html(response); // Load the response into the content area
+        $(".content-page").html(response);
       },
     });
   }

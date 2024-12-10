@@ -15,6 +15,8 @@
     .picture img {
         width: 150px;
         height: 150px;
+        border: 2px solid #B22222;
+        border-radius: 100px;
     }
     .container {
         display: grid;
@@ -34,6 +36,7 @@
     }
     .information p{
         margin: 10px;
+        color: #2c2c2c;
     }
 </style>
 <?php

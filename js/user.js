@@ -19,11 +19,6 @@ $(document).ready(function () {
     viewEvents(); // Call the function to load analytics
   });
 
-  $("#notifications-link").on("click", function (e) {
-    e.preventDefault(); // Prevent default behavior
-    viewNotifications(); // Call the function to load analytics
-  });
-
   $("#reservations-link").on("click", function (e) {
     e.preventDefault(); // Prevent default behavior
     viewReservations(); // Call the function to load analytics
@@ -33,33 +28,28 @@ $(document).ready(function () {
   let url = window.location.href;
   if (url.endsWith("dashboard.php")) {
     $("#dashboard-link").trigger("click"); // Trigger the dashboard/home click event
-  } else if (url.endsWith("notifications.php")) {
-    $("#notifications-link").trigger("click"); // Trigger the notifications click event
   } else if (url.endsWith("reservations.php")) {
     $("#reservations-link").trigger("click"); // Trigger the reservations click event
   } else if (url.endsWith("profile.php")) {
     $("#profile-link").trigger("click"); // Trigger the reservations click event
   }
 
-  // Function to load analytics view
   function viewEvents() {
     $.ajax({
-      type: "GET", // Use GET request
-      url: "../user/dashboard-view.php", // URL for the analytics view
-      dataType: "html", // Expect HTML response
+      type: "GET", 
+      url: "../user/dashboard-view.php", 
+      dataType: "html",
       success: function (response) {
-        $(".content-page").html(response); // Load the response into the content area
+        $(".content-page").html(response);
 
-        // Initialize DataTable for product table
         var table = $("#table-products").DataTable({
-          dom: "rtp", // Set DataTable options
-          pageLength: 10, // Default page length
-          ordering: false, // Disable ordering
+          dom: "rtp", 
+          pageLength: 10, 
+          ordering: false, 
         });
 
-        // Bind custom input to DataTable search
         $("#custom-search").on("keyup", function () {
-          table.search(this.value).draw(); // Search products based on input
+          table.search(this.value).draw(); 
         });
 
         $(".register-btn").on("click", function (e) {
@@ -81,8 +71,8 @@ $(document).ready(function () {
       type: "GET",
       datatype: "html",
       success: function (view) {
-        $(".modal-container").empty().html(view); // Load the modal view
-        $("#staticBackdropedit").modal("show"); // Show the modal
+        $(".modal-container").empty().html(view);
+        $("#staticBackdropedit").modal("show");
         $("#event_id").val(eventId);
       },
     });
@@ -94,8 +84,8 @@ $(document).ready(function () {
       type: "GET",
       datatype: "html",
       success: function (view) {
-        $(".modal-container").empty().html(view); // Load the modal view
-        $("#staticBackdropedit").modal("show"); // Show the modal
+        $(".modal-container").empty().html(view);
+        $("#staticBackdropedit").modal("show");
         $("#event_id").val(eventId);
       },
     });
@@ -103,33 +93,31 @@ $(document).ready(function () {
 
   function viewNotifications() {
     $.ajax({
-      type: "GET", // Use GET request
-      url: "../user/notifications-view.php", // URL for the analytics view
-      dataType: "html", // Expect HTML response
+      type: "GET",
+      url: "../user/notifications-view.php",
+      dataType: "html",
       success: function (response) {
-        $(".content-page").html(response); // Load the response into the content area
+        $(".content-page").html(response);
       },
     });
   }
 
   function viewReservations() {
     $.ajax({
-      type: "GET", // Use GET request
-      url: "../user/reservations-view.php", // URL for the analytics view
-      dataType: "html", // Expect HTML response
+      type: "GET",
+      url: "../user/reservations-view.php",
+      dataType: "html",
       success: function (response) {
-        $(".content-page").html(response); // Load the response into the content area
+        $(".content-page").html(response);
 
-        // Initialize DataTable for product table
         var table = $("#table-products").DataTable({
-          dom: "rtp", // Set DataTable options
-          pageLength: 10, // Default page length
-          ordering: false, // Disable ordering
+          dom: "rtp",
+          pageLength: 10,
+          ordering: false,
         });
 
-        // Bind custom input to DataTable search
         $("#custom-search").on("keyup", function () {
-          table.search(this.value).draw(); // Search products based on input
+          table.search(this.value).draw();
         });
 
         $(".view-ticket").on("click", function (e) {
@@ -148,16 +136,16 @@ $(document).ready(function () {
       success: function (view) {
         fetchTicketInfo(reservationId);
 
-        $(".modal-container").empty().html(view); // Load the modal view
-        $("#staticBackdropedit").modal("show"); // Show the modal
+        $(".modal-container").empty().html(view);
+        $("#staticBackdropedit").modal("show");
       },
     });
   }
   function fetchTicketInfo(reservationId) {
     $.ajax({
-      url: `../user/fetch-ticket.php?reservation_id=${reservationId}`, // URL for fetching categories
-      type: "POST", // Use GET request
-      dataType: "json", // Expect JSON response
+      url: `../user/fetch-ticket.php?reservation_id=${reservationId}`,
+      type: "POST",
+      dataType: "json",
       success: function (user) {
         console.log(user);
         $("#name").val(`Name: ${user.last_name}, ${user.first_name} ${user.middle_name}`);
@@ -171,11 +159,11 @@ $(document).ready(function () {
   
   function viewProfile() {
     $.ajax({
-      type: "GET", // Use GET request
-      url: "../user/profile-view.php", // URL for the analytics view
-      dataType: "html", // Expect HTML response
+      type: "GET",
+      url: "../user/profile-view.php",
+      dataType: "html",
       success: function (response) {
-        $(".content-page").html(response); // Load the response into the content area
+        $(".content-page").html(response);
       },
     });
   }

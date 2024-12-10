@@ -169,7 +169,3 @@ class Event
     }
 
 }
-
-// $obj = new Account();
-
-// $obj->add();

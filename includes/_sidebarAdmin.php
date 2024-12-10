@@ -16,12 +16,6 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="../admin/notifications.php" id="notifications-link" id="notifications-link" class="nav-link">
-                <i class="bi bi-bell"></i>
-                <span class="fs-6 ms-2">Notifications</span>
-            </a>
-        </li>
-        <li class="nav-item">
             <a href="../admin/users.php" id="users-link" class="nav-link">
                 <i class="bi bi-people"></i>
                 <span class="fs-6 ms-2">Users</span>

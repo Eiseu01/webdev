@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 01, 2024 at 02:49 PM
+-- Generation Time: Dec 10, 2024 at 03:55 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -32,9 +32,15 @@ CREATE TABLE `admin` (
   `user_id` int(11) NOT NULL,
   `status` enum('active','inactive','on_leave') DEFAULT 'active',
   `date_joined` timestamp NOT NULL DEFAULT current_timestamp(),
-  `email` varchar(100) DEFAULT NULL,
   `last_updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`admin_id`, `user_id`, `status`, `date_joined`, `last_updated`) VALUES
+(1, 1, 'active', '2024-12-10 08:28:41', '2024-12-10 08:28:41');
 
 -- --------------------------------------------------------
 
@@ -75,47 +81,23 @@ CREATE TABLE `events` (
   `created_by` int(11) NOT NULL,
   `reviewed_by` int(11) DEFAULT NULL,
   `creation_status` enum('pending','approved','denied') DEFAULT 'pending',
-  `progress_status` enum('pending','scheduled','postponed','cancelled','delayed') DEFAULT 'pending',
+  `progress_status` enum('pending','scheduled','cancelled','rescheduled') DEFAULT 'pending',
   `completion_status` enum('not_started','in_progress','finished','cancelled') DEFAULT 'not_started',
   `updated_details` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `capacity` int(11) NOT NULL
+  `total_capacity` int(11) NOT NULL,
+  `available_capacity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `events`
 --
 
-INSERT INTO `events` (`event_id`, `event_name`, `event_description`, `date`, `start_time`, `end_time`, `location`, `location_status`, `location_notes`, `created_by`, `reviewed_by`, `creation_status`, `progress_status`, `completion_status`, `updated_details`, `created_at`, `capacity`) VALUES
-(4, 'Tech Conference 2025', 'A conference showcasing the latest in technology trends.', '2025-12-30', '09:30:00', '17:00:00', 'Convention Center', 'good', NULL, 2, 1, 'denied', 'cancelled', 'not_started', NULL, '2024-11-26 10:41:48', 130),
-(5, 'Annual Company Meeting', 'A mandatory meeting for all employees.', '2024-12-19', '10:00:00', '13:00:00', 'Office HQ Boardroom', 'good', 'Refreshments provided.', 2, 1, 'pending', 'pending', 'not_started', NULL, '2024-11-26 10:42:09', 150),
-(6, 'Annual Tech Symposium', 'A symposium focusing on emerging tech trends and innovations.', '2025-06-15', '08:30:00', '17:00:00', 'Tech Hub Auditorium', 'good', NULL, 10, 1, 'approved', 'scheduled', 'not_started', NULL, '2024-11-30 12:17:05', 200),
-(7, 'Session', '', '2024-12-29', '10:00:00', '12:00:00', 'Bahay Ni Yan Mark', 'good', NULL, 2, 1, 'pending', 'pending', 'not_started', NULL, '2024-12-01 08:51:53', 10);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `notifications`
---
-
-CREATE TABLE `notifications` (
-  `id` int(11) NOT NULL,
-  `sender_id` int(11) NOT NULL,
-  `receiver_id` int(11) NOT NULL,
-  `message` text NOT NULL,
-  `status` enum('unread','read') DEFAULT 'unread',
-  `created_at` datetime DEFAULT current_timestamp(),
-  `title` varchar(70) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `notifications`
---
-
-INSERT INTO `notifications` (`id`, `sender_id`, `receiver_id`, `message`, `status`, `created_at`, `title`) VALUES
-(1, 2, 3, 'You have successfully reserved your spot for the upcoming event \"Tech Conference 2024\".', 'unread', '2024-11-28 15:13:39', 'Reservation Confirmed'),
-(2, 2, 3, 'Reminder: Your reservation for \"Tech Conference 2024\" is coming up in 2 days. Don\'t forget to attend!', 'unread', '2024-11-28 15:13:39', 'Event Reminder'),
-(3, 2, 3, 'Your reservation for \"Tech Conference 2024\" has been canceled due to unforeseen circumstances.', 'read', '2024-11-28 15:13:39', 'Reservation Canceled');
+INSERT INTO `events` (`event_id`, `event_name`, `event_description`, `date`, `start_time`, `end_time`, `location`, `location_status`, `location_notes`, `created_by`, `reviewed_by`, `creation_status`, `progress_status`, `completion_status`, `updated_details`, `created_at`, `total_capacity`, `available_capacity`) VALUES
+(4, 'Tech Conference 2025', 'A conference showcasing the latest in technology trends.', '2025-12-30', '09:30:00', '17:00:00', 'Convention Center', 'good', NULL, 2, 1, 'approved', 'scheduled', 'not_started', NULL, '2024-11-26 10:41:48', 130, 129),
+(5, 'Annual Company Meeting', 'A mandatory meeting for all employees.', '2024-04-19', '10:00:00', '13:00:00', 'Office HQ Boardroom', 'good', 'Refreshments provided.', 2, 1, 'approved', 'scheduled', 'not_started', NULL, '2024-11-26 10:42:09', 150, 150),
+(6, 'Annual Tech Symposium', 'A symposium focusing on emerging tech trends and innovations.', '2025-06-15', '08:30:00', '17:00:00', 'Tech Hub Auditorium', 'good', NULL, 10, 1, 'approved', 'scheduled', 'not_started', NULL, '2024-11-30 12:17:05', 200, 198),
+(21, 'a', 'a', '2024-12-12', '00:01:00', '00:12:00', 'a', 'good', NULL, 2, 1, 'approved', 'scheduled', 'not_started', NULL, '2024-12-10 06:44:16', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -136,10 +118,9 @@ CREATE TABLE `reservations` (
 --
 
 INSERT INTO `reservations` (`reservation_id`, `user_id`, `event_id`, `reservation_status`, `reservation_date`) VALUES
-(1, 3, 4, 'pending', '2024-11-28 12:45:08'),
-(5, 3, 5, 'pending', '2024-11-29 05:22:32'),
-(6, 3, 7, 'pending', '2024-12-01 10:14:05'),
-(7, 3, 6, 'pending', '2024-12-01 11:40:30');
+(45, 3, 4, 'confirmed', '2024-12-03 13:55:35'),
+(54, 3, 6, 'confirmed', '2024-12-10 06:26:46'),
+(56, 3, 21, 'confirmed', '2024-12-10 06:44:31');
 
 -- --------------------------------------------------------
 
@@ -153,11 +134,17 @@ CREATE TABLE `staff` (
   `department` varchar(100) DEFAULT NULL,
   `status` enum('active','inactive','on_leave') DEFAULT 'active',
   `date_joined` timestamp NOT NULL DEFAULT current_timestamp(),
-  `phone_number` varchar(20) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL,
   `assigned_events` text DEFAULT NULL,
   `last_updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `staff`
+--
+
+INSERT INTO `staff` (`staff_id`, `user_id`, `department`, `status`, `date_joined`, `assigned_events`, `last_updated`) VALUES
+(1, 2, 'College of Computing Studies', 'active', '2024-12-10 08:31:39', NULL, '2024-12-10 08:31:39'),
+(2, 10, 'College of Computing Studies', 'active', '2024-12-10 08:32:34', NULL, '2024-12-10 08:32:34');
 
 -- --------------------------------------------------------
 
@@ -186,14 +173,14 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`user_id`, `course_id`, `username`, `password`, `first_name`, `last_name`, `middle_name`, `level`, `role`, `email`, `phone_number`, `created_at`) VALUES
 (1, 2, 'ace123', '$2y$10$IUZQpiIEt2jSybsHYrvoJOc.ZVGNlV7.KARCGXtEcdWE.JKUr1Lvq', 'Ace John', 'Nieva', 'Malunes', 0, 'admin', 'acejohnz112@gmail.com', '09659523730', '2024-11-26 04:10:26'),
-(2, 2, 'yan123', '$2y$10$EQKReUGMwsooxpRt4jEM7uRPtPDJpzCJoh2rlhSjx0w19Kjf1L83u', 'Yan Mark', 'Darunday', 'Villas', 0, 'staff', 'yanmark@gmail.com', '09123456789', '2024-11-26 04:46:59'),
+(2, 2, 'yan123', '$2y$10$vXl.tG8I4UEP/yh2RSxZKuf4yTlsmDmLoUsEjTdHpSIeZwE.c.mSy', 'Yan Mark', 'Darunday', 'Villas', 0, 'staff', 'yanmark@gmail.com', '09123456789', '2024-11-26 04:46:59'),
 (3, 1, 'fra123', '$2y$10$lSoX9lgnV4j1dHaztAHIrOqrEaQtIh9AwxruVEmLdhGVF4b/RNwlW', 'Franco Adrianne', 'Ceniza', 'Tiez', 2, 'user', 'franco@gmail.com', '09987654321', '2024-11-26 04:47:23'),
-(4, 1, 'user1', 'password1', 'John', 'Doe', 'M', 1, 'user', 'john.doe@example.com', '09171234567', '2024-11-29 11:30:23'),
-(5, 1, 'user11', 'password2', 'Jane', 'Smith', 'L', 2, 'user', 'jane.smith@example.com', '09182345678', '2024-11-29 11:30:23'),
-(6, 1, 'user3', 'password3', 'Alice', 'Johnson', 'K', 3, 'user', 'alice.johnson@example.com', '09193456789', '2024-11-29 11:30:23'),
-(7, 1, 'user4', 'password4', 'Bob', 'Brown', 'H', 4, 'user', 'bob.brown@example.com', '09204567890', '2024-11-29 11:30:23'),
-(8, 1, 'user5', 'password5', 'Charlie', 'Davis', 'P', 1, 'user', 'charlie.davis@example.com', '09215678901', '2024-11-29 11:30:23'),
-(10, 2, 'staff', '$2y$10$krW5ao6RGm/Cky6j06tD8.aSv3sr77rxis2CAbnrJf4H1wLsCuhJ2', 'staff', 'staff', NULL, 0, 'staff', 'staff@gmail.com', '123456789', '2024-11-30 12:12:06');
+(4, 1, 'user1', '$2y$10$kDL/SkNb08vIk0LxrI1LvOHZcEsWaaayXhnKdWOwfxs7eMLBLx2H6', 'John', 'Doe', 'M', 1, 'user', 'john.doe@example.com', '09171234567', '2024-11-29 11:30:23'),
+(5, 1, 'user2', '$2y$10$4KHC3lbWO9ZvUNNzfEZ6aedd5OptO1AV5ka6EwPe5SBTsX7T.5Xi.', 'Jane', 'Smith', 'L', 2, 'user', 'jane.smith@example.com', '09182345678', '2024-11-29 11:30:23'),
+(6, 1, 'user3', '$2y$10$4U9uyydsfnuAO6QkIBlOROtTy7dV5/DfYEDEsNUzSd3qirO0fKL8e', 'Alice', 'Johnson', 'K', 3, 'user', 'alice.johnson@example.com', '09193456789', '2024-11-29 11:30:23'),
+(7, 1, 'user4', '$2y$10$bdnXIl9dN9OJCGHb81MHU.f5uhEDMy2EJfaQmcHHKvGXWeJEXr.ya', 'Bob', 'Brown', 'H', 4, 'user', 'bob.brown@example.com', '09204567890', '2024-11-29 11:30:23'),
+(8, 1, 'user5', '$2y$10$kadww52fAq9oZZoPWkdHz.amKOO4zgiQ7qplFkXz5Hb2vTZiwARY6', 'Charlie', 'Davis', 'P', 1, 'user', 'charlie.davis@example.com', '09215678901', '2024-11-29 11:30:23'),
+(10, 1, 'pao123', '$2y$10$s3HDXa2EOi3BRBvR3hEBAutuY1DoO03OnkhXw35LUlMRiHi7uMX/G', 'Paolo Lorenzo', 'Longcob', 'R', 1, 'staff', 'staff@gmail.com', '123456789', '2024-11-30 12:12:06');
 
 --
 -- Indexes for dumped tables
@@ -221,14 +208,6 @@ ALTER TABLE `events`
   ADD KEY `reviewed_by` (`reviewed_by`);
 
 --
--- Indexes for table `notifications`
---
-ALTER TABLE `notifications`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_sender_id` (`sender_id`),
-  ADD KEY `fk_receiver_id` (`receiver_id`);
-
---
 -- Indexes for table `reservations`
 --
 ALTER TABLE `reservations`
@@ -241,7 +220,7 @@ ALTER TABLE `reservations`
 --
 ALTER TABLE `staff`
   ADD PRIMARY KEY (`staff_id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD UNIQUE KEY `user_id` (`user_id`) USING BTREE;
 
 --
 -- Indexes for table `users`
@@ -259,31 +238,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
-  MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
---
--- AUTO_INCREMENT for table `notifications`
---
-ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `staff`
 --
 ALTER TABLE `staff`
-  MODIFY `staff_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `staff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -307,13 +280,6 @@ ALTER TABLE `admin`
 ALTER TABLE `events`
   ADD CONSTRAINT `events_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`user_id`),
   ADD CONSTRAINT `events_ibfk_2` FOREIGN KEY (`reviewed_by`) REFERENCES `users` (`user_id`);
-
---
--- Constraints for table `notifications`
---
-ALTER TABLE `notifications`
-  ADD CONSTRAINT `fk_receiver_id` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `fk_sender_id` FOREIGN KEY (`sender_id`) REFERENCES `users` (`user_id`);
 
 --
 -- Constraints for table `reservations`

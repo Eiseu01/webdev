@@ -84,6 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     .btn:hover {
         background-color: #D90000;
+        color: white;
     }
     h1 {
         margin: 75px 0 30px 0;
@@ -93,6 +94,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     .bi {
         color: #ACACAC;
+    }
+    .loginErr {
+        text-align: center;
+        color: red;
     }
 </style>
 
@@ -113,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <h2 class="bi bi-key"></h2>
                     <input type="password" id="password" name="password" placeholder="Password">
                 </div>
-                <p ><?= $loginErr ?></p>
+                <p class="loginErr"><?= $loginErr ?></p>
                 <button class="btn w-100 py-2" type="submit">Log in</button>
                 <!-- <a href="signup.php" class="btn btn-primary w-100 py-2 mt-2">Sign Up</a> -->
             </form>

@@ -25,11 +25,6 @@ $(document).ready(function () {
     viewUsers(); // Call the function to load analytics
   });
 
-  $("#notifications-link").on("click", function (e) {
-    e.preventDefault(); // Prevent default behavior
-    viewNotifications(); // Call the function to load analytics
-  });
-
   // Determine which page to load based on the current URL
   let url = window.location.href;
   console.log(url);
@@ -37,8 +32,6 @@ $(document).ready(function () {
     $("#dashboard-link").trigger("click"); // Trigger the dashboard/home click event
   } else if (url.endsWith("users.php")) {
     $("#users-link").trigger("click"); // Trigger the notifications click event
-  } else if (url.endsWith("notifications.php")) {
-    $("#notifications-link").trigger("click"); // Trigger the reservations click event
   } else if (url.endsWith("profile.php")) {
     $("#profile-link").trigger("click"); // Trigger the reservations click event
   }
