@@ -19,30 +19,28 @@
         text-align: center;
     }
     .category {
-        display: flex;
-        justify-content: space-around;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        text-align: center;
+        margin-bottom: 15px;
     }
-    .scheduled {
+    #scheduled {
         box-shadow: rgba(50, 50, 93, 0.1) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.1) 0px 18px 36px -18px inset;
     }
-    .inProgress {
+    #inprogress {
         box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
     }
-    .ended {
+    #finished {
         box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
     }
-    .category div {
-        margin: 0 0 20px 0;
-        border-radius: 5px;
-        cursor: pointer;
-        padding: 15px 0 15px 0;
-    }
-    .category div a {
+    .category a {
         text-decoration: none;
-        padding: 15px 200px;
         color: black;
         font-weight: 500;
         font-size: 20px;
+        padding: 20px;
+        border-radius: 10px;
     }
 </style>
 <?php
@@ -66,15 +64,9 @@
     <div class="card-body">
         <div class="table-responsive">
             <div class="category">
-                <div class="scheduled">
-                    <a id="scheduled" href="events-view.php">Scheduled</a>
-                </div>
-                <div class="inProgress">
-                     <a id="inprogress" href="events-view-inprogress.php">In Progress</a>
-                </div>
-                <div class="ended">
-                     <a id="finished" href="events-view-ended.php">Finished</a>
-                </div>
+                <a id="scheduled" href="events-view.php">Upcoming</a>
+                <a id="inprogress" href="events-view-inprogress.php">In Progress</a>
+                <a id="finished" href="events-view-ended.php">Finished</a>
             </div>
            <div class="d-flex justify-content-between align-items-center mb-4">
                 <div class="d-flex justify-content-center align-items-center">
@@ -131,15 +123,15 @@
                         
                         <td class="text-center" style="width: 200px">
                             <?php if($arr["creation_status"] == "approved" && $arr["progress_status"] == "scheduled"): ?>
-                                <a href="" class="cancel" data-id="<?= $arr["event_id"] ?>">Delete</a>
+                                <a href="" class="cancel" data-id="<?= $arr["event_id"] ?>" >Delete</a>
                             <?php endif; ?>
                             <?php if($arr["creation_status"] == "approved" && $arr["progress_status"] == "rescheduled"): ?>
-                                <a href="" class="approve" data-id="<?= $arr["event_id"] ?>">Approve</a>
-                                <a href="" class="reject" data-id="<?= $arr["event_id"] ?>">Reject</a>
+                                <a href="" class="approve" data-id="<?= $arr["event_id"] ?>" data-user="<?= $arr["created_by"] ?>" data-event="<?= $arr["event_name"] ?>">Approve</a>
+                                <a href="" class="reject" data-id="<?= $arr["event_id"] ?>" data-user="<?= $arr["created_by"] ?>" data-event="<?= $arr["event_name"] ?>">Reject</a>
                             <?php endif; ?>
                             <?php if($arr["creation_status"] == "pending"): ?>
-                                <a href="" class="approve" data-id="<?= $arr["event_id"] ?>">Approve</a>
-                                <a href="" class="reject" data-id="<?= $arr["event_id"] ?>">Reject</a>
+                                <a href="" class="approve" data-id="<?= $arr["event_id"] ?>" data-user="<?= $arr["created_by"] ?>" data-event="<?= $arr["event_name"] ?>">Approve</a>
+                                <a href="" class="reject" data-id="<?= $arr["event_id"] ?>" data-user="<?= $arr["created_by"] ?>" data-event="<?= $arr["event_name"] ?>">Reject</a>
                             <?php endif; ?>
                             <?php if($arr["creation_status"] == "denied"): ?>
                                 

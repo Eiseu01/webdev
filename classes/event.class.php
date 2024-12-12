@@ -98,8 +98,12 @@ class Event
         return $query->execute();
     }
 
+    function numScheduled() {
+
+    }
+
     function fetchEventDates($date) {
-        $sql = "SELECT date, start_time, end_time FROM events WHERE date = :date";
+        $sql = "SELECT date, start_time, end_time FROM events WHERE date = :date AND completion_status = 'finished'";
         $query = $this->db->connect()->prepare($sql);
         $query->bindParam(':date', $date);
         $data = null;
@@ -121,12 +125,28 @@ class Event
         return $query->execute();
     }
 
+    function statistics() {
+        $sql = "SELECT 
+            COUNT(CASE WHEN completion_status = 'not_started' THEN 1 END) AS upcoming_events,
+            COUNT(CASE WHEN completion_status = 'in_progress' THEN 1 END) AS in_progress_events,
+            COUNT(CASE WHEN completion_status = 'finished' THEN 1 END) AS finished_events,
+            (SELECT COUNT(*) FROM users) AS total_users
+        FROM events";
+        $query = $this->db->connect()->prepare($sql);
+        $query->execute();
+        if ($query->execute()) {
+            $data = $query->fetch(PDO::FETCH_ASSOC);
+        }
+        return $data;
+    }
+
     function fetchEvents($created_by = '', $creation_status = '', $completion_status = '')
     {
         $sql = "SELECT * FROM events e JOIN users u ON e.created_by = u.user_id WHERE creation_status LIKE '%' :creation_status '%' AND completion_status LIKE '%' :completion_status '%'";
         if($created_by) {
-            $sql .= " AND created_by = :created_by";
+            $sql .= " AND created_by = :created_by ";
         }
+        $sql .= " ORDER BY date DESC LIMIT 10";
         $query = $this->db->connect()->prepare($sql);
         if($created_by) {
             $query->bindParam(':created_by', $created_by);
@@ -140,20 +160,8 @@ class Event
         return $data;
     }
 
-    // function fetchAvailableEvents($user_id) {
-    //     $sql = "SELECT e.* FROM events e LEFT JOIN reservations r ON e.event_id = r.event_id AND r.user_id = :user_id WHERE e.creation_status = 'approved' AND e.progress_status = 'scheduled' AND r.reservation_id IS NULL;";
-
-    //     $query = $this->db->connect()->prepare($sql);
-    //     $query->bindParam(':user_id', $user_id);
-    //     $data = null;
-    //     if ($query->execute()) {
-    //         $data = $query->fetchAll(PDO::FETCH_ASSOC);
-    //     }
-    //     return $data;
-    // }
-
     function fetchAvailableEvents($user_id) {
-        $sql = "SELECT e.*, r.event_id as 'revent_id', r.reservation_status FROM events e LEFT JOIN reservations r ON e.event_id = r.event_id AND r.user_id = :user_id WHERE e.creation_status = 'approved' AND e.progress_status = 'scheduled' ORDER BY created_at DESC;";
+        $sql = "SELECT e.*, r.event_id as 'revent_id', r.reservation_status FROM events e LEFT JOIN reservations r ON e.event_id = r.event_id AND r.user_id = :user_id WHERE e.creation_status = 'approved' AND e.progress_status = 'scheduled' AND e.completion_status = 'not_started' ORDER BY created_at DESC;";
 
         $query = $this->db->connect()->prepare($sql);
         $query->bindParam(':user_id', $user_id);

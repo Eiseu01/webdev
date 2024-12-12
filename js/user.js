@@ -24,6 +24,11 @@ $(document).ready(function () {
     viewReservations(); // Call the function to load analytics
   });
 
+  $("#notifications-link").on("click", function (e) {
+    e.preventDefault();
+    viewNotifications();
+  });
+
   // Determine which page to load based on the current URL
   let url = window.location.href;
   if (url.endsWith("dashboard.php")) {
@@ -32,6 +37,8 @@ $(document).ready(function () {
     $("#reservations-link").trigger("click"); // Trigger the reservations click event
   } else if (url.endsWith("profile.php")) {
     $("#profile-link").trigger("click"); // Trigger the reservations click event
+  } else if (url.endsWith("notifications.php")) {
+    $("#notifications-link").trigger("click"); // Trigger the reservations click event
   }
 
   function viewEvents() {
@@ -50,6 +57,12 @@ $(document).ready(function () {
 
         $("#custom-search").on("keyup", function () {
           table.search(this.value).draw(); 
+        });
+
+        $("#category-filter").on("change", function () {
+          if (this.value !== "choose") {
+            table.column(7).search(this.value).draw(); // Filter products by selected category
+          }
         });
 
         $(".register-btn").on("click", function (e) {
@@ -98,6 +111,35 @@ $(document).ready(function () {
       dataType: "html",
       success: function (response) {
         $(".content-page").html(response);
+
+        var table = $("#table-products").DataTable({
+          dom: "rtp", // Set DataTable options
+          pageLength: 10, // Default page length
+          ordering: false, // Disable ordering
+        });
+
+        // Bind custom input to DataTable search
+        $("#custom-search").on("keyup", function () {
+          table.search(this.value).draw(); // Search products based on input
+        });
+
+        $(".trash").on("click", function (e) {
+          e.preventDefault();
+          deleteNotification(this.dataset.id);
+        });
+      },
+    });
+  }
+
+  function deleteNotification(notifId) {
+    $.ajax({
+      url: `../modals/deleteNotification.php`,
+      type: "GET",
+      datatype: "html",
+      success: function (view) {
+        $(".modal-container").empty().html(view); // Load the modal view
+        $("#staticBackdropedit").modal("show"); // Show the modal
+        $("#notification_id").val(notifId);
       },
     });
   }

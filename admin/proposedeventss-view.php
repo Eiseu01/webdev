@@ -4,7 +4,7 @@
     }
     .page-title {
         text-align: center;
-        padding: 0 0 10px 0;
+        padding: 20px 0 10px 0;
     }
     .username h3{
         padding: 15px 15px 0 15px;
@@ -74,15 +74,12 @@
     $array = $eventObj->fetchEvents($_SESSION["account"]["user_id"]);
     
 ?>
-<div class="modal-container"></div>
 <div>
-    <div class="username">
-        <h3>Welcome Admin <?= $_SESSION["account"]["username"] ?>!</h3>
-    </div>
     <div class="page-title">
         <h2>Proposed Event List</h2>
     </div>
 </div>
+<div class="modal-container"></div>
 <div class="card">
     <div class="card-body">
         <div class="table-responsive">

@@ -57,9 +57,16 @@
                         <td class="text-center" style="width: 150px;"><?= $arr["date"] ?></td>
                         <td class="text-center" style="width: 200px;"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
                         <td class="text-center"><?= $arr["reservation_status"] ?></td>
-                        <td class="text-center">
+                        <td class="text-center fst-italic">
                             <?php if($arr["reservation_status"] == "confirmed"): ?>
                                 <a class="view-ticket" href="" data-id="<?= $arr["reservation_id"] ?>">View Ticket</a>
+                            <?php endif; ?>
+                            <?php if($arr["reservation_status"] == "pending"): ?>
+                                <?php 
+                                    $date = new DateTime($arr["date"]);
+                                    $date->modify('-1 day'); // Subtract 1 day
+                                ?>
+                                Payment due: <?= $date->format('Y-m-d') ?>
                             <?php endif; ?>
                         </td>
                     </tr>

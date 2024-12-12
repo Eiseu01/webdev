@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($_SESSION['account']['role'] == "admin") {
             header('location: ../admin/dashboard.php');
         } else if ($_SESSION['account']['role'] == "organizer") {
-            header('location: ../staff/dashboard.php');
+            header('location: ../staff/events.php');
         } else {
             header('location: ../user/dashboard.php');
         }

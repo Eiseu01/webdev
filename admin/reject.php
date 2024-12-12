@@ -4,16 +4,21 @@ session_start();
 
 require_once('../tools/functions.php');
 require_once('../classes/event.class.php');
+require_once('../classes/notification.class.php');
 
 $reviewed_by = $event_id = '';
 $reviewed_byErr = $event_idErr  = '';
 
 $eventObj = new Event();
+$notifObj = new Notification();
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     
     $reviewed_by = $_SESSION["account"]["user_id"];
     $event_id = $_POST["event_id"];
+    $user_id = $_POST["user_id"];
+    $event_name = $_POST["event_name"];
+    $message = "We regret to inform you that your proposed event " . $event_name . " has not been approved at this time.";
 
     if(empty($reviewed_by)){
         $reviewed_byErr = 'Reviewed by ID is required.';
@@ -28,11 +33,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $eventObj->event_id = $event_id;
         $eventObj->creation_status = "denied";
         $eventObj->progress_status = "cancelled";
+        $notifObj->user_id = $user_id;
+        $notifObj->message = $message;
 
-        if($eventObj->changeEventStatus()){
-            header("location: ../admin/events.php");
-        } else {
-            echo 'Something went wrong when you tried to change the status.';
+        if($notifObj->addNotification("event_update")) {
+            if($eventObj->changeEventStatus()){
+                header("location: ../admin/events.php");
+            } else {
+                echo 'Something went wrong when you tried to change the status.';
+            }
         }
         exit;
     }
@@ -51,6 +60,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                     <div id="label" class="mb-2">
                         <label for="event_id"><h4>Are you sure you want to reject this event?</h4></label>
                         <input style="display:none;" type="text" value="" id="event_id" name="event_id">
+                        <input style="display:none;" type="text" value="" id="user_id" name="user_id">
+                        <input style="display:none;" type="text" value="" id="event_name" name="event_name">
                     </div>
                 </div>
                 <div class="modal-footer">

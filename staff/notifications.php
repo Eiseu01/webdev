@@ -1,5 +1,5 @@
 <?php
-$page_title = "Events - Proposed Events";
+$page_title = "Event - Notifications";
 session_start();
 
 if (isset($_SESSION['account'])) {
@@ -27,4 +27,5 @@ require_once '../includes/_head.php';
     require_once '../includes/_footerStaff.php';
     ?>
 </body>
+
 </html>

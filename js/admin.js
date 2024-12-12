@@ -49,25 +49,32 @@ $(document).ready(function () {
     viewParticipants();
   });
 
+  $("#notifications-link").on("click", function (e) {
+    e.preventDefault();
+    viewNotifications();
+  }); 
+
 
   // Determine which page to load based on the current URL
   let url = window.location.href;
   if (url.endsWith("dashboard.php")) {
-    $("#dashboard-link").trigger("click"); // Trigger the dashboard click event
+    $("#dashboard-link").trigger("click"); 
   } else if (url.endsWith("users.php")) {
-    $("#users-link").trigger("click"); // Trigger the products click event
+    $("#users-link").trigger("click"); 
   } else if (url.endsWith("profile.php")) {
-    $("#profile-link").trigger("click"); // Trigger the notifications click event
+    $("#profile-link").trigger("click"); 
   } else if (url.endsWith("proposedeventss.php")) {
-    $("#proposedevents-link").trigger("click"); // Trigger the notifications click event
+    $("#proposedevents-link").trigger("click"); 
   } else if (url.endsWith("participants.php")) {
-    $("#participants-link").trigger("click"); // Trigger the notifications click event
+    $("#participants-link").trigger("click"); 
   } else if (url.endsWith("events.php")) {
-    $("#manage-link").trigger("click"); // Trigger the manage click event
+    $("#manage-link").trigger("click");
   } else if (url.endsWith("finished.php")) {
-    $("#finished").trigger("click"); // Trigger the manage click event
+    $("#finished").trigger("click");
   } else if (url.endsWith("inprogress.php")) {
-    $("#inprogress").trigger("click"); // Trigger the manage click event
+    $("#inprogress").trigger("click"); 
+  } else if (url.endsWith("notifications.php")) {
+    $("#notifications-link").trigger("click"); 
   }
 
   function viewParticipants() {
@@ -98,20 +105,35 @@ $(document).ready(function () {
 
         $(".confirm").on("click", function (e) {
           e.preventDefault();
-          confirmReservation(this.dataset.id);
+          confirmReservation(this.dataset.id, this.dataset.user, this.dataset.event);
         });
 
         $(".decline").on("click", function (e) {
           e.preventDefault();
-          declineReservation(this.dataset.id);
+          declineReservation(this.dataset.id, this.dataset.user, this.dataset.event);
+        });
+
+        $(".delete").on("click", function (e) {
+          e.preventDefault();
+          deleteReservation(this.dataset.id);
+        });
+
+        $(".absent").on("click", function (e) {
+          e.preventDefault();
+          attendanceAbsent(this.dataset.id);
+        });
+
+        $(".present").on("click", function (e) {
+          e.preventDefault();
+          attendancePresent(this.dataset.id);
         });
       },
     });
   }
 
-  function confirmReservation(reservationId) {
+  function attendanceAbsent(reservationId) {
     $.ajax({
-      url: `../modals/confirm-reservation.php`,
+      url: `../modals/absent.php`,
       type: "GET",
       datatype: "html",
       success: function (view) {
@@ -122,9 +144,52 @@ $(document).ready(function () {
     });
   }
 
-  function declineReservation(reservationId) {
+  function attendancePresent(reservationId) {
+    $.ajax({
+      url: `../modals/present.php`,
+      type: "GET",
+      datatype: "html",
+      success: function (view) {
+        $(".modal-container").empty().html(view); // Load the modal view
+        $("#staticBackdropedit").modal("show"); // Show the modal
+        $("#reservation_id").val(reservationId);
+      },
+    });
+  }
+
+  function confirmReservation(reservationId, userId, eventName) {
+    $.ajax({
+      url: `../modals/confirm-reservation.php`,
+      type: "GET",
+      datatype: "html",
+      success: function (view) {
+        $(".modal-container").empty().html(view); // Load the modal view
+        $("#staticBackdropedit").modal("show"); // Show the modal
+        $("#reservation_id").val(reservationId);
+        $("#user_id").val(userId);
+        $("#event_name").val(eventName);
+      },
+    });
+  }
+
+  function declineReservation(reservationId, userId, eventName) {
     $.ajax({
       url: `../modals/decline-reservation.php`,
+      type: "GET",
+      datatype: "html",
+      success: function (view) {
+        $(".modal-container").empty().html(view); // Load the modal view
+        $("#staticBackdropedit").modal("show"); // Show the modal
+        $("#reservation_id").val(reservationId);
+        $("#user_id").val(userId);
+        $("#event_name").val(eventName);
+      },
+    });
+  }
+
+  function deleteReservation(reservationId) {
+    $.ajax({
+      url: `../modals/delete-reservation.php`,
       type: "GET",
       datatype: "html",
       success: function (view) {
@@ -587,7 +652,7 @@ $(document).ready(function () {
 
         $(".reject").on("click", function (e) {
           e.preventDefault();
-          reject(this.dataset.id);
+          reject(this.dataset.id, this.dataset.user, this.dataset.event);
         });
 
         $(".cancel").on("click", function (e) {
@@ -597,7 +662,7 @@ $(document).ready(function () {
 
         $(".approve").on("click", function (e) {
           e.preventDefault();
-          approve(this.dataset.id);
+          approve(this.dataset.id, this.dataset.user, this.dataset.event);
         });
       },
     });
@@ -688,7 +753,7 @@ $(document).ready(function () {
   }
 
 
-  function reject(eventId) {
+  function reject(eventId, userId, eventName) {
     $.ajax({
       url: `../admin/reject.php`,
       type: "GET",
@@ -697,6 +762,8 @@ $(document).ready(function () {
         $(".modal-container").empty().html(view);
         $("#staticBackdropedit").modal("show");
         $("#event_id").val(eventId);
+        $("#user_id").val(userId);
+        $("#event_name").val(eventName);
       },
     });
   }
@@ -714,15 +781,18 @@ $(document).ready(function () {
     });
   }
 
-  function approve(eventId) {
+  function approve(eventId, userId, eventName) {
     $.ajax({
       url: `../admin/approve.php`,
       type: "GET",
       datatype: "html",
       success: function (view) {
+        console.log(userId)
         $(".modal-container").empty().html(view);
         $("#staticBackdropedit").modal("show");
         $("#event_id").val(eventId);
+        $("#user_id").val(userId);
+        $("#event_name").val(eventName);
       },
     });
   }
@@ -921,11 +991,12 @@ $(document).ready(function () {
   function viewNotifications() {
     $.ajax({
       type: "GET",
-      url: "../staff/notifications-view.php", 
+      url: "../admin/notifications-view.php",
       dataType: "html",
       success: function (response) {
         $(".content-page").html(response);
       },
     });
   }
+
 });

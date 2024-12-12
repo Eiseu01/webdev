@@ -34,6 +34,11 @@ $(document).ready(function () {
     viewReservations(); // Call the function to load analytics
   });
 
+  $("#notifications-link").on("click", function (e) {
+    e.preventDefault();
+    viewNotifications();
+  });
+
   // Determine which page to load based on the current URL
   let url = window.location.href;
   console.log(url);
@@ -47,6 +52,8 @@ $(document).ready(function () {
     $("#events-link").trigger("click"); // Trigger the reservations click event
   } else if (url.endsWith("reservations.php")) {
     $("#reservations-link").trigger("click"); // Trigger the reservations click event
+  } else if (url.endsWith("notifications.php")) {
+    $("#notifications-link").trigger("click"); // Trigger the reservations click event
   }
 
   function viewEvents() {
@@ -174,20 +181,35 @@ $(document).ready(function () {
 
         $(".confirm").on("click", function (e) {
           e.preventDefault();
-          confirmReservation(this.dataset.id);
+          confirmReservation(this.dataset.id, this.dataset.user, this.dataset.event);
         });
 
         $(".decline").on("click", function (e) {
           e.preventDefault();
-          declineReservation(this.dataset.id);
+          declineReservation(this.dataset.id, this.dataset.user, this.dataset.event);
+        });
+
+        $(".delete").on("click", function (e) {
+          e.preventDefault();
+          deleteReservation(this.dataset.id);
+        });
+
+        $(".absent").on("click", function (e) {
+          e.preventDefault();
+          attendanceAbsent(this.dataset.id);
+        });
+
+        $(".present").on("click", function (e) {
+          e.preventDefault();
+          attendancePresent(this.dataset.id);
         });
       },
     }); 
   }
 
-  function confirmReservation(reservationId) {
+  function attendanceAbsent(reservationId) {
     $.ajax({
-      url: `../modals/confirm-reservation.php`,
+      url: `../modals/absent.php`,
       type: "GET",
       datatype: "html",
       success: function (view) {
@@ -198,9 +220,52 @@ $(document).ready(function () {
     });
   }
 
-  function declineReservation(reservationId) {
+  function attendancePresent(reservationId) {
+    $.ajax({
+      url: `../modals/present.php`,
+      type: "GET",
+      datatype: "html",
+      success: function (view) {
+        $(".modal-container").empty().html(view); // Load the modal view
+        $("#staticBackdropedit").modal("show"); // Show the modal
+        $("#reservation_id").val(reservationId);
+      },
+    });
+  }
+
+  function confirmReservation(reservationId, userId, eventName) {
+    $.ajax({
+      url: `../modals/confirm-reservation.php`,
+      type: "GET",
+      datatype: "html",
+      success: function (view) {
+        $(".modal-container").empty().html(view); // Load the modal view
+        $("#staticBackdropedit").modal("show"); // Show the modal
+        $("#reservation_id").val(reservationId);
+        $("#user_id").val(userId);
+        $("#event_name").val(eventName);
+      },
+    });
+  }
+
+  function declineReservation(reservationId, userId, eventName) {
     $.ajax({
       url: `../modals/decline-reservation.php`,
+      type: "GET",
+      datatype: "html",
+      success: function (view) {
+        $(".modal-container").empty().html(view); // Load the modal view
+        $("#staticBackdropedit").modal("show"); // Show the modal
+        $("#reservation_id").val(reservationId);
+        $("#user_id").val(userId);
+        $("#event_name").val(eventName);
+      },
+    });
+  }
+
+  function deleteReservation(reservationId) {
+    $.ajax({
+      url: `../modals/delete-reservation.php`,
       type: "GET",
       datatype: "html",
       success: function (view) {
@@ -585,6 +650,36 @@ $(document).ready(function () {
       dataType: "html", // Expect HTML response
       success: function (response) {
         $(".content-page").html(response); // Load the response into the content area
+
+        // Initialize DataTable for product table
+        var table = $("#table-products").DataTable({
+          dom: "rtp", // Set DataTable options
+          pageLength: 10, // Default page length
+          ordering: false, // Disable ordering
+        });
+
+        // Bind custom input to DataTable search
+        $("#custom-search").on("keyup", function () {
+          table.search(this.value).draw(); // Search products based on input
+        });
+
+        $(".trash").on("click", function (e) {
+          e.preventDefault();
+          deleteNotification(this.dataset.id);
+        });
+      },
+    });
+  }
+
+  function deleteNotification(notifId) {
+    $.ajax({
+      url: `../modals/deleteNotification.php`,
+      type: "GET",
+      datatype: "html",
+      success: function (view) {
+        $(".modal-container").empty().html(view); // Load the modal view
+        $("#staticBackdropedit").modal("show"); // Show the modal
+        $("#notification_id").val(notifId);
       },
     });
   }

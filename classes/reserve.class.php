@@ -41,7 +41,7 @@ class Reserve {
     function fetchReserve($recordID, $creation_status = '')
     {
         $sql = "SELECT * FROM reservations r JOIN events e ON r.event_id = e.event_id 
-                WHERE user_id = :recordID AND e.creation_status LIKE '%' :creation_status '%' ORDER BY reservation_date;";
+                WHERE user_id = :recordID AND e.creation_status LIKE '%' :creation_status '%' ORDER BY e.date;";
 
         $query = $this->db->connect()->prepare($sql);
         $query->bindParam(':recordID', $recordID);
@@ -76,11 +76,19 @@ class Reserve {
     }
 
     function fetchReservation($reservation_id) {
-        // $sql = "UPDATE reservations SET reservation_status = :reservation_status WHERE reservation_id = :reservation_id;";
-        $sql = " UPDATE reservations r JOIN events e ON r.event_id = e.event_id SET r.reservation_status = :reservation_status, e.available_capacity = e.available_capacity+ IF(:reservation_status = 'cancelled', 1, IF(:reservation_status = 'confirmed', 0, 0)) WHERE r.reservation_id = :reservation_id;";
+        // Update reservation status and adjust capacity accordingly
+        $sql = "UPDATE reservations r 
+                JOIN events e ON r.event_id = e.event_id 
+                SET r.reservation_status = :reservation_status,
+                    e.available_capacity = 
+                    CASE
+                        WHEN :reservation_status = 'cancelled' THEN e.available_capacity + 1
+                        WHEN :reservation_status = 'confirmed' THEN e.available_capacity - 1
+                        ELSE e.available_capacity
+                    END 
+                WHERE r.reservation_id = :reservation_id;";
 
         $query = $this->db->connect()->prepare($sql);
-
         $query->bindParam(':reservation_status', $this->reservation_status);
         $query->bindParam(':reservation_id', $reservation_id);
         
@@ -109,6 +117,25 @@ class Reserve {
             $data = $query->fetch();
         }
         return $data;
+    }
+
+    function attendance($present, $reservation_id) {
+        $sql = "UPDATE reservations SET present = :present WHERE reservation_id = :reservation_id";
+
+        $query = $this->db->connect()->prepare($sql);
+        
+        $query->bindParam(':present', $present);
+        $query->bindParam(':reservation_id', $reservation_id);
+
+        return $query->execute();
+    }
+
+    function paymentDue() {
+        $sql = "UPDATE reservations r JOIN events e ON r.event_id = e.event_id SET r.reservation_status = 'cancelled' WHERE DATEDIFF(e.date, CURDATE()) <= 1";
+
+        $query = $this->db->connect()->prepare($sql);
+
+        return $query->execute();
     }
 }
 ?>

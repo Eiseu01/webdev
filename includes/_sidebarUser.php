@@ -16,6 +16,12 @@
             </a>
         </li>
         <li class="nav-item">
+            <a href="../user/notifications.php" id="notifications-link" class="nav-link">
+                <i class="bi bi-calendar-check"></i>
+                <span class="fs-6 ms-2">Notifications</span>
+            </a>
+        </li>
+        <li class="nav-item">
             <a href="../user/profile.php" id="profile-link" class="nav-link">
                 <i class="bi bi-person"></i>
                 <span class="fs-6 ms-2">Profile</span>

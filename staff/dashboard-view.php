@@ -71,6 +71,8 @@
     require_once("../classes/event.class.php");
 
     $eventObj = new Event;
+    $eventObj->updateEventDateInProgress();
+    $eventObj->updateEventDateFinished();
     $array = $eventObj->fetchEvents($_SESSION["account"]["user_id"]);
     
 ?>
@@ -109,6 +111,7 @@
                         <th>Time</th>
                         <th>Creation Status</th>
                         <th>Progress Status</th>
+                        <th>Status</th>
                         <th class="text-center">Total Capacity</th>
                         <th class="text-center">Available Capacity</th>
                         <th>Action</th>
@@ -128,6 +131,17 @@
                         <td style="width: 100px;" class="text-center"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
                         <td class="text-center"><?= $arr["creation_status"] ?></td>
                         <td class="text-center"><?= $arr["progress_status"] ?></td>
+                        <td>
+                            <?php
+                                if($arr["completion_status"] == "not_started") {
+                                    echo "Not started";
+                                } else if($arr["completion_status"] == "in_progress") {
+                                    echo "In Progress";
+                                } else {
+                                    echo "Finished";
+                                }
+                            ?>
+                        </td>
                         <td class="text-center"><?= $arr["total_capacity"] ?></td>
                         <td class="text-center"><?= $arr["available_capacity"] ?></td>
                         <td style="text-align: center; width: 150px">
@@ -135,11 +149,14 @@
                                 <a href="" class="edit" data-id="<?= $arr["event_id"] ?>">Edit</a>
                                 <a href="" class="delete" data-id="<?= $arr["event_id"] ?>">Delete</a>  
                             <?php endif; ?>
-                            <?php if($arr["creation_status"] == "approved"): ?>
+                            <?php if($arr["creation_status"] == "approved" && $arr["completion_status"] == "not_started"): ?>
                                 <a href="" class="resched" data-id="<?= $arr["event_id"] ?>">Reschedule</a>
                             <?php endif; ?>
                             <?php if($arr["creation_status"] == "denied"): ?>
                                 <a href="" class="delete" data-id="<?= $arr["event_id"] ?>">Delete</a>
+                            <?php endif; ?>
+                            <?php if($arr["completion_status"] == "in_progress"): ?>
+                                
                             <?php endif; ?>
                         </td>
                     </tr>

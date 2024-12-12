@@ -39,14 +39,28 @@
 <div class="card">
     <div class="card-body">
         <div class="table-responsive">
-            <form class="d-flex me-2">
-                <div class="input-group w-100 pb-3">
-                    <input type="text" class="form-control form-control-light" id="custom-search" placeholder="Search Events...">
-                    <span class="input-group-text bg-primary border-primary text-white brand-bg-color">
-                        <i class="bi bi-search"></i>
-                    </span>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="d-flex justify-content-center align-items-center">
+                    <form class="d-flex me-2">
+                        <div class="input-group w-100">
+                            <input type="text" class="form-control form-control-light" id="custom-search" placeholder="Search">
+                            <span class="input-group-text bg-primary border-primary text-white brand-bg-color">
+                                <i class="bi bi-search"></i>
+                            </span>
+                        </div>
+                    </form>
+                    <div class="d-flex align-items-center">
+                        <label for="category-filter" class="me-2">Category</label>
+                        <select id="category-filter" class="form-select">
+                            <option value="choose">Choose...</option>
+                            <option value="">All</option>
+                            <option value="Register">Available</option>
+                            <option value="Cancel">Pending</option>
+                            <option value="Unavailable">Unavailable</option>
+                        </select>
+                    </div>
                 </div>
-            </form>
+            </div>
             <table id="table-products" class="table table-centered table-nowrap mb-0">
                 <thead class="table-light">
                     <tr>
@@ -77,12 +91,14 @@
                         <td class="text-center">
                             <?php if($arr["available_capacity"] > 0): ?>
                                 <?php if($arr["event_id"] == $arr["revent_id"] && $arr["reservation_status"] == "pending"): ?>
+                                    <p style="display: none;"></p>
                                     <a href="" class="cancel-btn" data-id="<?= $arr["event_id"] ?>">Cancel</a>
                                 <?php endif; ?>
                                 <?php if($arr["event_id"] == $arr["revent_id"] && $arr["reservation_status"] == "confirmed"): ?>
                                     <a>Registered</a>
                                 <?php endif; ?>
                                 <?php if($arr["event_id"] != $arr["revent_id"]): ?>
+                                    <p style="display: none;"></p>
                                     <a href="" class="register-btn" data-id="<?= $arr["event_id"] ?>">Register</a>
                                 <?php endif; ?>
                             <?php endif; ?>

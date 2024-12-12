@@ -406,6 +406,7 @@
   background-color: var(--ct-table-bg);
   border-bottom-width: var(--ct-border-width);
   font-size: 16px;
+  margin-bottom: 20px;
 }
 
 .table > :not(caption) > * > * {
@@ -468,5 +469,14 @@
 }
 
 .dt-paging {
-  display: none;
+  display: flex;
+  justify-content: end;
+  padding-top: 10px;
+  text-align: end;
 }
+
+.pagination li button{
+  padding: 5px 15px;
+  font-size: 16px;
+}
+

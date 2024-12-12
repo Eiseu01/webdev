@@ -54,6 +54,7 @@
                         <th>Event</th>
                         <th>Status</th>
                         <th>Action</th>
+                        <th>Attendance</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -74,12 +75,23 @@
                         <td><?= $arr["reservation_status"] ?></td>
                         <td class="action"> 
                             <?php if($arr["reservation_status"] == "pending"): ?>
-                                <a class="confirm" href="" data-id="<?= $arr["reservation_id"] ?>">Confirm</a>
-                                <a class="decline" href="" data-id="<?= $arr["reservation_id"] ?>">Decline</a>
+                                <a class="confirm" href="" data-id="<?= $arr["reservation_id"] ?>" data-user="<?= $arr["user_id"] ?>" data-event="<?= $arr["event_name"] ?>">Confirm</a>
+                                <a class="decline" href="" data-id="<?= $arr["reservation_id"] ?>" data-user="<?= $arr["user_id"] ?>" data-event="<?= $arr["event_name"] ?>">Decline</a>
+                            <?php endif; ?>
+                            <?php if($arr["reservation_status"] == "cancelled"): ?>
+                                <a class="delete" href="" data-id="<?= $arr["reservation_id"] ?>">Delete</a>
                             <?php endif; ?>
                             <?php if($arr["reservation_status"] == "confirmed"): ?>
                                 <p class="text-success m-0">Confirmed</p>
                             <?php endif; ?>
+                        </td>
+                        <td class="attendance">
+                            <?php if($arr["present"]): ?>
+                                <a class="absent text-success" href="" style="text-decoration: none;" data-id="<?= $arr["reservation_id"] ?>">Present</a>
+                            <?php endif; ?>
+                            <?php if(!$arr["present"]): ?>
+                                <a class="present text-danger" href="" style="text-decoration: none;" data-id="<?= $arr["reservation_id"] ?>">Absent</a>
+                            <?php endif; ?> 
                         </td>
                     </tr>
                     <?php
