@@ -4,14 +4,26 @@
     </a>
     <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
+            <a href="../staff/events.php" id="events-link" class="nav-link">
+                <i class="bi bi-calendar-week"></i>
+                <span class="fs-6 ms-2">Events</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="../staff/reservations.php" id="reservations-link" class="nav-link">
+                <i class="bi bi-calendar-check"></i>
+                <span class="fs-6 ms-2">Reservations</span>
+            </a>
+        </li>
+        <li class="nav-item">
             <a href="../staff/dashboard.php" id="dashboard-link" class="nav-link">
-                <i class="bi bi-speedometer2"></i>
+                <i class="bi bi-calendar-event"></i>
                 <span class="fs-6 ms-2">Proposed Events</span>
             </a>
         </li>
         <li class="nav-item">
             <a href="../staff/users.php" id="users-link" class="nav-link">
-                <i class="bi bi-people"></i>
+                <i class="bi bi-person-gear"></i>
                 <span class="fs-6 ms-2">Manage Participants</span>
             </a>
         </li>

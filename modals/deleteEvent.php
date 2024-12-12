@@ -3,34 +3,30 @@
 session_start();
 
 require_once('../tools/functions.php');
+require_once('../classes/event.class.php');
 require_once('../classes/reserve.class.php');
 
-$reservation_status = $reservation_id = '';
-
+$event_id = '';
+$eventObj = new Event();
 $reserveObj = new Reserve();
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    
-    $reservation_id = $_POST["reservation_id"];
-    $reservation_status = "confirmed";
 
-    if(empty($reservation_id)){
-        $reservation_idErr = 'Reservation ID is required.';
-    }
+    $event_id = $_POST["event_id"];
 
-    if(empty($reservation_status)){
-        $reservation_statusErr = 'Reservation Status is required.';
-    }
-
-    if(empty($reservation_idErr) && empty($reservation_statusErr)){
-        $reserveObj->reservation_status = $reservation_status;
-
-        if($reserveObj->fetchReservation($reservation_id)) {
-            header("location: ../staff/users.php");
-        } else {
-            echo 'Something went wrong when you tried to approve.';
+    if(!empty($event_id)){
+        if($reserveObj->deleteEvent($event_id)) {
+            if($eventObj->deleteEvent($event_id)){
+                if($_SESSION["account"]["role"] == "admin") {
+                    header("location: ../admin/proposedeventss.php");
+                } else {
+                    header("location: ../staff/dashboard.php");
+                }
+            } else {
+                echo 'Something went wrong when you tried to delete the event.';
+            }
+            exit;
         }
-        exit;
     }
 }
 ?>
@@ -39,14 +35,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #EE4C51; color: white;">
-                <h5 class="modal-title" id="staticBackdropLabel">Reservation</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Edit Event Status</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="post" id="form-reservation" action="confirm-reservation.php">
+            <form method="post" id="edit-event-status" action="../modals/deleteEvent.php">
                 <div class="modal-body">
                     <div id="label" class="mb-2">
-                        <label for="reservation_id"><h4>Do you want to confirm this?</h4></label>
-                        <input style="display:none;" type="text" value="" id="reservation_id" name="reservation_id">
+                        <label for="event_id"><h4>Are you sure you want to delete this proposed event?</h4></label>
+                        <input style="display:none;" type="text" value="" id="event_id" name="event_id">
                     </div>
                 </div>
                 <div class="modal-footer">

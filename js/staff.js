@@ -14,7 +14,11 @@ $(document).ready(function () {
     viewProfile(); // Call the function to load analytics
   });
 
-  // Event listener for the dashboard link
+  $("#events-link").on("click", function (e) {
+    e.preventDefault(); // Prevent default behavior
+    viewEvents(); // Call the function to load analytics
+  });
+
   $("#dashboard-link").on("click", function (e) {
     e.preventDefault(); // Prevent default behavior
     viewProposedEvents(); // Call the function to load analytics
@@ -23,6 +27,11 @@ $(document).ready(function () {
   $("#users-link").on("click", function (e) {
     e.preventDefault(); // Prevent default behavior
     viewUsers(); // Call the function to load analytics
+  });
+
+  $("#reservations-link").on("click", function (e) {
+    e.preventDefault(); // Prevent default behavior
+    viewReservations(); // Call the function to load analytics
   });
 
   // Determine which page to load based on the current URL
@@ -34,6 +43,107 @@ $(document).ready(function () {
     $("#users-link").trigger("click"); // Trigger the notifications click event
   } else if (url.endsWith("profile.php")) {
     $("#profile-link").trigger("click"); // Trigger the reservations click event
+  } else if (url.endsWith("events.php")) {
+    $("#events-link").trigger("click"); // Trigger the reservations click event
+  } else if (url.endsWith("reservations.php")) {
+    $("#reservations-link").trigger("click"); // Trigger the reservations click event
+  }
+
+  function viewEvents() {
+    $.ajax({
+      type: "GET",
+      url: "../staff/events-view.php",
+      dataType: "html",
+      success: function (response) {
+        $(".content-page").html(response);
+
+        var table = $("#table-products").DataTable({
+          dom: "rtp",
+          pageLength: 10,
+          ordering: false,
+        });
+
+        $("#custom-search").on("keyup", function () {
+          table.search(this.value).draw();
+        });
+
+        $(".register-btn").on("click", function (e) {
+          e.preventDefault();
+          registerModal(this.dataset.id);
+        });
+
+        $(".cancel-btn").on("click", function (e) {
+          e.preventDefault();
+          cancelModal(this.dataset.id);
+        });
+      },
+    });
+  }
+
+  function registerModal(eventId) {
+    $.ajax({
+      url: `../modals/register.php`,
+      type: "GET",
+      datatype: "html",
+      success: function (view) {
+        $(".modal-container").empty().html(view);
+        $("#staticBackdropedit").modal("show");
+        $("#event_id").val(eventId);
+      },
+    });
+  }
+
+  function cancelModal(eventId) {
+    $.ajax({
+      url: `../modals/cancel.php`,
+      type: "GET",
+      datatype: "html",
+      success: function (view) {
+        $(".modal-container").empty().html(view);
+        $("#staticBackdropedit").modal("show");
+        $("#event_id").val(eventId);
+      },
+    });
+  }
+
+  function viewReservations() {
+    $.ajax({
+      type: "GET",
+      url: "../staff/reservations-view.php",
+      dataType: "html",
+      success: function (response) {
+        $(".content-page").html(response);
+
+        var table = $("#table-products").DataTable({
+          dom: "rtp",
+          pageLength: 10,
+          ordering: false,
+        });
+
+        $("#custom-search").on("keyup", function () {
+          table.search(this.value).draw();
+        });
+
+        $(".view-ticket").on("click", function (e) {
+          e.preventDefault();
+          viewTicket(this.dataset.id);
+        });
+      },
+    });
+  }
+
+  function viewTicket(reservationId) {
+    $.ajax({
+      url: `../modals/view-ticket.php`,
+      type: "GET",
+      datatype: "html",
+      success: function (view) {
+        fetchTicketInfo(reservationId);
+
+        $(".modal-container").empty().html(view);
+        $("#staticBackdropedit").modal("show");
+      },
+    });
   }
 
   function viewUsers() {
@@ -77,7 +187,7 @@ $(document).ready(function () {
 
   function confirmReservation(reservationId) {
     $.ajax({
-      url: `../staff/confirm-reservation.php`,
+      url: `../modals/confirm-reservation.php`,
       type: "GET",
       datatype: "html",
       success: function (view) {
@@ -90,7 +200,7 @@ $(document).ready(function () {
 
   function declineReservation(reservationId) {
     $.ajax({
-      url: `../staff/decline-reservation.php`,
+      url: `../modals/decline-reservation.php`,
       type: "GET",
       datatype: "html",
       success: function (view) {
@@ -101,7 +211,6 @@ $(document).ready(function () {
     });
   }
 
-  // Function to load analytics view
   function viewProposedEvents() {
     $.ajax({
       type: "GET", // Use GET request
@@ -143,7 +252,7 @@ $(document).ready(function () {
           reschedEvent(this.dataset.id);
         });
 
-        $("#addEvent").on("click", function (e) {
+        $(".addEvent").on("click", function (e) {
           e.preventDefault();
           addEvent();
         });
@@ -166,7 +275,7 @@ $(document).ready(function () {
 
   function addEvent() {
     $.ajax({
-      url: `../staff/addEvent.html`,
+      url: `../modals/addEvent.html`,
       type: "GET",
       datatype: "html",
       success: function (view) {
@@ -186,7 +295,7 @@ $(document).ready(function () {
     console.log("AJAX request is about to be sent");
     $.ajax({
       type: "POST",
-      url: `../staff/addEvent.php`,
+      url: `../modals/addEvent.php`,
       data: $("form").serialize(),
       dataType: "json",
       success: function (response) {
@@ -253,6 +362,12 @@ $(document).ready(function () {
           } else {
             $("#capacity").removeClass("is-invalid");
           }
+          if (response.message) {
+            $("#timeErr").addClass("is-invalid");
+            $("#timeErr").text(response.message).show();
+          } else {
+            $("#timeErr").removeClass("is-invalid");
+          }
         } else if (response.status === "success") {
           // On success, hide modal and reset form
           $("#staticBackdropedit").modal("hide");
@@ -272,7 +387,7 @@ $(document).ready(function () {
 
   function reschedEvent(eventId) {
     $.ajax({
-      url: `../staff/reschedEvent.html`,
+      url: `../modals/reschedEvent.html`,
       type: "GET",
       datatype: "html",
       success: function (view) {
@@ -294,30 +409,42 @@ $(document).ready(function () {
     console.log("AJAX request is about to be sent");
     $.ajax({
       type: "POST",
-      url: `../staff/reschedEvent.php?event_id=${eventId}`,
+      url: `../modals/reschedEvent.php?event_id=${eventId}`,
       data: $("form").serialize(),
       dataType: "json",
       success: function (response) {
         console.log(response);
         if (response.status === "error") {
           // Handle validation errors
-          if (response.event_nameErr) {
-            $("#event_name").addClass("is-invalid");
-            $("#event_name")
-              .next(".invalid-feedback")
-              .text(response.event_nameErr)
-              .show();
+          if (response.dateErr) {
+            $("#date").addClass("is-invalid");
+            $("#date").next(".invalid-feedback").text(response.dateErr).show();
           } else {
-            $("#event_name").removeClass("is-invalid");
+            $("#date").removeClass("is-invalid");
           }
-          if (response.event_venueErr) {
-            $("#event_venue").addClass("is-invalid");
-            $("#event_venue")
+          if (response.start_timeErr) {
+            $("#start_time").addClass("is-invalid");
+            $("#start_time")
               .next(".invalid-feedback")
-              .text(response.event_venueErr)
+              .text(response.start_timeErr)
               .show();
           } else {
-            $("#event_venue").removeClass("is-invalid");
+            $("#start_time").removeClass("is-invalid");
+          }
+          if (response.end_timeErr) {
+            $("#end_time").addClass("is-invalid");
+            $("#end_time")
+              .next(".invalid-feedback")
+              .text(response.end_timeErr)
+              .show();
+          } else {
+            $("#end_time").removeClass("is-invalid");
+          }
+          if (response.message) {
+            $("#timeErr").addClass("is-invalid");
+            $("#timeErr").text(response.message).show();
+          } else {
+            $("#timeErr").removeClass("is-invalid");
           }
         } else if (response.status === "success") {
           // On success, hide modal and reset form
@@ -338,7 +465,7 @@ $(document).ready(function () {
 
   function editEvent(eventId) {
     $.ajax({
-      url: `../staff/editEvent.html`,
+      url: `../modals/editEvent.html`,
       type: "GET",
       datatype: "html",
       success: function (view) {
@@ -360,7 +487,7 @@ $(document).ready(function () {
     console.log("AJAX request is about to be sent");
     $.ajax({
       type: "POST",
-      url: `../staff/editEvent.php?event_id=${eventId}`,
+      url: `../modals/editEvent.php?event_id=${eventId}`,
       data: $("form").serialize(),
       dataType: "json",
       success: function (response) {
@@ -409,6 +536,12 @@ $(document).ready(function () {
           } else {
             $("#capacity").removeClass("is-invalid");
           }
+          if (response.message) {
+            $("#timeErr").addClass("is-invalid");
+            $("#timeErr").text(response.message).show();
+          } else {
+            $("#timeErr").removeClass("is-invalid");
+          }
         } else if (response.status === "success") {
           // On success, hide modal and reset form
           $("#staticBackdropedit").modal("hide");
@@ -428,7 +561,7 @@ $(document).ready(function () {
 
   function fetchEvent(eventId) {
     $.ajax({
-      url: `../staff/fetch-event.php?event_id=${eventId}`, // URL for fetching categories
+      url: `../modals/fetch-event.php?event_id=${eventId}`, // URL for fetching categories
       type: "POST", // Use GET request
       dataType: "json", // Expect JSON response 
       success: function (event) {
@@ -466,4 +599,23 @@ $(document).ready(function () {
       },
     });
   }
+
+  function fetchTicketInfo(reservationId) {
+    $.ajax({
+      url: `../tools/fetch-ticket.php?reservation_id=${reservationId}`,
+      type: "POST",
+      dataType: "json",
+      success: function (user) {
+        console.log(user);
+        $("#name").val(
+          `Name: ${user.last_name}, ${user.first_name} ${user.middle_name}`
+        );
+        $("#event").val("Event Name: " + user.event_name);
+        $("#venue").val("Venue: " + user.location);
+        $("#date").val("Date: " + user.date);
+        $("#time").val(`Time: ${user.start_time} - ${user.end_time}`);
+      },
+    });
+  }
+
 });

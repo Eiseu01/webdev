@@ -19,8 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['account'] = $data;
 
         if ($_SESSION['account']['role'] == "admin") {
-            header('location: ../admin/events.php');
-        } else if ($_SESSION['account']['role'] == "staff") {
+            header('location: ../admin/dashboard.php');
+        } else if ($_SESSION['account']['role'] == "organizer") {
             header('location: ../staff/dashboard.php');
         } else {
             header('location: ../user/dashboard.php');
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_SESSION['account'])) {
         if ($_SESSION['account']['role'] == "admin") {
             header('location: ../admin/dashboard.php');
-        }else if (!$_SESSION['account']['role'] == "staff") {
+        }else if (!$_SESSION['account']['role'] == "organizer") {
             header('location: ../staff/dashboard.php');
         }else {
             header("location: ../user/dashboard.php");

@@ -1,5 +1,5 @@
 <?php
-$page_title = "Event - Profile";
+$page_title = "Event - Reservations";
 session_start();
 
 if (isset($_SESSION['account'])) {

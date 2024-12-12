@@ -389,7 +389,7 @@
   --ct-table-active-color: #fff;
   --ct-table-hover-bg: #313a46;
   --ct-table-hover-color: #fff;
-  font-size: 20px;
+  font-size: 18px;
   color: var(--ct-table-color);
   border-color: var(--ct-table-border-color);
 }
@@ -405,6 +405,7 @@
   color: #2c2c2c;
   background-color: var(--ct-table-bg);
   border-bottom-width: var(--ct-border-width);
+  font-size: 16px;
 }
 
 .table > :not(caption) > * > * {

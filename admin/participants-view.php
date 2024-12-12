@@ -1,55 +1,20 @@
+<?php
+    require_once '../classes/event.class.php';
+    require_once '../classes/reserve.class.php';
+    session_start();
+    $eventObj = new Event;
+?>
 <style>
-    a {
-        text-decoration: none;
-        color: #B22222;
-    }
     .page-title {
         text-align: center;
         padding: 15px;
     }
-    .picture {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .picture img {
-        width: 150px;
-        height: 150px;
-        border: 2px solid #B22222;
-        border-radius: 100px;
-    }
-    .container {
-        display: grid;
-        justify-content: center;
-        align-items: center;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-        margin: 5px;
-    }
-    .box {
-        display: grid;
-        grid-template-columns: 250px 1fr 80px;
-        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-        width: 760px;
-        padding: 10px;
-        border-radius: 10px;
-    }
-    .information p{
-        margin: 10px;
-        color: #2c2c2c;
+    .action a {
+        text-decoration: none;
     }
 </style>
-<?php
-    session_start();
-    require_once("../classes/account.class.php");
-
-    $reserveObj = new Account();
-    $array = $reserveObj->fetchUsers()
-?>
+<h2 class="page-title">Manage Participants</h2>
 <div class="modal-container"></div>
-<div class="page-title">
-    <h2>Users</h2>
-</div>
 <div class="card">
     <div class="card-body">
         <div class="table-responsive">
@@ -68,9 +33,12 @@
                         <select id="category-filter" class="form-select">
                             <option value="choose">Choose...</option>
                             <option value="">All</option>
-                            <option value="user">User</option>
-                            <option value="organizer">Organizer</option>
-                            <option value="admin">Admin</option>
+                            <?php
+                            $categoryList = $eventObj->fetchEvents($_SESSION["account"]["user_id"], "approved");
+                            foreach ($categoryList as $cat) {
+                            ?>
+                            <option value="<?= $cat['event_name'] ?>"><?= $cat['event_name'] ?></option>
+                            <?php } ?>
                         </select>
                     </div>
                 </div>
@@ -79,28 +47,39 @@
                 <thead class="table-light">
                     <tr class="text-center">
                         <th>No.</th>
-                        <th>Username</th>
-                        <th>Fullname</th>
-                        <th>Course</th>
-                        <th class="text-center">Year Level</th>
-                        <th>Role</th>
+                        <th>Name</th>
+                        <th>Course & Level</th>
+                        <th>Email</th>
+                        <th class="text-center">Phone Number</th>
+                        <th>Event</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
                     $i = 1;
+                    $reserveObj = new Reserve;
+                    $array = $reserveObj->fetchEvents($_SESSION["account"]["user_id"]);
+
                     foreach ($array as $arr) {
                     ?>
                     <tr class="text-center">
                         <td><?= $i ?></td>
-                        <td class="text-start"><?= $arr["username"] ?></td>
-                        <td><?= $arr["last_name"] . ", " . $arr["first_name"] . " " . $arr["middle_name"] ?></td>
-                        <td><?= $arr["course_code"] ?></td>
-                        <td class="text-center"><?= $arr["level"] ? $arr["level"] : "NONE" ?></td>
-                        <td><?= $arr["role"] ?></td>
+                        <td class="text-start"><?= $arr["last_name"] . ", " . $arr["first_name"] . " " . $arr["middle_name"] ?></td>
+                        <td><?= $arr["course_code"] . ' - ' . $arr["level"] ?></td>
+                        <td><?= $arr["email"] ?></td>
+                        <td class="text-center"><?= $arr["phone_number"] ?></td>
+                        <td><?= $arr["event_name"] ?></td>
+                        <td><?= $arr["reservation_status"] ?></td>
                         <td class="action"> 
-                            <a href="" class="manage-user" data-id="<?= $arr["user_id"] ?>">Manage</a>
+                            <?php if($arr["reservation_status"] == "pending"): ?>
+                                <a class="confirm" href="" data-id="<?= $arr["reservation_id"] ?>">Confirm</a>
+                                <a class="decline" href="" data-id="<?= $arr["reservation_id"] ?>">Decline</a>
+                            <?php endif; ?>
+                            <?php if($arr["reservation_status"] == "confirmed"): ?>
+                                <p class="text-success m-0">Confirmed</p>
+                            <?php endif; ?>
                         </td>
                     </tr>
                     <?php

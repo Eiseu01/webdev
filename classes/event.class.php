@@ -98,12 +98,41 @@ class Event
         return $query->execute();
     }
 
-    function fetchEvents($created_by = '', $creation_status = '')
-    {
-        $sql = "SELECT * FROM events e JOIN users u ON e.created_by = u.user_id WHERE created_by LIKE '%' :created_by '%' AND creation_status LIKE '%' :creation_status '%' ORDER BY e.created_at DESC;";
+    function fetchEventDates($date) {
+        $sql = "SELECT date, start_time, end_time FROM events WHERE date = :date";
         $query = $this->db->connect()->prepare($sql);
-        $query->bindParam(':created_by', $created_by);
+        $query->bindParam(':date', $date);
+        $data = null;
+        if ($query->execute()) {
+            $data = $query->fetchAll(PDO::FETCH_ASSOC);
+        }
+        return $data;
+    }
+
+    function updateEventDateInProgress() {
+        $sql = "UPDATE events SET completion_status = 'in_progress' WHERE CONCAT(date, ' ', start_time) <= NOW() AND CONCAT(date, ' ', end_time) >= NOW() AND completion_status != 'in_progress'";
+        $query = $this->db->connect()->prepare($sql);
+        return $query->execute();
+    }
+
+    function updateEventDateFinished() {
+        $sql = "UPDATE events SET completion_status = 'finished' WHERE CONCAT(date, ' ', end_time) < NOW() AND completion_status != 'finished'";
+        $query = $this->db->connect()->prepare($sql);
+        return $query->execute();
+    }
+
+    function fetchEvents($created_by = '', $creation_status = '', $completion_status = '')
+    {
+        $sql = "SELECT * FROM events e JOIN users u ON e.created_by = u.user_id WHERE creation_status LIKE '%' :creation_status '%' AND completion_status LIKE '%' :completion_status '%'";
+        if($created_by) {
+            $sql .= " AND created_by = :created_by";
+        }
+        $query = $this->db->connect()->prepare($sql);
+        if($created_by) {
+            $query->bindParam(':created_by', $created_by);
+        }
         $query->bindParam(':creation_status', $creation_status);
+        $query->bindParam(':completion_status', $completion_status);
         $data = null;
         if ($query->execute()) {
             $data = $query->fetchAll(PDO::FETCH_ASSOC);

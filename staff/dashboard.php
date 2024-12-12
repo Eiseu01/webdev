@@ -3,7 +3,7 @@ $page_title = "Events - Proposed Events";
 session_start();
 
 if (isset($_SESSION['account'])) {
-    if ($_SESSION['account']['role'] != "staff") {
+    if ($_SESSION['account']['role'] != "organizer") {
         header('location: ../account/loginwcss.php');
     }
 } else {

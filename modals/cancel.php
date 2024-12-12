@@ -31,7 +31,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
         if($eventObj->addCapacity($event_id)) {
             if($reserveObj->deleteReserve($user_id, $event_id)){
-                header("location: ../user/dashboard.php");
+                if($_SESSION["account"]["role"] == "organizer") {
+                    header("location: ../staff/events.php");
+                } else {
+                    header("location: ../user/dashboard.php");
+                }
             } else {
                 echo 'Something went wrong when you tried to register.';
             }
@@ -48,7 +52,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 <h5 class="modal-title" id="staticBackdropLabel">Register</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="post" id="form-register" action="cancel.php">
+            <form method="post" id="form-register" action="../modals/cancel.php">
                 <div class="modal-body">
                     <div id="label" class="mb-2">
                         <label for="event_id"><h4>Do you want to cancel?</h4></label>

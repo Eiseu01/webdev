@@ -67,7 +67,7 @@ $(document).ready(function () {
 
   function registerModal(eventId) {
     $.ajax({
-      url: `../user/register.php`,
+      url: `../modals/register.php`,
       type: "GET",
       datatype: "html",
       success: function (view) {
@@ -80,7 +80,7 @@ $(document).ready(function () {
 
   function cancelModal(eventId) {
     $.ajax({
-      url: `../user/cancel.php`,
+      url: `../modals/cancel.php`,
       type: "GET",
       datatype: "html",
       success: function (view) {
@@ -130,7 +130,7 @@ $(document).ready(function () {
 
   function viewTicket(reservationId) {
     $.ajax({
-      url: `../user/view-ticket.php`,
+      url: `../modals/view-ticket.php`,
       type: "GET",
       datatype: "html",
       success: function (view) {
@@ -141,9 +141,10 @@ $(document).ready(function () {
       },
     });
   }
+
   function fetchTicketInfo(reservationId) {
     $.ajax({
-      url: `../user/fetch-ticket.php?reservation_id=${reservationId}`,
+      url: `../tools/fetch-ticket.php?reservation_id=${reservationId}`,
       type: "POST",
       dataType: "json",
       success: function (user) {

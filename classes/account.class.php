@@ -110,11 +110,10 @@ class Account
         return $data;
     }
 
-    function fetchUsers($user_id) {
-        $sql = "SELECT u.role, u.user_id, u.username, u.password, u.first_name, u.last_name, u.middle_name, u.level, c.course_name, c.course_code FROM users u LEFT JOIN course c ON u.course_id = c.course_id WHERE u.user_id != :user_id ORDER BY role;";
+    function fetchUsers() {
+        $sql = "SELECT u.role, u.user_id, u.username, u.password, u.first_name, u.last_name, u.middle_name, u.level, c.course_name, c.course_code FROM users u LEFT JOIN course c ON u.course_id = c.course_id;";
 
         $query = $this->db->connect()->prepare($sql);
-        $query->bindParam('user_id', $user_id);
         $data = null;
         if ($query->execute()) {
             $data = $query->fetchAll(PDO::FETCH_ASSOC);

@@ -77,7 +77,7 @@
 <div class="modal-container"></div>
 <div>
     <div class="username">
-        <h3>Welcome Organizer <?= $_SESSION["account"]["username"] ?>!</h3>
+        <h3>Welcome Admin <?= $_SESSION["account"]["username"] ?>!</h3>
     </div>
     <div class="page-title">
         <h2>Proposed Event List</h2>
@@ -124,7 +124,7 @@
                         <td><?= $arr["event_name"] ?></td>
                         <td><?= $arr["location"] ?></td>
                         <td><?= $arr["event_description"] ?></td>
-                        <td style="width: 120px;" class="text-center"><?= $arr["date"] ?></td>
+                        <td style="width: 110px;" class="text-center"><?= $arr["date"] ?></td>
                         <td style="width: 100px;" class="text-center"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
                         <td class="text-center"><?= $arr["creation_status"] ?></td>
                         <td class="text-center"><?= $arr["progress_status"] ?></td>

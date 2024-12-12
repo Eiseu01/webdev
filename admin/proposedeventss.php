@@ -1,9 +1,9 @@
 <?php
-$page_title = "Event - Profile";
+$page_title = "Event - Proposed Events";
 session_start();
 
 if (isset($_SESSION['account'])) {
-    if ($_SESSION['account']['role'] != "organizer") {
+    if ($_SESSION['account']['role'] !== "admin") {
         header('location: ../account/loginwcss.php');
     }
 } else {
@@ -17,15 +17,15 @@ require_once '../includes/_head.php';
     <div class="wrapper">
         <?php
         require_once '../includes/_topnav.php';
-        require_once '../includes/_sidebarStaff.php';
+        require_once '../includes/_sidebarAdmin.php';
         ?>
         <div class="content-page px-3">
             <!-- dynamic content here -->
         </div>
     </div>
     <?php
-    require_once '../includes/_footerStaff.php';
-    ?>
+    require_once '../includes/_footerAdmin.php';
+    ?>z
 </body>
 
 </html>

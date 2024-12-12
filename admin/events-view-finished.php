@@ -23,13 +23,13 @@
         justify-content: space-around;
     }
     .scheduled {
-        box-shadow: rgba(50, 50, 93, 0.1) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.1) 0px 18px 36px -18px inset;
+       box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
     }
     .inProgress {
         box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
     }
     .ended {
-        box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+        box-shadow: rgba(50, 50, 93, 0.1) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.1) 0px 18px 36px -18px inset;
     }
     .category div {
         margin: 0 0 20px 0;
@@ -50,7 +50,8 @@
     require_once("../classes/event.class.php");
 
     $eventObj = new Event;
-    $array = $eventObj->fetchEvents('','', "not_started");
+    $eventObj->updateEventDateFinished();
+    $array = $eventObj->fetchEvents('','', "finished");
     
 ?>
 <div class="modal-container"></div>
@@ -76,7 +77,7 @@
                      <a id="finished" href="events-view-ended.php">Finished</a>
                 </div>
             </div>
-           <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
                 <div class="d-flex justify-content-center align-items-center">
                     <form class="d-flex me-2">
                         <div class="input-group w-100">
@@ -86,15 +87,6 @@
                             </span>
                         </div>
                     </form>
-                    <div class="d-flex align-items-center">
-                        <label for="category-filter" class="me-2">Category</label>
-                        <select id="category-filter" class="form-select">
-                            <option value="choose">Choose...</option>
-                            <option value="">All</option>
-                            <option value="approved">Approved</option>
-                            <option value="pending">Pending</option>
-                        </select>
-                    </div>
                 </div>
             </div>
             <table id="table-products" class="table table-centered table-nowrap mb-0">
@@ -106,9 +98,7 @@
                         <th>Description</th>
                         <th class="text-center">Date</th>
                         <th>Time</th>
-                        <th>Creation Status</th>
-                        <th>Progress Status</th>
-                        <th>Capacity</th>
+                        <th class="text-center">Capacity</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -125,25 +115,10 @@
                         <td><?= $arr["event_description"] ?></td>
                         <td class="text-center" style="width: 150px;"><?= $arr["date"] ?></td>
                         <td class="text-center" style="width: 100px;"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
-                        <td class="text-center"><?= $arr["creation_status"] ?></td>
-                        <td class="text-center"><?= $arr["progress_status"] ?></td>
                         <td class="text-center"><?= $arr["total_capacity"] ?></td>
                         
                         <td class="text-center" style="width: 200px">
-                            <?php if($arr["creation_status"] == "approved" && $arr["progress_status"] == "scheduled"): ?>
-                                <a href="" class="cancel" data-id="<?= $arr["event_id"] ?>">Delete</a>
-                            <?php endif; ?>
-                            <?php if($arr["creation_status"] == "approved" && $arr["progress_status"] == "rescheduled"): ?>
-                                <a href="" class="approve" data-id="<?= $arr["event_id"] ?>">Approve</a>
-                                <a href="" class="reject" data-id="<?= $arr["event_id"] ?>">Reject</a>
-                            <?php endif; ?>
-                            <?php if($arr["creation_status"] == "pending"): ?>
-                                <a href="" class="approve" data-id="<?= $arr["event_id"] ?>">Approve</a>
-                                <a href="" class="reject" data-id="<?= $arr["event_id"] ?>">Reject</a>
-                            <?php endif; ?>
-                            <?php if($arr["creation_status"] == "denied"): ?>
-                                
-                            <?php endif; ?>
+                            <a href="" class="cancel" data-id="<?= $arr["event_id"] ?>">View Participants</a>
                         </td>
                     </tr>
                     <?php endforeach; ?>

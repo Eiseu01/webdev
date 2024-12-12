@@ -27,7 +27,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
         if($reserveObj->fetchReservation($reservation_id)) {
             if($reserveObj->deleteCancelledReservation($reservation_id)) {
-                header("location: ../staff/users.php");
+                if($_SESSION["account"]["role"] == "admin") {
+                    header("location: ../admin/participants.php");
+                } else {
+                    header("location: ../staff/users.php");
+                }
             } else {
                 echo 'Something went wrong when you tried to decline.';
             }
@@ -45,7 +49,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 <h5 class="modal-title" id="staticBackdropLabel">Reservation</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="post" id="form-reservation" action="decline-reservation.php">
+            <form method="post" id="form-reservation" action="../modals/decline-reservation.php">
                 <div class="modal-body">
                     <div id="label" class="mb-2">
                         <label for="reservation_id"><h4>Do you want to decline this?</h4></label>

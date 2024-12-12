@@ -3,26 +3,44 @@
 session_start();
 
 require_once('../tools/functions.php');
-require_once('../classes/event.class.php');
 require_once('../classes/reserve.class.php');
+require_once('../classes/event.class.php');
 
-$event_id = '';
-$eventObj = new Event();
+$user_id = $event_id = '';
+$user_idErr = $event_idErr  = '';
+
 $reserveObj = new Reserve();
+$eventObj = new Event();
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
-
+    
+    $user_id = $_SESSION["account"]["user_id"];
     $event_id = $_POST["event_id"];
 
-    if(!empty($event_id)){
-        if($reserveObj->deleteEvent($event_id)) {
-            if($eventObj->deleteEvent($event_id)){
-                header("location: ../staff/dashboard.php");
+    if(empty($user_id)){
+        $user_idErr = 'User ID is required.';
+    }
+
+    if(empty($event_id)){
+        $event_idErr = 'Event ID is required.';
+    }
+
+    if(empty($user_idErr) && empty($event_idErr)){
+        $reserveObj->user_id = $user_id;
+        $reserveObj->event_id = $event_id;
+
+        if($eventObj->subtractCapacity($event_id)) {
+            if($reserveObj->addReserve()){
+                if($_SESSION["account"]["role"] == "organizer") {
+                    header("location: ../staff/events.php");
+                } else {
+                    header("location: ../user/dashboard.php");
+                }
             } else {
-                echo 'Something went wrong when you tried to delete the event.';
+                echo 'Something went wrong when you tried to register.';
             }
-            exit;
         }
+        exit;
     }
 }
 ?>
@@ -31,13 +49,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #EE4C51; color: white;">
-                <h5 class="modal-title" id="staticBackdropLabel">Edit Event Status</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Register</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="post" id="edit-event-status" action="deleteEvent.php">
+            <form method="post" id="form-register" action="../modals/register.php">
                 <div class="modal-body">
                     <div id="label" class="mb-2">
-                        <label for="event_id"><h4>Are you sure you want to delete this proposed event?</h4></label>
+                        <label for="event_id"><h4>Do you want to register?</h4></label>
                         <input style="display:none;" type="text" value="" id="event_id" name="event_id">
                     </div>
                 </div>
