@@ -24,14 +24,27 @@
 <div class="card">
     <div class="card-body">
         <div class="table-responsive">
-            <form class="d-flex me-2">
-                <div class="input-group w-100 pb-3">
-                    <input type="text" class="form-control form-control-light" id="custom-search" placeholder="Search Events...">
-                    <span class="input-group-text bg-primary border-primary text-white brand-bg-color">
-                        <i class="bi bi-search"></i>
-                    </span>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="d-flex justify-content-center align-items-center">
+                    <form class="d-flex me-2">
+                        <div class="input-group w-100">
+                            <input type="text" class="form-control form-control-light" id="custom-search" placeholder="Search">
+                            <span class="input-group-text bg-primary border-primary text-white brand-bg-color">
+                                <i class="bi bi-search"></i>
+                            </span>
+                        </div>
+                    </form>
+                    <div class="d-flex align-items-center">
+                        <label for="category-filter" class="me-2" id="label-category">Category</label>
+                        <select id="category-filter" class="form-select">
+                            <option value="choose">Select Status</option>
+                            <option value="">All</option>
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+                    </div>
                 </div>
-            </form>
+            </div>
             <table id="table-products" class="table table-centered table-nowrap mb-0">
                 <thead class="table-light">
                     <tr>
@@ -51,12 +64,12 @@
                         $endTime = strtotime($arr["end_time"]);
                     ?>
                     <tr>
-                        <td><?= $arr["event_name"] ?></td>
-                        <td><?= $arr["location"] ?></td>
-                        <td><?= $arr["event_description"] ?></td>
-                        <td class="text-center" style="width: 150px;"><?= $arr["date"] ?></td>
-                        <td class="text-center" style="width: 200px;"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
-                        <td class="text-center"><?= $arr["reservation_status"] ?></td>
+                        <td data-cell="event name"><?= $arr["event_name"] ?></td>
+                        <td data-cell="venue"><?= $arr["location"] ?></td>
+                        <td data-cell="description"><?= $arr["event_description"] ?></td>
+                        <td data-cell="date"><?= $arr["date"] ?></td>
+                        <td data-cell="time"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
+                        <td data-cell="status"><?= $arr["reservation_status"] ?></td>
                         <td class="text-center fst-italic">
                             <?php if($arr["reservation_status"] == "confirmed"): ?>
                                 <a class="view-ticket" href="" data-id="<?= $arr["reservation_id"] ?>">View Ticket</a>

@@ -9,72 +9,54 @@ $(document).ready(function () {
     window.history.pushState({ path: url }, "", url); // Update the browser's URL without reloading
   });
 
-  $("#dashboard-link").on("click", function (e) {
+  $(".dashboard-link").on("click", function (e) {
     e.preventDefault();
     viewDashboard();
   });
 
-  $("#proposedevents-link").on("click", function (e) {
+  $(".proposedevents-link").on("click", function (e) {
     e.preventDefault();
     viewProposedEvents();
   });
 
-  $("#users-link").on("click", function (e) {
+  $(".users-link").on("click", function (e) {
     e.preventDefault();
     viewUsers();
   });
 
-  $("#manage-link").on("click", function (e) {
+  $(".manage-link").on("click", function (e) {
     e.preventDefault();
     viewEvents();
   });
 
-  $("#finished").on("click", function (e) {
-    e.preventDefault();
-    viewEventsFinished();
-  });
-
-  $("#inprogresss").on("click", function (e) {
-    e.preventDefault();
-    viewEventsInProgress();
-  });
-
-  $("#profile-link").on("click", function (e) {
+  $(".profile-link").on("click", function (e) {
     e.preventDefault();
     viewProfile();
   });
 
-  $("#participants-link").on("click", function (e) {
+  $(".participants-link").on("click", function (e) {
     e.preventDefault();
     viewParticipants();
   });
 
-  $("#notifications-link").on("click", function (e) {
-    e.preventDefault();
-    viewNotifications();
-  }); 
-
-
   // Determine which page to load based on the current URL
   let url = window.location.href;
   if (url.endsWith("dashboard.php")) {
-    $("#dashboard-link").trigger("click"); 
+    $(".dashboard-link").trigger("click"); 
   } else if (url.endsWith("users.php")) {
-    $("#users-link").trigger("click"); 
+    $(".users-link").trigger("click"); 
   } else if (url.endsWith("profile.php")) {
-    $("#profile-link").trigger("click"); 
+    $(".profile-link").trigger("click"); 
   } else if (url.endsWith("proposedeventss.php")) {
-    $("#proposedevents-link").trigger("click"); 
+    $(".proposedevents-link").trigger("click"); 
   } else if (url.endsWith("participants.php")) {
-    $("#participants-link").trigger("click"); 
+    $(".participants-link").trigger("click"); 
   } else if (url.endsWith("events.php")) {
-    $("#manage-link").trigger("click");
+    $(".manage-link").trigger("click");
   } else if (url.endsWith("finished.php")) {
-    $("#finished").trigger("click");
+    $(".finished").trigger("click");
   } else if (url.endsWith("inprogress.php")) {
-    $("#inprogress").trigger("click"); 
-  } else if (url.endsWith("notifications.php")) {
-    $("#notifications-link").trigger("click"); 
+    $(".inprogress").trigger("click"); 
   }
 
   function viewParticipants() {
@@ -103,29 +85,42 @@ $(document).ready(function () {
           }
         });
 
+        // Confirm reservation
         $(".confirm").on("click", function (e) {
           e.preventDefault();
-          confirmReservation(this.dataset.id, this.dataset.user, this.dataset.event);
+          confirmReservation(
+            this.dataset.id,
+            this.dataset.user,
+            this.dataset.event
+          ); // Call confirm function
         });
 
+        // Decline reservation
         $(".decline").on("click", function (e) {
           e.preventDefault();
-          declineReservation(this.dataset.id, this.dataset.user, this.dataset.event);
+          declineReservation(
+            this.dataset.id,
+            this.dataset.user,
+            this.dataset.event
+          ); // Call decline function
         });
 
+        // Delete reservation
         $(".delete").on("click", function (e) {
           e.preventDefault();
-          deleteReservation(this.dataset.id);
+          deleteReservation(this.dataset.id); // Call delete function
         });
 
+        // Mark attendance as absent
         $(".absent").on("click", function (e) {
           e.preventDefault();
-          attendanceAbsent(this.dataset.id);
+          attendanceAbsent(this.dataset.id); // Call attendanceAbsent function
         });
 
+        // Mark attendance as present
         $(".present").on("click", function (e) {
           e.preventDefault();
-          attendancePresent(this.dataset.id);
+          attendancePresent(this.dataset.id); // Call attendancePresent function
         });
       },
     });
@@ -231,16 +226,19 @@ $(document).ready(function () {
           editEvent(this.dataset.id);
         });
 
+        // Delete event handler
         $(".delete").on("click", function (e) {
           e.preventDefault();
           deleteEvent(this.dataset.id);
         });
 
+        // Reschedule event handler
         $(".resched").on("click", function (e) {
           e.preventDefault();
           reschedEvent(this.dataset.id);
         });
 
+        // Add event handler
         $(".addEvent").on("click", function (e) {
           e.preventDefault();
           addEvent();
@@ -264,7 +262,7 @@ $(document).ready(function () {
 
   function addEvent() {
     $.ajax({
-      url: `../modals/addEvent.html`,
+      url: `../modals/addEventForm.php`,
       type: "GET",
       datatype: "html",
       success: function (view) {
@@ -617,12 +615,12 @@ $(document).ready(function () {
       url: "../admin/events-view.php",
       dataType: "html",
       success: function (response) {
-        $(".content-page").html(response); 
+        $(".content-page").html(response);
 
         var table = $("#table-products").DataTable({
-          dom: "rtp", 
-          pageLength: 10, 
-          ordering: false, 
+          dom: "rtp",
+          pageLength: 10,
+          ordering: false,
         });
 
         $("#custom-search").on("keyup", function () {
@@ -635,34 +633,37 @@ $(document).ready(function () {
           }
         });
 
+        // View finished events
         $("#finished").on("click", function (e) {
           e.preventDefault();
           viewEventsFinished();
         });
 
+        // View in-progress events
         $("#inprogress").on("click", function (e) {
           e.preventDefault();
           viewEventsInProgress();
         });
 
+        // View scheduled events
         $("#scheduled").on("click", function (e) {
-          e.preventDefault();
           viewEvents();
         });
 
+        // Handle reject, cancel, and approve actions
         $(".reject").on("click", function (e) {
           e.preventDefault();
-          reject(this.dataset.id, this.dataset.user, this.dataset.event);
+          reject(this.dataset.id, this.dataset.user, this.dataset.event); // Call reject function
         });
 
         $(".cancel").on("click", function (e) {
           e.preventDefault();
-          cancel(this.dataset.id);
+          cancel(this.dataset.id); // Call cancel function
         });
 
         $(".approve").on("click", function (e) {
           e.preventDefault();
-          approve(this.dataset.id, this.dataset.user, this.dataset.event);
+          approve(this.dataset.id, this.dataset.user, this.dataset.event); // Call approve function
         });
       },
     });
@@ -671,7 +672,7 @@ $(document).ready(function () {
   function viewEventsInProgress() {
     $.ajax({
       type: "GET",
-      url: "../admin/events-view-inprogress.php",
+      url: "../events-view/events-view-inprogress.php",
       dataType: "html",
       success: function (response) {
         $(".content-page").html(response);
@@ -692,18 +693,20 @@ $(document).ready(function () {
           }
         });
 
+        // View finished events
         $("#finished").on("click", function (e) {
           e.preventDefault();
           viewEventsFinished();
         });
 
+        // View in-progress events
         $("#inprogress").on("click", function (e) {
           e.preventDefault();
           viewEventsInProgress();
         });
 
+        // View scheduled events
         $("#scheduled").on("click", function (e) {
-          e.preventDefault();
           viewEvents();
         });
       },
@@ -713,7 +716,7 @@ $(document).ready(function () {
   function viewEventsFinished() {
     $.ajax({
       type: "GET",
-      url: "../admin/events-view-finished.php",
+      url: "../events-view/events-view-finished.php",
       dataType: "html",
       success: function (response) {
         $(".content-page").html(response);
@@ -734,18 +737,20 @@ $(document).ready(function () {
           }
         });
 
+        // View finished events
         $("#finished").on("click", function (e) {
           e.preventDefault();
           viewEventsFinished();
         });
 
+        // View in-progress events
         $("#inprogress").on("click", function (e) {
           e.preventDefault();
           viewEventsInProgress();
         });
 
+        // View scheduled events
         $("#scheduled").on("click", function (e) {
-          e.preventDefault();
           viewEvents();
         });
       },
@@ -755,7 +760,7 @@ $(document).ready(function () {
 
   function reject(eventId, userId, eventName) {
     $.ajax({
-      url: `../admin/reject.php`,
+      url: `../admin-modals/reject.php`,
       type: "GET",
       datatype: "html",
       success: function (view) {
@@ -770,7 +775,7 @@ $(document).ready(function () {
 
   function cancel(eventId) {
     $.ajax({
-      url: `../admin/cancel.php`,
+      url: `../admin-modals/cancel.php`,
       type: "GET",
       datatype: "html",
       success: function (view) {
@@ -783,7 +788,7 @@ $(document).ready(function () {
 
   function approve(eventId, userId, eventName) {
     $.ajax({
-      url: `../admin/approve.php`,
+      url: `../admin-modals/approve.php`,
       type: "GET",
       datatype: "html",
       success: function (view) {
@@ -826,14 +831,13 @@ $(document).ready(function () {
           e.preventDefault();
           editUser(this.dataset.id);
         });
-        
       },
     });
   }
 
   function editUser(userId) {
     $.ajax({
-      url: `../admin/editUser.html`,
+      url: `../admin-modals/editUser.html`,
       type: "GET",
       datatype: "html",
       success: function (view) {
@@ -857,7 +861,7 @@ $(document).ready(function () {
     console.log("AJAX request is about to be sent");
     $.ajax({
       type: "POST",
-      url: `../admin/editUser.php?user_id=${userId}`,
+      url: `../admin-modals/editUser.php?user_id=${userId}`,
       data: $("form").serialize(),
       dataType: "json",
       success: function (response) {
@@ -952,12 +956,10 @@ $(document).ready(function () {
 
   function fetchCourse() {
     $.ajax({
-      url: "../admin/fetch-course.php",
+      url: "../tools/fetch-course.php",
       type: "GET",
       dataType: "json",
       success: function (data) {
-        $("#course_id").empty().append('<option value="">--Select--</option>');
-
         $.each(data, function (index, course) {
           $("#course_id").append(
             $("<option>", {
@@ -972,7 +974,7 @@ $(document).ready(function () {
 
   function fetchUser(userId) {
     $.ajax({
-      url: `../admin/fetch-user.php?user_id=${userId}`,
+      url: `../tools/fetch-user.php?user_id=${userId}`,
       type: "POST",
       dataType: "json",
       success: function (user) {
@@ -988,15 +990,10 @@ $(document).ready(function () {
     });
   }
 
-  function viewNotifications() {
-    $.ajax({
-      type: "GET",
-      url: "../admin/notifications-view.php",
-      dataType: "html",
-      success: function (response) {
-        $(".content-page").html(response);
-      },
-    });
-  }
+  $(".table").DataTable({
+    language: {
+      emptyTable: "Custom message for empty table",
+    },
+  });
 
 });

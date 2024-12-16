@@ -17,6 +17,23 @@
         padding: 10px;
         color: #2c2c2c;
     }
+    .box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .box a {
+        text-decoration: none;
+        border-radius: 3px;
+        padding: 3px 10px;
+        margin-right: 10px;
+        color: white;
+        background-color: #B22323;
+        transition: 0.2s;
+    }
+    .box a:hover {
+        opacity: 0.9;
+    }
 </style>
 <?php
     session_start();    
@@ -32,14 +49,17 @@
 <div class="card">
     <div class="card-body">
         <div class="table-responsive">
-            <form class="d-flex me-2">
-                <div class="input-group w-100 pb-3">
-                    <input type="text" class="form-control form-control-light" id="custom-search" placeholder="Search Events...">
-                    <span class="input-group-text bg-primary border-primary text-white brand-bg-color">
-                        <i class="bi bi-search"></i>
-                    </span>
-                </div>
-            </form>
+            <div class="box">
+                <form class="d-flex me-2">
+                    <div class="input-group w-100 pb-3">
+                        <input type="text" class="form-control form-control-light" id="custom-search" placeholder="Search Events...">
+                        <span class="input-group-text bg-primary border-primary text-white brand-bg-color">
+                            <i class="bi bi-search"></i>
+                        </span>
+                    </div>
+                </form>
+                <a href="" id="truncateNotif">Delete All</a>
+            </div>
             <table id="table-products" class="notifTable table-centered table-nowrap mb-0">
                 <thead>
                     <tr>

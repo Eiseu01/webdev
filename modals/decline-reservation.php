@@ -63,7 +63,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             <form method="post" id="form-reservation" action="../modals/decline-reservation.php">
                 <div class="modal-body">
                     <div id="label" class="mb-2">
-                        <label for="reservation_id"><h4>Do you want to confirm this?</h4></label>
+                        <label for="reservation_id"><h4>Do you want to decline this?</h4></label>
                         <input style="display:none;" type="text" value="" id="reservation_id" name="reservation_id">
                         <input style="display:none;" type="text" value="" id="user_id" name="user_id">
                         <input style="display:none;" type="text" value="" id="event_name" name="event_name">

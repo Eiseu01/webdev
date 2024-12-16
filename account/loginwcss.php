@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else if ($_SESSION['account']['role'] == "organizer") {
             header('location: ../staff/events.php');
         } else {
-            header('location: ../user/dashboard.php');
+            header('location: ../user/events.php');
         }
     } else {
         $loginErr = 'Invalid username/password';
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }else if (!$_SESSION['account']['role'] == "organizer") {
             header('location: ../staff/dashboard.php');
         }else {
-            header("location: ../user/dashboard.php");
+            header("location: ../user/events.php");
         }
     }
 }
@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     .btn {
         background-color: #A20202;
-        transition: 0.5s;
+        transition: 0.2s;
         color: white;
         height: 60px;
         border-radius: 0;
@@ -83,8 +83,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         border-bottom-left-radius: 5px;
     }
     .btn:hover {
-        background-color: #D90000;
         color: white;
+        background-color: #D90000;
     }
     h1 {
         margin: 75px 0 30px 0;
@@ -99,6 +99,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         text-align: center;
         color: red;
     }
+    .signup {
+        text-decoration: none;
+        color: #A20202;
+    }
 </style>
 
 <body>
@@ -106,9 +110,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="container">
         <div class="box">
             <form action="loginwcss.php" method="post">
-                <img src="../img/wmsu-logo.png" width="120" height="120">
+                <a href="../homepage/home.php"><img src="../img/wmsu-logo.png" width="120" height="120"></a>
     
-                <h1>Please log in</h1>
+                <h1>Please sign in</h1>
 
                 <div class="inp">
                     <h2 class="bi bi-person"></h2>
@@ -119,8 +123,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <input type="password" id="password" name="password" placeholder="Password">
                 </div>
                 <p class="loginErr"><?= $loginErr ?></p>
-                <button class="btn w-100 py-2" type="submit">Log in</button>
-                <!-- <a href="signup.php" class="btn btn-primary w-100 py-2 mt-2">Sign Up</a> -->
+                <p class="text-center">Don't have an account? <a href="signup.php" class="signup">Sign Up</a></p>
+                <button class="btn w-100 py-2" type="submit">Sign in</button>
             </form>
         </div>
     </div>

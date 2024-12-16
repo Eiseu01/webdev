@@ -34,7 +34,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 if($_SESSION["account"]["role"] == "organizer") {
                     header("location: ../staff/events.php");
                 } else {
-                    header("location: ../user/dashboard.php");
+                    header("location: ../user/events.php");
                 }
             } else {
                 echo 'Something went wrong when you tried to register.';

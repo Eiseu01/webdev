@@ -5,6 +5,8 @@
     $eventObj = new Event;
     $array = $eventObj->fetchEvents('','','finished');
     $counts = $eventObj->statistics();
+    $eventObj->updateEventDateInProgress();
+    $eventObj->updateEventDateFinished();
 ?>
 <style>
     .username h3{
@@ -106,13 +108,14 @@
                 <div class="card-body p-1 pt-2">
                     <div class="table-responsive">
                         <table id="table-products" class="table table-centered table-nowrap mb-0">
-                            <thead class="table-light">
+                            <thead>
                                 <tr>
-                                    <th class="text-center">Event Name</th>
-                                    <th class="text-center">Event Venue</th>
-                                    <th class="text-center">Organizer</th>
-                                    <th class="text-center">Date</th>
-                                    <th class="text-center">Time</th>
+                                    <th>Event Name</th>
+                                    <th>Event Venue</th>
+                                    <th>Description</th>
+                                    <th>Organizer</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -126,11 +129,12 @@
                                     $endTime = strtotime($arr["end_time"]);
                                 ?>
                                 <tr>
-                                    <td><?= $arr["event_name"] ?></td>
-                                    <td><?= $arr["event_description"] ?></td>
-                                    <td class="w-25"><?= $arr["last_name"] . ", " . $arr["first_name"] . " " . $arr["middle_name"] ?></td>
-                                    <td style="width: 110px;" class="text-center"><?= $arr["date"] ?></td>
-                                    <td style="width: 100px;" class="text-center"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
+                                    <td data-cell="event name"><?= $arr["event_name"] ?></td>
+                                    <td data-cell="venue"><?= $arr["location"] ?></td>
+                                    <td data-cell="description"><?= $arr["event_description"] ?></td>
+                                    <td data-cell="organizer"><?= $arr["last_name"] . ", " . $arr["first_name"] . " " . $arr["middle_name"] ?></td>
+                                    <td data-cell="date"><?= $arr["date"] ?></td>
+                                    <td data-cell="time"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
                                 </tr>
                                 <?php endforeach; ?>
                             </tbody>

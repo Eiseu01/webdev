@@ -47,7 +47,7 @@ class Event
     }
 
     function updateEvent() {
-        $sql = "UPDATE events SET event_name = :event_name, location = :location, event_description = :event_description, date = :date, start_time = :start_time, end_time = :end_time, total_capacity = :capacity, available_capacity = :capacity WHERE event_id = :event_id;";
+        $sql = "UPDATE events SET event_name = :event_name, location = :location, event_description = :event_description, date = :date, start_time = :start_time, end_time = :end_time, total_capacity = :capacity, available_capacity = :capacity, creation_status = 'pending', progress_status = 'pending' WHERE event_id = :event_id;";
 
         $query = $this->db->connect()->prepare($sql);
 
@@ -98,10 +98,6 @@ class Event
         return $query->execute();
     }
 
-    function numScheduled() {
-
-    }
-
     function fetchEventDates($date) {
         $sql = "SELECT date, start_time, end_time FROM events WHERE date = :date AND completion_status = 'finished'";
         $query = $this->db->connect()->prepare($sql);
@@ -114,13 +110,13 @@ class Event
     }
 
     function updateEventDateInProgress() {
-        $sql = "UPDATE events SET completion_status = 'in_progress' WHERE CONCAT(date, ' ', start_time) <= NOW() AND CONCAT(date, ' ', end_time) >= NOW() AND completion_status != 'in_progress'";
+        $sql = "UPDATE events SET completion_status = 'in_progress' WHERE CONCAT(date, ' ', start_time) <= NOW() AND CONCAT(date, ' ', end_time) >= NOW() AND completion_status != 'in_progress' AND progress_status = 'scheduled'";
         $query = $this->db->connect()->prepare($sql);
         return $query->execute();
     }
 
     function updateEventDateFinished() {
-        $sql = "UPDATE events SET completion_status = 'finished' WHERE CONCAT(date, ' ', end_time) < NOW() AND completion_status != 'finished'";
+        $sql = "UPDATE events SET completion_status = 'finished' WHERE CONCAT(date, ' ', end_time) < NOW() AND completion_status != 'finished' AND progress_status = 'scheduled'";
         $query = $this->db->connect()->prepare($sql);
         return $query->execute();
     }
@@ -161,10 +157,16 @@ class Event
     }
 
     function fetchAvailableEvents($user_id) {
-        $sql = "SELECT e.*, r.event_id as 'revent_id', r.reservation_status FROM events e LEFT JOIN reservations r ON e.event_id = r.event_id AND r.user_id = :user_id WHERE e.creation_status = 'approved' AND e.progress_status = 'scheduled' AND e.completion_status = 'not_started' ORDER BY created_at DESC;";
+        $sql = "SELECT e.*, r.event_id as 'revent_id', r.reservation_status FROM events e LEFT JOIN reservations r ON e.event_id = r.event_id ";
+        if($user_id) {
+            $sql .= " AND r.user_id = :user_id ";
+        }
+        $sql .= " WHERE e.creation_status = 'approved' AND e.progress_status = 'scheduled' AND e.completion_status = 'not_started' ORDER BY created_at DESC;";
 
         $query = $this->db->connect()->prepare($sql);
-        $query->bindParam(':user_id', $user_id);
+        if($user_id) {
+            $query->bindParam(':user_id', $user_id);
+        }
         $data = null;
         if ($query->execute()) {
             $data = $query->fetchAll(PDO::FETCH_ASSOC);

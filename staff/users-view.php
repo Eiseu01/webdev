@@ -29,7 +29,7 @@
                         </div>
                     </form>
                     <div class="d-flex align-items-center">
-                        <label for="category-filter" class="me-2">Category</label>
+                        <label for="category-filter" class="me-2" id="label-category">Category</label>
                         <select id="category-filter" class="form-select">
                             <option value="choose">Choose...</option>
                             <option value="">All</option>

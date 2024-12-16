@@ -25,15 +25,18 @@ class Account
 
     function add()
     {
-        $sql = "INSERT INTO users (first_name, last_name, email, phone_number, username, password) VALUES (:first_name, :last_name, :email, :phone_number, :username, :password);";
+        $sql = "INSERT INTO users (first_name, last_name, middle_name, email, phone_number, username, password, course_id, level) VALUES (:first_name, :last_name, :middle_name, :email, :phone_number, :username, :password, :course_id, :level);";
 
         $query = $this->db->connect()->prepare($sql);
 
         $query->bindParam(':first_name', $this->first_name);
         $query->bindParam(':last_name', $this->last_name);
+        $query->bindParam(':middle_name', $this->middle_name);
         $query->bindParam(':email', $this->email);
         $query->bindParam(':phone_number', $this->phone_number);
         $query->bindParam(':username', $this->username);
+        $query->bindParam(':course_id', $this->course_id);
+        $query->bindParam(':level', $this->level);
         $hashpassword = password_hash($this->password, PASSWORD_DEFAULT);
         $query->bindParam(':password', $hashpassword);
 
@@ -42,7 +45,7 @@ class Account
 
     function editUser()
     {
-        $sql = "UPDATE users SET username = :username, last_name = :last_name, first_name = :first_name, middle_name = :middle_name, course_id = :course_id, level = :level, role = :role, password = :password WHERE user_id = :user_id;";
+        $sql = "UPDATE users SET username = :username, last_name = :last_name, first_name = :first_name, middle_name = :middle_name, course_id = :course_id, level = :level, role = :role WHERE user_id = :user_id;";
 
         $query = $this->db->connect()->prepare($sql);
         
@@ -53,8 +56,8 @@ class Account
         $query->bindParam(':course_id', $this->course_id);
         $query->bindParam(':level', $this->level);
         $query->bindParam(':role', $this->role);
-        $hashpassword = password_hash($this->password, PASSWORD_DEFAULT);
-        $query->bindParam(':password', $hashpassword);
+        // $hashpassword = password_hash($this->password, PASSWORD_DEFAULT);
+        // $query->bindParam(':password', $hashpassword);
         $query->bindParam(':user_id', $this->user_id);
     
         return $query->execute();
@@ -131,6 +134,16 @@ class Account
             $data = $query->fetch();
         }
         return $data;
+    }
+
+    function resetPass($reset_code_hash, $reset_code_expires_at, $email) {
+        $sql = "UPDATE users SET reset_code_hash = :reset_code_hash, reset_code_expires_at = :reset_code_expires_at WHERE email = :email";
+        $query = $this->db->connect()->prepare($sql);
+        $query->bindParam(':reset_code_hash', $reset_code_hash);
+        $query->bindParam(':reset_code_expires_at', $reset_code_expires_at);
+        $query->bindParam(':email', $email);
+
+        return $query->execute();
     }
 }
 

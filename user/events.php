@@ -1,5 +1,5 @@
 <?php
-$page_title = "Event - Homepage";
+$page_title = "Event - Events";
 session_start();
 
 if (isset($_SESSION['account'])) {
@@ -17,14 +17,14 @@ require_once '../includes/_head.php';
     <div class="wrapper">
         <?php
         require_once '../includes/_topnav.php';
-        require_once '../includes/_sidebarUser.php';
+        require_once '../includes/_sidebar.php';
         ?>
         <div class="content-page px-3">
             <!-- dynamic content here -->
         </div>
     </div>
     <?php
-    require_once '../includes/_footerUser.php';
+    require_once '../includes/_footer.php';
     ?>
 </body>
 

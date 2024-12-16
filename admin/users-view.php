@@ -64,7 +64,7 @@
                         </div>
                     </form>
                     <div class="d-flex align-items-center">
-                        <label for="category-filter" class="me-2">Category</label>
+                        <label for="category-filter" class="me-2" id="label-category">Category</label>
                         <select id="category-filter" class="form-select">
                             <option value="choose">Choose...</option>
                             <option value="">All</option>
@@ -82,7 +82,7 @@
                         <th>Username</th>
                         <th>Fullname</th>
                         <th>Course</th>
-                        <th class="text-center">Year Level</th>
+                        <th>Year Level</th>
                         <th>Role</th>
                         <th>Action</th>
                     </tr>
@@ -92,14 +92,14 @@
                     $i = 1;
                     foreach ($array as $arr) {
                     ?>
-                    <tr class="text-center">
-                        <td><?= $i ?></td>
-                        <td class="text-start"><?= $arr["username"] ?></td>
-                        <td><?= $arr["last_name"] . ", " . $arr["first_name"] . " " . $arr["middle_name"] ?></td>
-                        <td><?= $arr["course_code"] ?></td>
-                        <td class="text-center"><?= $arr["level"] ? $arr["level"] : "NONE" ?></td>
-                        <td><?= $arr["role"] ?></td>
-                        <td class="action"> 
+                    <tr>
+                        <td data-cell="no."><?= $i ?></td>
+                        <td data-cell="username"><?= $arr["username"] ?></td>
+                        <td data-cell="fullname"><?= $arr["last_name"] . ", " . $arr["first_name"] . " " . $arr["middle_name"] ?></td>
+                        <td data-cell="course"><?= $arr["course_code"] ?></td>
+                        <td data-cell="year level"><?= $arr["level"] ? $arr["level"] : "NONE" ?></td>
+                        <td data-cell="role"><?= $arr["role"] ?></td>
+                        <td class="action text-center"> 
                             <a href="" class="manage-user" data-id="<?= $arr["user_id"] ?>">Manage</a>
                         </td>
                     </tr>

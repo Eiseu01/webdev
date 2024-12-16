@@ -7,7 +7,7 @@ require_once('../classes/account.class.php');
 
 $user_id = $_GET['user_id'];
 $username = $last_name = $first_name = $middle_name = $course_id = $level = $role = $password = '';
-$usernameErr = $last_nameErr = $first_nameErr = $middle_nameErr = $course_idErr = $levelErr = $passwordErr = $roleErr = '';
+$usernameErr = $last_nameErr = $first_nameErr = $middle_nameErr = $course_idErr = $levelErr = $roleErr = $passwordErr = '';
 
 $userObj = new Account();
 
@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $course_id = clean_input($_POST['course_id']);
     $level = clean_input($_POST['level']);
     $role = clean_input($_POST['role']);
-    $password = clean_input($_POST['password']);
+    // $password = clean_input($_POST['password']);
 
     if (empty($username)) {
         $usernameErr = "Username is required";
@@ -34,9 +34,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($middle_name)) {
         $middle_nameErr = "Middle name is required";
     }
-    if (empty($password)) {
-        $passwordErr = "Password is required";
-    } 
+    // if (empty($password)) {
+    //     $passwordErr = "Password is required";
+    // } 
     if (empty($role)) {
         $roleErr = "Role is required";
     }
@@ -44,11 +44,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $course_idErr = "Course is required";
     }
 
-    if (!empty($usernameErr) || !empty($last_nameErr) || !empty($first_nameErr) || !empty($middle_nameErr) || !empty($course_idErr) || !empty($passwordErr) || !empty($roleErr)) {
+    if (!empty($usernameErr) || !empty($last_nameErr) || !empty($first_nameErr) || !empty($middle_nameErr) || !empty($course_idErr) || !empty($roleErr)) {
         echo json_encode([
             'status' => 'error',
             'usernameErr' => $usernameErr,
-            'passwordErr' => $passwordErr,
+            // 'passwordErr' => $passwordErr,
             'roleErr' => $roleErr,
             'last_nameErr' => $last_nameErr,
             'first_nameErr' => $first_nameErr,
@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    if (empty($usernameErr) && empty($last_nameErr) && empty($first_nameErr) && empty($middle_nameErr) && empty($course_idErr) && empty($passwordErr)  && empty($roleErr)) {
+    if (empty($usernameErr) && empty($last_nameErr) && empty($first_nameErr) && empty($middle_nameErr) && empty($course_idErr) && empty($roleErr)) {
         
         $userObj->user_id = $user_id;
         $userObj->username = $username;
@@ -67,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $userObj->middle_name = $middle_name;
         $userObj->course_id = $course_id;
         $userObj->role = $role;
-        $userObj->password = $password;
+        // $userObj->password = $password;
         $userObj->level = $level;
 
         if ($userObj->editUser()) {

@@ -19,9 +19,9 @@
         text-align: center;
     }
     .addBtn {
-        position: absolute;
-        right: 100px;
-        bottom: 100px;
+        position: sticky;
+        bottom: 30px;
+        margin-left: 240px;
         width: 80px;
         height: 80px;
         border-radius: 100px;
@@ -60,8 +60,13 @@
         font-weight: bold;
         text-decoration: none;
     }
-    @media only screen and (min-width: 600px) {
+    @media only screen and (min-width: 650px) {
         .addBtn {
+            display: none;
+        }
+    }
+    @media (max-width: 650px) {
+        .addProductBtn {
             display: none;
         }
     }
@@ -93,7 +98,7 @@
                     </div>
                 </form>
                 <div class="addProductBtn">
-                    <a class="addEvent" href="addproduct.php">Add Product</a>
+                    <a class="addEvent" href="addproduct.php">Create an Event</a>
                 </div>
             </div>
             <table id="table-products" class="table table-centered table-nowrap mb-0">
@@ -106,8 +111,8 @@
                         <th>Time</th>
                         <th>Creation Status</th>
                         <th>Progress Status</th>
-                        <th class="text-center">Total Capacity</th>
-                        <th class="text-center">Available Capacity</th>
+                        <th>Total Capacity</th>
+                        <th>Available Capacity</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -118,16 +123,16 @@
                         $endTime = strtotime($arr["end_time"]);
                     ?>
                     <tr>
-                        <td><?= $arr["event_name"] ?></td>
-                        <td><?= $arr["location"] ?></td>
-                        <td><?= $arr["event_description"] ?></td>
-                        <td style="width: 110px;" class="text-center"><?= $arr["date"] ?></td>
-                        <td style="width: 100px;" class="text-center"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
-                        <td class="text-center"><?= $arr["creation_status"] ?></td>
-                        <td class="text-center"><?= $arr["progress_status"] ?></td>
-                        <td class="text-center"><?= $arr["total_capacity"] ?></td>
-                        <td class="text-center"><?= $arr["available_capacity"] ?></td>
-                        <td style="text-align: center; width: 150px">
+                        <td data-cell="event name"><?= $arr["event_name"] ?></td>
+                        <td data-cell="venue"><?= $arr["location"] ?></td>
+                        <td data-cell="description"><?= $arr["event_description"] ?></td>
+                        <td data-cell="date"><?= $arr["date"] ?></td>
+                        <td data-cell="time"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
+                        <td data-cell="creation status"><?= $arr["creation_status"] ?></td>
+                        <td data-cell="progress status"><?= $arr["progress_status"] ?></td>
+                        <td data-cell="total capacity"><?= $arr["total_capacity"] ?></td>
+                        <td data-cell="available capacity"><?= $arr["available_capacity"] ?></td>
+                        <td class="text-center">
                             <?php if($arr["creation_status"] == "pending"): ?>
                                 <a href="" class="edit" data-id="<?= $arr["event_id"] ?>">Edit</a>
                                 <a href="" class="delete" data-id="<?= $arr["event_id"] ?>">Delete</a>  
@@ -136,7 +141,8 @@
                                 <a href="" class="resched" data-id="<?= $arr["event_id"] ?>">Reschedule</a>
                             <?php endif; ?>
                             <?php if($arr["creation_status"] == "denied"): ?>
-                                <a href="" class="delete" data-id="<?= $arr["event_id"] ?>">Delete</a>
+                                <a href="" class="edit" data-id="<?= $arr["event_id"] ?>">Edit</a>
+                                <a href="" class="delete" data-id="<?= $arr["event_id"] ?>">Delete</a>          
                             <?php endif; ?>
                         </td>
                     </tr>

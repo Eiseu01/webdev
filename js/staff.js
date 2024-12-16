@@ -9,32 +9,32 @@ $(document).ready(function () {
     window.history.pushState({ path: url }, "", url); // Update the browser's URL without reloading
   });
 
-  $("#profile-link").on("click", function (e) {
+  $(".profile-link").on("click", function (e) {
     e.preventDefault(); // Prevent default behavior
     viewProfile(); // Call the function to load analytics
   });
 
-  $("#events-link").on("click", function (e) {
+  $(".events-link").on("click", function (e) {
     e.preventDefault(); // Prevent default behavior
     viewEvents(); // Call the function to load analytics
   });
 
-  $("#dashboard-link").on("click", function (e) {
+  $(".dashboard-link").on("click", function (e) {
     e.preventDefault(); // Prevent default behavior
     viewProposedEvents(); // Call the function to load analytics
   });
 
-  $("#users-link").on("click", function (e) {
+  $(".users-link").on("click", function (e) {
     e.preventDefault(); // Prevent default behavior
     viewUsers(); // Call the function to load analytics
   });
 
-  $("#reservations-link").on("click", function (e) {
+  $(".reservations-link").on("click", function (e) {
     e.preventDefault(); // Prevent default behavior
     viewReservations(); // Call the function to load analytics
   });
 
-  $("#notifications-link").on("click", function (e) {
+  $(".notifications-link").on("click", function (e) {
     e.preventDefault();
     viewNotifications();
   });
@@ -43,17 +43,17 @@ $(document).ready(function () {
   let url = window.location.href;
   console.log(url);
   if (url.endsWith("dashboard.php")) {
-    $("#dashboard-link").trigger("click"); // Trigger the dashboard/home click event
+    $(".dashboard-link").trigger("click"); // Trigger the dashboard/home click event
   } else if (url.endsWith("users.php")) {
-    $("#users-link").trigger("click"); // Trigger the notifications click event
+    $(".users-link").trigger("click"); // Trigger the notifications click event
   } else if (url.endsWith("profile.php")) {
-    $("#profile-link").trigger("click"); // Trigger the reservations click event
+    $(".profile-link").trigger("click"); // Trigger the reservations click event
   } else if (url.endsWith("events.php")) {
-    $("#events-link").trigger("click"); // Trigger the reservations click event
+    $(".events-link").trigger("click"); // Trigger the reservations click event
   } else if (url.endsWith("reservations.php")) {
-    $("#reservations-link").trigger("click"); // Trigger the reservations click event
+    $(".reservations-link").trigger("click"); // Trigger the reservations click event
   } else if (url.endsWith("notifications.php")) {
-    $("#notifications-link").trigger("click"); // Trigger the reservations click event
+    $(".notifications-link").trigger("click"); // Trigger the reservations click event
   }
 
   function viewEvents() {
@@ -74,18 +74,125 @@ $(document).ready(function () {
           table.search(this.value).draw();
         });
 
+        // Register button click handler
         $(".register-btn").on("click", function (e) {
           e.preventDefault();
-          registerModal(this.dataset.id);
+          registerModal(this.dataset.id); // Call registerModal with the data-id
         });
 
+        // Cancel button click handler
         $(".cancel-btn").on("click", function (e) {
           e.preventDefault();
-          cancelModal(this.dataset.id);
+          cancelModal(this.dataset.id); // Call cancelModal with the data-id
+        });
+
+        // View finished events
+        $("#finished").on("click", function (e) {
+          e.preventDefault();
+          viewEventsFinished();
+        });
+
+        // View in-progress events
+        $("#inprogress").on("click", function (e) {
+          e.preventDefault();
+          viewEventsInProgress();
+        });
+
+        // View scheduled events
+        $("#scheduled").on("click", function (e) {
+          viewEvents();
         });
       },
     });
   }
+
+   function viewEventsInProgress() {
+     $.ajax({
+       type: "GET",
+       url: "../events-view/events-view-inprogress.php",
+       dataType: "html",
+       success: function (response) {
+         $(".content-page").html(response);
+
+         var table = $("#table-products").DataTable({
+           dom: "rtp",
+           pageLength: 10,
+           ordering: false,
+         });
+
+         $("#custom-search").on("keyup", function () {
+           table.search(this.value).draw();
+         });
+
+         $("#category-filter").on("change", function () {
+           if (this.value !== "choose") {
+             table.column(6).search(this.value).draw(); // Filter products by selected category
+           }
+         });
+
+         // View finished events
+         $("#finished").on("click", function (e) {
+           e.preventDefault();
+           viewEventsFinished();
+         });
+
+         // View in-progress events
+         $("#inprogress").on("click", function (e) {
+           e.preventDefault();
+           viewEventsInProgress();
+         });
+
+         // View scheduled events
+         $("#scheduled").on("click", function (e) {
+           viewEvents();
+         });
+       },
+     });
+   }
+
+   function viewEventsFinished() {
+     $.ajax({
+       type: "GET",
+       url: "../events-view/events-view-finished.php",
+       dataType: "html",
+       success: function (response) {
+         $(".content-page").html(response);
+
+         var table = $("#table-products").DataTable({
+           dom: "rtp",
+           pageLength: 10,
+           ordering: false,
+         });
+
+         $("#custom-search").on("keyup", function () {
+           table.search(this.value).draw();
+         });
+
+         $("#category-filter").on("change", function () {
+           if (this.value !== "choose") {
+             table.column(6).search(this.value).draw(); // Filter products by selected category
+           }
+         });
+
+         // View finished events
+         $("#finished").on("click", function (e) {
+           e.preventDefault();
+           viewEventsFinished();
+         });
+
+         // View in-progress events
+         $("#inprogress").on("click", function (e) {
+           e.preventDefault();
+           viewEventsInProgress();
+         });
+
+         // View scheduled events
+         $("#scheduled").on("click", function (e) {
+           viewEvents();
+         });
+       },
+     });
+   }
 
   function registerModal(eventId) {
     $.ajax({
@@ -127,13 +234,21 @@ $(document).ready(function () {
           ordering: false,
         });
 
-        $("#custom-search").on("keyup", function () {
-          table.search(this.value).draw();
+        $("#category-filter").on("change", function () {
+          if (this.value !== "choose") {
+            table.column(5).search(this.value).draw(); // Filter products by selected category
+          }
         });
 
+        // Search handler
+        $("#custom-search").on("keyup", function () {
+          table.search(this.value).draw(); // Perform search in DataTable
+        });
+
+        // View ticket handler
         $(".view-ticket").on("click", function (e) {
           e.preventDefault();
-          viewTicket(this.dataset.id);
+          viewTicket(this.dataset.id); // Call viewTicket with the data-id
         });
       },
     });
@@ -179,26 +294,39 @@ $(document).ready(function () {
           }
         });
 
+        // Confirm reservation handler
         $(".confirm").on("click", function (e) {
           e.preventDefault();
-          confirmReservation(this.dataset.id, this.dataset.user, this.dataset.event);
+          confirmReservation(
+            this.dataset.id,
+            this.dataset.user,
+            this.dataset.event
+          );
         });
 
+        // Decline reservation handler
         $(".decline").on("click", function (e) {
           e.preventDefault();
-          declineReservation(this.dataset.id, this.dataset.user, this.dataset.event);
+          declineReservation(
+            this.dataset.id,
+            this.dataset.user,
+            this.dataset.event
+          );
         });
 
+        // Delete reservation handler
         $(".delete").on("click", function (e) {
           e.preventDefault();
           deleteReservation(this.dataset.id);
         });
 
+        // Attendance absent handler
         $(".absent").on("click", function (e) {
           e.preventDefault();
           attendanceAbsent(this.dataset.id);
         });
 
+        // Attendance present handler
         $(".present").on("click", function (e) {
           e.preventDefault();
           attendancePresent(this.dataset.id);
@@ -302,21 +430,25 @@ $(document).ready(function () {
           }
         });
 
+        // Edit event handler
         $(".edit").on("click", function (e) {
           e.preventDefault();
           editEvent(this.dataset.id);
         });
 
+        // Delete event handler
         $(".delete").on("click", function (e) {
           e.preventDefault();
           deleteEvent(this.dataset.id);
         });
 
+        // Reschedule event handler
         $(".resched").on("click", function (e) {
           e.preventDefault();
           reschedEvent(this.dataset.id);
         });
 
+        // Add event handler
         $(".addEvent").on("click", function (e) {
           e.preventDefault();
           addEvent();
@@ -327,7 +459,7 @@ $(document).ready(function () {
 
   function deleteEvent(eventId) {
     $.ajax({
-      url: `../staff/deleteEvent.php`,
+      url: `../modals/deleteEvent.php`,
       type: "GET",
       datatype: "html",
       success: function (view) {
@@ -340,7 +472,7 @@ $(document).ready(function () {
 
   function addEvent() {
     $.ajax({
-      url: `../modals/addEvent.html`,
+      url: `../modals/addEventForm.php`,
       type: "GET",
       datatype: "html",
       success: function (view) {
@@ -667,10 +799,25 @@ $(document).ready(function () {
           e.preventDefault();
           deleteNotification(this.dataset.id);
         });
+
+        $("#truncateNotif").on("click", function (e) {
+          e.preventDefault();
+          truncateNotification();
+        });
       },
     });
   }
-
+  function truncateNotification() {
+    $.ajax({
+      url: `../modals/truncateNotification.php`,
+      type: "GET",
+      datatype: "html",
+      success: function (view) {
+        $(".modal-container").empty().html(view); // Load the modal view
+        $("#staticBackdropedit").modal("show"); // Show the modal
+      },
+    });
+  }
   function deleteNotification(notifId) {
     $.ajax({
       url: `../modals/deleteNotification.php`,

@@ -18,7 +18,7 @@ class Notification
 
     function fetchNotifications($user_id)
     {
-        $sql = "SELECT * FROM notifications WHERE user_id = :user_id";
+        $sql = "SELECT * FROM notifications WHERE user_id = :user_id ORDER BY created_at DESC";
 
         $query = $this->db->connect()->prepare($sql);
         $query->bindParam(':user_id', $user_id);
@@ -43,11 +43,19 @@ class Notification
     }
 
     function deleteNotification($notificationId) {
-        $sql = "DELETE FROM notifications WHERE notification_id = :notification_idd;";
+        $sql = "DELETE FROM notifications WHERE notification_id = :notification_id;";
 
         $query = $this->db->connect()->prepare($sql);
 
-        $query->bindParam(':notification_idd', $notificationId);
+        $query->bindParam(':notification_id', $notificationId);
+
+        return $query->execute();
+    }
+    
+    function truncateNotif() {
+        $sql = "TRUNCATE TABLE notifications;";
+
+        $query = $this->db->connect()->prepare($sql);
 
         return $query->execute();
     }

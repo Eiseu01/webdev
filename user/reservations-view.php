@@ -52,12 +52,12 @@
                         $endTime = strtotime($arr["end_time"]);
                     ?>
                     <tr>
-                        <td><?= $arr["event_name"] ?></td>
-                        <td><?= $arr["location"] ?></td>
-                        <td><?= $arr["event_description"] ?></td>
-                        <td class="text-center" style="width: 150px;"><?= $arr["date"] ?></td>
-                        <td class="text-center" style="width: 200px;"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
-                        <td class="text-center"><?= $arr["reservation_status"] ?></td>
+                        <td data-cell="event name"><?= $arr["event_name"] ?></td>
+                        <td data-cell="venue"><?= $arr["location"] ?></td>
+                        <td data-cell="description"><?= $arr["event_description"] ?></td>
+                        <td data-cell="date"><?= $arr["date"] ?></td>
+                        <td data-cell="time"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
+                        <td data-cell="status"><?= $arr["reservation_status"] ?></td>
                         <td class="text-center fst-italic">
                             <?php if($arr["reservation_status"] == "confirmed"): ?>
                                 <a class="view-ticket" href="" data-id="<?= $arr["reservation_id"] ?>">View Ticket</a>

@@ -17,14 +17,14 @@ require_once '../includes/_head.php';
     <div class="wrapper">
         <?php
         require_once '../includes/_topnav.php';
-        require_once '../includes/_sidebarAdmin.php';
+        require_once '../includes/_sidebar.php';
         ?>
         <div class="content-page px-3">
             <!-- dynamic content here -->
         </div>
     </div>
     <?php
-    require_once '../includes/_footerAdmin.php';
+    require_once '../includes/_footer.php';
     ?>z
 </body>
 

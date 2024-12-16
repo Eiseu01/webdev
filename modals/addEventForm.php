@@ -27,12 +27,12 @@
                     </div>
                     <div class="mb-2">
                         <label for="date" class="form-label">Date</label>
-                        <input type="date" class="form-control" id="date" name="date" />
+                        <input type="date" class="form-control" id="date" name="date" value="<?= date('Y-m-d') ?>" />
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="mb-2">
                         <label for="start_time" class="form-label">Start Time</label>
-                        <input type="time" class="form-control" id="start_time" name="start_time" />
+                        <input type="time" class="form-control" id="start_time" name="start_time" value="<?= date('H:i') ?>"/>
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="mb-2">
@@ -49,10 +49,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        No
+                        Cancel
                     </button>
                     <button type="submit" class="btn btn-primary brand-bg-color">
-                        Yes
+                        Save
                     </button>
                 </div>
             </form>

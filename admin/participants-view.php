@@ -29,7 +29,7 @@
                         </div>
                     </form>
                     <div class="d-flex align-items-center">
-                        <label for="category-filter" class="me-2">Category</label>
+                        <label for="category-filter" class="me-2" id="label-category">Category</label>
                         <select id="category-filter" class="form-select">
                             <option value="choose">Choose...</option>
                             <option value="">All</option>
@@ -50,7 +50,7 @@
                         <th>Name</th>
                         <th>Course & Level</th>
                         <th>Email</th>
-                        <th class="text-center">Phone Number</th>
+                        <th>Phone Number</th>
                         <th>Event</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -66,14 +66,14 @@
                     foreach ($array as $arr) {
                     ?>
                     <tr class="text-center">
-                        <td><?= $i ?></td>
-                        <td class="text-start"><?= $arr["last_name"] . ", " . $arr["first_name"] . " " . $arr["middle_name"] ?></td>
-                        <td><?= $arr["course_code"] . ' - ' . $arr["level"] ?></td>
-                        <td><?= $arr["email"] ?></td>
-                        <td class="text-center"><?= $arr["phone_number"] ?></td>
-                        <td><?= $arr["event_name"] ?></td>
-                        <td><?= $arr["reservation_status"] ?></td>
-                        <td class="action"> 
+                        <td data-cell="no."><?= $i ?></td>
+                        <td data-cell="name"><?= $arr["last_name"] . ", " . $arr["first_name"] . " " . $arr["middle_name"] ?></td>
+                        <td data-cell="course & level"><?= $arr["course_code"] . ' - ' . $arr["level"] ?></td>
+                        <td data-cell="email"><?= $arr["email"] ?></td>
+                        <td data-cell="phone number"><?= $arr["phone_number"] ?></td>
+                        <td data-cell="event"><?= $arr["event_name"] ?></td>
+                        <td data-cell="status"><?= $arr["reservation_status"] ?></td>
+                        <td class="action text-center"> 
                             <?php if($arr["reservation_status"] == "pending"): ?>
                                 <a class="confirm" href="" data-id="<?= $arr["reservation_id"] ?>" data-user="<?= $arr["user_id"] ?>" data-event="<?= $arr["event_name"] ?>">Confirm</a>
                                 <a class="decline" href="" data-id="<?= $arr["reservation_id"] ?>" data-user="<?= $arr["user_id"] ?>" data-event="<?= $arr["event_name"] ?>">Decline</a>
@@ -85,7 +85,7 @@
                                 <p class="text-success m-0">Confirmed</p>
                             <?php endif; ?>
                         </td>
-                        <td class="attendance">
+                        <td class="attendance text-center">
                             <?php if($arr["present"]): ?>
                                 <a class="absent text-success" href="" style="text-decoration: none;" data-id="<?= $arr["reservation_id"] ?>">Present</a>
                             <?php endif; ?>

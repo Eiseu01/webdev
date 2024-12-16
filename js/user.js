@@ -9,54 +9,54 @@ $(document).ready(function () {
     window.history.pushState({ path: url }, "", url); // Update the browser's URL without reloading
   });
 
-  $("#profile-link").on("click", function (e) {
+  $(".profile-link").on("click", function (e) {
     e.preventDefault(); // Prevent default behavior
     viewProfile(); // Call the function to load analytics
   });
 
-  $("#dashboard-link").on("click", function (e) {
+  $(".events-link").on("click", function (e) {
     e.preventDefault(); // Prevent default behavior
     viewEvents(); // Call the function to load analytics
   });
 
-  $("#reservations-link").on("click", function (e) {
+  $(".reservations-link").on("click", function (e) {
     e.preventDefault(); // Prevent default behavior
     viewReservations(); // Call the function to load analytics
   });
 
-  $("#notifications-link").on("click", function (e) {
+  $(".notifications-link").on("click", function (e) {
     e.preventDefault();
     viewNotifications();
   });
 
   // Determine which page to load based on the current URL
   let url = window.location.href;
-  if (url.endsWith("dashboard.php")) {
-    $("#dashboard-link").trigger("click"); // Trigger the dashboard/home click event
+  if (url.endsWith("events.php")) {
+    $(".events-link").trigger("click"); // Trigger the dashboard/home click event
   } else if (url.endsWith("reservations.php")) {
-    $("#reservations-link").trigger("click"); // Trigger the reservations click event
+    $(".reservations-link").trigger("click"); // Trigger the reservations click event
   } else if (url.endsWith("profile.php")) {
-    $("#profile-link").trigger("click"); // Trigger the reservations click event
+    $(".profile-link").trigger("click"); // Trigger the reservations click event
   } else if (url.endsWith("notifications.php")) {
-    $("#notifications-link").trigger("click"); // Trigger the reservations click event
+    $(".notifications-link").trigger("click"); // Trigger the reservations click event
   }
 
   function viewEvents() {
     $.ajax({
       type: "GET", 
-      url: "../user/dashboard-view.php", 
+      url: "../user/events-view.php", 
       dataType: "html",
       success: function (response) {
         $(".content-page").html(response);
 
         var table = $("#table-products").DataTable({
-          dom: "rtp", 
-          pageLength: 10, 
-          ordering: false, 
+          dom: "rtp",
+          pageLength: 10,
+          ordering: false,
         });
 
         $("#custom-search").on("keyup", function () {
-          table.search(this.value).draw(); 
+          table.search(this.value).draw();
         });
 
         $("#category-filter").on("change", function () {
@@ -65,14 +65,121 @@ $(document).ready(function () {
           }
         });
 
-        $(".register-btn").on("click", function (e) {
+        // View finished events
+        $("#finished").on("click", function (e) {
           e.preventDefault();
-          registerModal(this.dataset.id);
+          viewEventsFinished();
         });
 
+        // View in-progress events
+        $("#inprogress").on("click", function (e) {
+          e.preventDefault();
+          viewEventsInProgress();
+        });
+
+        // View scheduled events
+        $("#scheduled").on("click", function (e) {
+          viewEvents();
+        });
+
+        // Register button click handler
+        $(".register-btn").on("click", function (e) {
+          e.preventDefault();
+          registerModal(this.dataset.id); // Call registerModal with the data-id
+        });
+
+        // Cancel button click handler
         $(".cancel-btn").on("click", function (e) {
           e.preventDefault();
-          cancelModal(this.dataset.id);
+          cancelModal(this.dataset.id); // Call cancelModal with the data-id
+        });
+      },
+    });
+  }
+
+  function viewEventsInProgress() {
+    $.ajax({
+      type: "GET",
+      url: "../events-view/events-view-inprogress.php",
+      dataType: "html",
+      success: function (response) {
+        $(".content-page").html(response);
+
+        var table = $("#table-products").DataTable({
+          dom: "rtp",
+          pageLength: 10,
+          ordering: false,
+        });
+
+        $("#custom-search").on("keyup", function () {
+          table.search(this.value).draw();
+        });
+
+        $("#category-filter").on("change", function () {
+          if (this.value !== "choose") {
+            table.column(6).search(this.value).draw(); // Filter products by selected category
+          }
+        });
+
+        // View finished events
+        $("#finished").on("click", function (e) {
+          e.preventDefault();
+          viewEventsFinished();
+        });
+
+        // View in-progress events
+        $("#inprogress").on("click", function (e) {
+          e.preventDefault();
+          viewEventsInProgress();
+        });
+
+        // View scheduled events
+        $("#scheduled").on("click", function (e) {
+          viewEvents();
+        });
+      },
+    });
+  }
+
+  function viewEventsFinished() {
+    $.ajax({
+      type: "GET",
+      url: "../events-view/events-view-finished.php",
+      dataType: "html",
+      success: function (response) {
+        $(".content-page").html(response);
+
+        var table = $("#table-products").DataTable({
+          dom: "rtp",
+          pageLength: 10,
+          ordering: false,
+        });
+
+        $("#custom-search").on("keyup", function () {
+          table.search(this.value).draw();
+        });
+
+        $("#category-filter").on("change", function () {
+          if (this.value !== "choose") {
+            table.column(6).search(this.value).draw(); // Filter products by selected category
+          }
+        });
+
+        // View finished events
+        $("#finished").on("click", function (e) {
+          e.preventDefault();
+          viewEventsFinished();
+        });
+
+        // View in-progress events
+        $("#inprogress").on("click", function (e) {
+          e.preventDefault();
+          viewEventsInProgress();
+        });
+
+        // View scheduled events
+        $("#scheduled").on("click", function (e) {
+          viewEvents();
         });
       },
     });
@@ -123,10 +230,27 @@ $(document).ready(function () {
           table.search(this.value).draw(); // Search products based on input
         });
 
+        // Trash button click handler
         $(".trash").on("click", function (e) {
           e.preventDefault();
-          deleteNotification(this.dataset.id);
+          deleteNotification(this.dataset.id); // Call deleteNotification with the data-id
         });
+        
+        $("#truncateNotif").on("click", function (e) {
+          e.preventDefault();
+          truncateNotification();
+        });
+      },
+    });
+  }
+  function truncateNotification() {
+    $.ajax({
+      url: `../modals/truncateNotification.php`,
+      type: "GET",
+      datatype: "html",
+      success: function (view) {
+        $(".modal-container").empty().html(view); // Load the modal view
+        $("#staticBackdropedit").modal("show"); // Show the modal
       },
     });
   }
@@ -158,13 +282,15 @@ $(document).ready(function () {
           ordering: false,
         });
 
+        // Custom search input handler
         $("#custom-search").on("keyup", function () {
-          table.search(this.value).draw();
+          table.search(this.value).draw(); // Search in the DataTable based on input value
         });
 
+        // View ticket button click handler
         $(".view-ticket").on("click", function (e) {
-          e.preventDefault();
-          viewTicket(this.dataset.id);
+          e.preventDefault(); // Prevent default action (e.g., navigating to a new page)
+          viewTicket(this.dataset.id); // Call viewTicket with the data-id
         });
       },
     });
