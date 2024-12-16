@@ -137,7 +137,7 @@
                                 <a href="" class="edit" data-id="<?= $arr["event_id"] ?>">Edit</a>
                                 <a href="" class="delete" data-id="<?= $arr["event_id"] ?>">Delete</a>  
                             <?php endif; ?>
-                            <?php if($arr["creation_status"] == "approved"): ?>
+                            <?php if($arr["creation_status"] == "approved" && $arr["completion_status"] == "not_started"): ?>
                                 <a href="" class="resched" data-id="<?= $arr["event_id"] ?>">Reschedule</a>
                             <?php endif; ?>
                             <?php if($arr["creation_status"] == "denied"): ?>

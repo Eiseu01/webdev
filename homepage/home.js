@@ -13,7 +13,7 @@ $(document).ready(function () {
 
   $("#category-filter").on("change", function () {
     if (this.value !== "choose") {
-      table.column(7).search(this.value).draw(); // Filter products by selected category
+      table.column(6).search(this.value).draw(); // Filter products by selected category
     }
   }); 
 

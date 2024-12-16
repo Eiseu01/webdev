@@ -120,6 +120,8 @@
     require_once '../includes/_head.php';
 
     $eventObj = new Event;
+    $eventObj->updateEventDateInProgress();
+    $eventObj->updateEventDateFinished();
     $array = $eventObj->fetchAvailableEvents('');
 
 ?>
@@ -183,11 +185,10 @@
                         <th>Event Name</th>
                         <th>Venue</th>
                         <th>Description</th>
-                        <th class="text-center">Date</th>
+                        <th>Date</th>
                         <th>Time</th>
-                        <th class="text-center">Total Capacity</th>
-                        <th class="text-center">Available Capacity</th>
-                        <th>Action</th>
+                        <th>Capacity</th>
+                        <th>Availability</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -197,14 +198,13 @@
                         $endTime = strtotime($arr["end_time"]); 
                     ?>
                     <tr>
-                        <td><?= $arr["event_name"] ?></td>
-                        <td><?= $arr["location"] ?></td>
-                        <td><?= $arr["event_description"] ?></td>
-                        <td class="text-center" style="width: 150px;"><?= $arr["date"] ?></td>
-                        <td class="text-center" style="width: 200px;"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
-                        <td class="text-center"><?= $arr["total_capacity"] ?></td>
-                        <td class="text-center"><?= $arr["available_capacity"] ?></td>
-                        <td class="text-center">
+                        <td data-cell="event name"><?= $arr["event_name"] ?></td>
+                        <td data-cell="venue"><?= $arr["location"] ?></td>
+                        <td data-cell="description"><?= $arr["event_description"] ?></td>
+                        <td data-cell="date"><?= $arr["date"] ?></td>
+                        <td data-cell="time"><?= date('g:i A', $startTime) ?> - <?= date('g:i A', $endTime) ?></td>
+                        <td data-cell="total capacity"><?= $arr["total_capacity"] ?></td>
+                        <td data-cell="availability" class="text-center">
                             <?php if($arr["available_capacity"] > 0): ?>
                                 <p class="text-success">Available</p>
                             <?php endif; ?>

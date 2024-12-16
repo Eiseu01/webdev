@@ -22,7 +22,7 @@
 
                     <div class="mb-2">
                         <label for="event_description" class="form-label">Event Description</label>
-                        <input type="text" class="form-control" id="event_description" name="event_description" />
+                        <textarea class="form-control" id="event_description" name="event_description"></textarea>
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="mb-2">
