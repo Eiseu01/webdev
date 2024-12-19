@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 16, 2024 at 06:45 PM
+-- Generation Time: Dec 19, 2024 at 10:04 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `event`
 --
+CREATE DATABASE IF NOT EXISTS `event` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `event`;
 
 -- --------------------------------------------------------
 
@@ -27,6 +29,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `admin`
 --
 
+DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin` (
   `admin_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -48,6 +51,7 @@ INSERT INTO `admin` (`admin_id`, `user_id`, `status`, `date_joined`, `last_updat
 -- Table structure for table `course`
 --
 
+DROP TABLE IF EXISTS `course`;
 CREATE TABLE `course` (
   `course_id` int(11) NOT NULL,
   `course_name` varchar(50) NOT NULL,
@@ -69,6 +73,7 @@ INSERT INTO `course` (`course_id`, `course_name`, `course_code`) VALUES
 -- Table structure for table `events`
 --
 
+DROP TABLE IF EXISTS `events`;
 CREATE TABLE `events` (
   `event_id` int(11) NOT NULL,
   `event_name` varchar(100) NOT NULL,
@@ -95,9 +100,10 @@ CREATE TABLE `events` (
 --
 
 INSERT INTO `events` (`event_id`, `event_name`, `event_description`, `date`, `start_time`, `end_time`, `location`, `location_status`, `location_notes`, `created_by`, `reviewed_by`, `creation_status`, `progress_status`, `completion_status`, `updated_details`, `created_at`, `total_capacity`, `available_capacity`) VALUES
-(4, 'Tech Conference 2025', 'A conference showcasing the latest in technology trends.', '2024-12-30', '09:30:00', '17:10:00', 'Convention Center', 'good', NULL, 2, 1, 'pending', 'pending', 'not_started', NULL, '2024-11-26 10:41:48', 130, 124),
+(4, 'Tech Conference 2025', 'A conference showcasing the latest in technology trends.', '2024-12-30', '09:30:00', '17:10:00', 'Convention Center', 'good', NULL, 2, 1, 'pending', 'pending', 'not_started', NULL, '2024-11-26 10:41:48', 130, 122),
 (5, 'Annual Company Meeting', 'A mandatory meeting for all employees.', '2024-12-13', '10:00:00', '13:25:00', 'Office HQ Boardroom', 'good', 'Refreshments provided.', 2, 1, 'pending', 'pending', 'not_started', NULL, '2024-11-26 10:42:09', 150, 146),
-(6, 'Annual Tech Symposium', 'A symposium focusing on emerging tech trends and innovations.', '2025-06-15', '08:30:00', '17:00:00', 'Tech Hub Auditorium', 'good', NULL, 10, 1, 'pending', 'pending', 'not_started', NULL, '2024-11-30 12:17:05', 200, 190);
+(6, 'Annual Tech Symposium', 'A symposium focusing on emerging tech trends and innovations.', '2025-06-15', '08:30:00', '17:00:00', 'Tech Hub Auditorium', 'good', NULL, 10, 1, 'pending', 'pending', 'not_started', NULL, '2024-11-30 12:17:05', 200, 190),
+(68, 'Christmas Party', '', '2024-12-13', '12:00:00', '04:30:00', 'LR2', 'good', NULL, 1, 1, 'approved', 'scheduled', 'finished', NULL, '2024-12-16 14:28:01', 15, 15);
 
 -- --------------------------------------------------------
 
@@ -105,6 +111,7 @@ INSERT INTO `events` (`event_id`, `event_name`, `event_description`, `date`, `st
 -- Table structure for table `notifications`
 --
 
+DROP TABLE IF EXISTS `notifications`;
 CREATE TABLE `notifications` (
   `notification_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -120,6 +127,7 @@ CREATE TABLE `notifications` (
 -- Table structure for table `reservations`
 --
 
+DROP TABLE IF EXISTS `reservations`;
 CREATE TABLE `reservations` (
   `reservation_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -135,6 +143,7 @@ CREATE TABLE `reservations` (
 -- Table structure for table `staff`
 --
 
+DROP TABLE IF EXISTS `staff`;
 CREATE TABLE `staff` (
   `staff_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -159,6 +168,7 @@ INSERT INTO `staff` (`staff_id`, `user_id`, `department`, `status`, `date_joined
 -- Table structure for table `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
   `course_id` int(11) NOT NULL DEFAULT 0,
@@ -179,10 +189,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `course_id`, `username`, `password`, `first_name`, `last_name`, `middle_name`, `level`, `role`, `email`, `phone_number`, `created_at`) VALUES
-(1, 1, 'ace123', '$2y$10$0WPZynXx.3PNIvNRE6CFaeW6069ICCvkqLCR6DAlx.pfIBve0reF.', 'Ace John', 'Nieva', 'Malunes', 0, 'admin', 'acejohnz112@gmail.com', '09659523730', '2024-11-26 04:10:26'),
+(1, 1, 'ace123', '$2y$10$0WPZynXx.3PNIvNRE6CFaeW6069ICCvkqLCR6DAlx.pfIBve0reF.', 'Ace John', 'Nieva', 'Malunes', 2, 'admin', 'acejohnz112@gmail.com', '09659523730', '2024-11-26 04:10:26'),
 (2, 1, 'yan123', '$2y$10$Un/W7kUZB5BpfUtN4HQTqeZsRimfpo/QDJZszD.pPFCTNCdYwzpny', 'Yan Mark', 'Darunday', 'Villas', 2, 'organizer', 'yanmark@gmail.com', '09123456789', '2024-11-26 04:46:59'),
 (3, 1, 'fra123', '$2y$10$ivdb6bEiVGExNBY.lpobSe/yDRs60scK1x0J0kyQOKT8er2kfgt0K', 'Franco Adrianne', 'Ceniza', 'HAHA', 2, 'user', 'franco@gmail.com', '09987654321', '2024-11-26 04:47:23'),
-(10, 1, 'pao123', '$2y$10$f8ydKwnDYoUcHo/upOBrsOkAulK61pL8/VAZJ7y89rPwEQ6OPu956', 'Paolo Lorenzo', 'Longcob', 'Rice', 2, 'organizer', 'staff@gmail.com', '123456789', '2024-11-30 12:12:06');
+(10, 1, 'pao123', '$2y$10$f8ydKwnDYoUcHo/upOBrsOkAulK61pL8/VAZJ7y89rPwEQ6OPu956', 'Paolo Lorenzo', 'Longcob', 'Tan', 2, 'organizer', 'staff@gmail.com', '123456789', '2024-11-30 12:12:06');
 
 --
 -- Indexes for dumped tables
@@ -253,19 +263,19 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
-  MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
+  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=157;
 
 --
 -- AUTO_INCREMENT for table `staff`
@@ -277,7 +287,7 @@ ALTER TABLE `staff`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- Constraints for dumped tables
